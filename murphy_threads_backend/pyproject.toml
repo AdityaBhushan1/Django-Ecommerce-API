@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "murphy threads backend"
+version = "0.1.0"
+description = "Backend Of Murphy Threads Website"
+authors = ["Aditya Bhushan <adityapanto123@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
