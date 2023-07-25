@@ -146,5 +146,5 @@ EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
 EMAIL_HOST = ''
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587 # SET IT ACCORDINGLY
-EMAIL_HOST_USER = ''
+EMAIL_HOST_USER = 'support@murphythreads.store'
 EMAIL_HOST_PASSWORD = ''
