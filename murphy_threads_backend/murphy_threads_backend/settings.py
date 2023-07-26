@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-kgaf7qet2p8e_b6q+7m_h@h9#rzrw7*b^0ix@85j_dxtdsaz(m"
+SECRET_KEY = config("secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("debug")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config("allowed_hosts")
 
 
 # Application definition
@@ -42,7 +45,8 @@ INSTALLED_APPS = [
     'cart',
     'extra',
     'orders',
-    'product'
+    'product',
+    'payments'
 ]
 
 MIDDLEWARE = [
@@ -81,12 +85,12 @@ WSGI_APPLICATION = "murphy_threads_backend.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'murphythreads',
-        'USER': 'postgres',
-        'PASSWORD': '9457',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': config("engine"),
+        'NAME': config("name"),
+        'USER': config("user"),
+        'PASSWORD': config("password"),
+        'HOST': config("host"),
+        'PORT': config("port"),
     }
 }
 
@@ -131,7 +135,7 @@ STATIC_URL = "static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -142,9 +146,26 @@ REST_FRAMEWORK = {
 }
 
 
-EMAIL_BACKEND = 'django.core.mail.backend.smtp.EmailBackend'
-EMAIL_HOST = ''
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587 # SET IT ACCORDINGLY
-EMAIL_HOST_USER = 'support@murphythreads.store'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_BACKEND = config("email_backend")
+EMAIL_HOST = config("email_host")
+EMAIL_USE_TLS = config("email_use_tls")
+EMAIL_PORT = config("email_port")
+EMAIL_HOST_USER = config("email_host_user")
+EMAIL_HOST_PASSWORD = config("email_host_password")
+
+# STRIPE
+STRIPE_PUBLISHABLE_LIVE_KEY = config("stripe_api_publishable_key_live")
+STRIPE_SECRET_LIVE_KEY = config("stripe_api_secret_key_live")
+STRIPE_PUBLISHABLE_TEST_KEY = config("stripe_api_publishable_key_test")
+STRIPE_SECRET_TEST_KEY = config("stripe_api_secret_key_test")
+
+# INSTAMOJO
+INSTAMOJO_PRIVATE_LIVE_API_KEY = config("instamojo_private_live_api_key")
+INSTAMOJO_PRIVATE_LIVE_AUTH_TOKEN = config("instamojo_private_live_auth_token")
+INSTAMOJO_PRIVATE_LIVE_SALT = config("instamojo_private_live_salt")
+
+# PAYPAL
+PAYPLA_TEST_CLIENT_ID = config("paypal_sandbox_client_id")
+PAYPLA_TEST_SECRET_KEY = config("paypal_sandbox_secret_key")
+PAYPLA_LIVE_CLIENT_ID = config("paypal_live_client_id")
+PAYPLA_LIVE_SECRET_KEY = config("paypal_live_secret_key")
