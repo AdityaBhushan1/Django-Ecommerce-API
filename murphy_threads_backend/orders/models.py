@@ -5,7 +5,7 @@ from product.models import *
 # Create your models here.
 
 class Payments(models.Model):
-    id = models.AutoFeild(primary_key=True,null=False)
+    id = models.AutoField(primary_key=True,null=False)
     user_id = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='uid',null=False)
 class Orders(models.Model):
     orderid = models.AutoField(primary_key=True,null=False)
