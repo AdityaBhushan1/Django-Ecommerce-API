@@ -3,6 +3,10 @@ from account.models import *
 from product.models import *
 
 # Create your models here.
+
+class Payments(models.Model):
+    id = models.AutoFeild(primary_key=True,null=False)
+    user_id = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='uid',null=False)
 class Orders(models.Model):
     orderid = models.AutoField(primary_key=True,null=False)
     user_id = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='uid',null=False)
@@ -10,7 +14,7 @@ class Orders(models.Model):
     # shipping_addressid = models.ForeignKey(UserAddresses, on_delete=models.CASCADE,to_field='id')
     ammount_paid = models.DecimalField(max_digits = 20,decimal_places = 2,null = False)
     quantity = models.IntegerField(default = 1,null = False)
-    pay_id = ...
+    pay_id = models.ForeignKey(Payments, on_delete=models.CASCADE, to_field='id',null=False)
     ordered_on = models.DateTimeField(auto_now=True)
     modified_at = models.DateTimeField(auto_now=True)
     
