@@ -85,7 +85,7 @@ WSGI_APPLICATION = "murphy_threads_backend.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': config("engine"),
+        'ENGINE': config("db_engine"),
         'NAME': config("name"),
         'USER': config("user"),
         'PASSWORD': config("password"),
