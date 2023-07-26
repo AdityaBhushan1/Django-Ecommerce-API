@@ -26,10 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("debug")
+DEBUG = config("under_development")
 
 ALLOWED_HOSTS = config("allowed_hosts")
-
 
 # Application definition
 
@@ -163,9 +162,14 @@ STRIPE_SECRET_TEST_KEY = config("stripe_api_secret_key_test")
 INSTAMOJO_PRIVATE_LIVE_API_KEY = config("instamojo_private_live_api_key")
 INSTAMOJO_PRIVATE_LIVE_AUTH_TOKEN = config("instamojo_private_live_auth_token")
 INSTAMOJO_PRIVATE_LIVE_SALT = config("instamojo_private_live_salt")
+INSTAMOJO_PRIVATE_TEST_API_KEY = config("instamojo_private_test_api_key")
+INSTAMOJO_PRIVATE_TEST_AUTH_TOKEN = config("instamojo_private_test_auth_token")
+INSTAMOJO_PRIVATE_TEST_SALT = config("instamojo_private_test_salt")
 
 # PAYPAL
 PAYPLA_TEST_CLIENT_ID = config("paypal_sandbox_client_id")
 PAYPLA_TEST_SECRET_KEY = config("paypal_sandbox_secret_key")
 PAYPLA_LIVE_CLIENT_ID = config("paypal_live_client_id")
 PAYPLA_LIVE_SECRET_KEY = config("paypal_live_secret_key")
+
+IS_UNDER_DEVELOPMENT = config("under_development")
