@@ -10,5 +10,7 @@ path('/get_user_addresses/<int:uid>',get_user_addresses,name="get_user_addresses
 path('/create-user/',create_new_user,name="create_new_user"),
 path("/update-user/<int:pk>",update_user,name="update_user"),
 path('/delete-user/<int:id>',delete_user,name="delete_user"),
-path("/verify/<str:username>/<int:pk>/<str:email_token>",activate_account,name="account_activation"),
+path("/account/verify/<str:username>/<int:pk>/<str:email_token>",activate_account,name="account_activation"),
+path('/request-password-reset/<int:pk>',request_password_reset,name="pass_reset_request"),
+path('/password-reset/<str:pass_reset_token>,reset_pass,name="pass_reset"),
 ]
