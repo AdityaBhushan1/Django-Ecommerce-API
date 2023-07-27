@@ -14,7 +14,7 @@ class Users(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
     is_email_verified = models.BooleanField(default=False)
-    email_token = models.CharField(max_length=255,null = True,blank = True)
+    email_token = models.CharField(max_length=255,null = True,blank = False,unique=True)
 
 class UserAddresses(models.Model):
     id = models.AutoField(primary_key=True,null=False)
