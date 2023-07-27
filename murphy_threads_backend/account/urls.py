@@ -10,4 +10,5 @@ path('/get_user_addresses/<int:uid>',get_user_addresses,name="get_user_addresses
 path('/create-user/',create_new_user,name="create_new_user"),
 path("/update-user/<int:pk>",update_user,name="update_user"),
 path('/delete-user/<int:id>',delete_user,name="delete_user"),
+path("/verify/<str:>"),
 ]
