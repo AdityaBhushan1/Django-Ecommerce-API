@@ -13,7 +13,7 @@ class Payments(models.Model):
 
 class Orders(models.Model):
     orderid = models.AutoField(primary_key=True,null=False)
-    usernamr = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='username',null=False)
+    username = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='username',null=False)
     productid = models.ForeignKey(Products, on_delete=models.CASCADE,to_field='pid',null=False)
     shipping_address_id = models.ForeignKey(UserAddresses, on_delete=models.CASCADE,to_field='id')
     ammount_paid = models.DecimalField(max_digits = 20,decimal_places = 2,null = False)
