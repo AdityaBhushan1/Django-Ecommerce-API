@@ -5,7 +5,7 @@ import uuid
 
 # Create your models here.
 class Users(AbstractBaseUser, PermissionsMixin):      
-    username = models.CharField(max_length=255,null=False,unique=True)
+    username = models.CharField(primary_key=True,max_length=255,null=False,unique=True)
    # password = models.CharField(max_length=255)
     first_name = models.CharField(max_length=255,null=False)
     last_name = models.CharField(max_length=255,null=False)
