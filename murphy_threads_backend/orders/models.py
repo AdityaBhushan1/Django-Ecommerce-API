@@ -1,17 +1,21 @@
 from django.db import models
-from account.models import *
 from product.models import *
+from account.models import *
+from django.contrib.auth import get_user_model
+
+Users = get_user_model()
 
 # Create your models here.
 
 class Payments(models.Model):
     id = models.AutoField(primary_key=True,null=False)
-    user_id = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='uid',null=False)
+    username = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='username',null=False)
+
 class Orders(models.Model):
     orderid = models.AutoField(primary_key=True,null=False)
     user_id = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='uid',null=False)
     productid = models.ForeignKey(Products, on_delete=models.CASCADE,to_field='pid',null=False)
-    # shipping_addressid = models.ForeignKey(UserAddresses, on_delete=models.CASCADE,to_field='id')
+    shipping_address_id = models.ForeignKey(UserAddresses, on_delete=models.CASCADE,to_field='id')
     ammount_paid = models.DecimalField(max_digits = 20,decimal_places = 2,null = False)
     quantity = models.IntegerField(default = 1,null = False)
     pay_id = models.ForeignKey(Payments, on_delete=models.CASCADE, to_field='id',null=False)
