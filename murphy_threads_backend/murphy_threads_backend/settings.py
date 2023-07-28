@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from datetime import timedelta
 
 
 
@@ -41,23 +42,25 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'rest_framework',
     'account',
-    'cart',
-    'extra',
-    'orders',
-    'product',
-    'payments',
-    'wishlist'
+    # 'cart',
+    # 'extra',
+    # 'orders',
+    # 'product',
+    # 'payments',
+    # 'wishlist',
+    'rest_framework_simplejwt',
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    
 ]
 if config("under_development") == True:
     MIDDLEWARE.append("murphy_threads_backend.middleware.ApiKeyMiddleware")
@@ -147,6 +150,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
 
@@ -183,3 +187,14 @@ IS_UNDER_DEVELOPMENT = config("under_development")
 API_KEY = config("api_key")
 
 AUTH_USER_MODEL = 'account.Users'
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
+}
+
+# set this to forntend hosts
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]

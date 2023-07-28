@@ -9,11 +9,11 @@ Users = get_user_model()
 
 class Payments(models.Model):
     id = models.AutoField(primary_key=True,null=False)
-    username = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='username',null=False)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='email',null=False)
 
 class Orders(models.Model):
     orderid = models.AutoField(primary_key=True,null=False)
-    username = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='username',null=False)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='email',null=False)
     productid = models.ForeignKey(Products, on_delete=models.CASCADE,to_field='pid',null=False)
     shipping_address_id = models.ForeignKey(UserAddresses, on_delete=models.CASCADE,to_field='id')
     ammount_paid = models.DecimalField(max_digits = 20,decimal_places = 2,null = False)
@@ -25,7 +25,7 @@ class Orders(models.Model):
 class OrderState(models.Model):
     id = models.AutoField(primary_key = True,null = False)
     order_id = models.ForeignKey(Orders, on_delete=models.CASCADE, to_field='orderid',null=False)
-    username = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='username',null=False)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='email',null=False)
     is_shipped = models.BooleanField(default = False)
     shipped_date = models.DateTimeField(null = True)
     is_delivered = models.BooleanField(default = False)
@@ -37,7 +37,7 @@ class OrderState(models.Model):
 class Returns(models.Model):
     id = models.AutoField(primary_key = True,null = False)
     order_id = models.ForeignKey(Orders, on_delete=models.CASCADE, to_field='orderid',null=False)
-    username = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='username',null=False)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='email',null=False)
     is_returned = models.BooleanField(default = False)
     return_applied_date = models.DateTimeField(null = True)
     is_return_applicable = models.BooleanField(default = True)
@@ -48,7 +48,7 @@ class Refunds(models.Model):
     id = models.AutoField(primary_key = True,null = False)
     order_id = models.ForeignKey(Orders, on_delete=models.CASCADE, 
     to_field='orderid',null=False)
-    username = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='username',null=False)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='email',null=False)
     is_refund_applicable = models.BooleanField(null = True)
     is_refunded = models.BooleanField(null = True)
     refund_date = models.DateTimeField(null = True)

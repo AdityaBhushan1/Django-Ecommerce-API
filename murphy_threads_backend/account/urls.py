@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include 
 from . import views
 from utils.urls import app_urls
+from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView, TokenVerifyView
 
 app_name = 'account'
 
@@ -24,9 +25,12 @@ urlpatterns = [
 
      path('password-reset/<str:pass_reset_token>',views.reset_pass,name="pass_reset"),
 
-     path('add-address/,views.add_new_address,name="add_new_address"),
+     path('add-address/',views.add_new_address,name="add_new_address"),
      
      path('update-address/<int:id>',views.update_address,name="address_update"),
 
      path("delete-address/<int:id>",views.delete_address,name="address_delete"),
+     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
      ]

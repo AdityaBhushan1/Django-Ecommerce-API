@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
+
 urlpatterns = [
     path("murphy-threads-admin-panel/", admin.site.urls),
     path('', views.home, name='home'),
@@ -28,4 +29,5 @@ urlpatterns = [
     # path("payment/", include("payments.urls"),name = 'payment'),
     # path("product/", include("product.urls"),name = 'product'),
     # path("wishlist/", include("wishlist.urls"),name = 'wishlist'),
+    
 ]
