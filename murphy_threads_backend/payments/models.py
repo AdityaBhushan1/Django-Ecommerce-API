@@ -9,6 +9,6 @@ Users = get_user_model()
 
 class SavedCards(models.Model):
     id = models.AutoField(primary_key=True,null=False)
-    user_id = models.ForeignKey(Users,on_delete=models.CASCADE,to_field='uid',null=False)
+    username = models.ForeignKey(Users,on_delete=models.CASCADE,to_field='username',null=False)
     card_number = models.BigIntegerField()
     expiry_month = models.IntegerField(null = False)
