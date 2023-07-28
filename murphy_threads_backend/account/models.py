@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+import uuid
 
 # Create your models here.
 class Users(AbstractBaseUser, PermissionsMixin):      
-    user_name = models.CharField(max_length=255,null=False,unique=True)
+    username = models.CharField(max_length=255,null=False,unique=True)
    # password = models.CharField(max_length=255)
     first_name = models.CharField(max_length=255,null=False)
     last_name = models.CharField(max_length=255,null=False)
@@ -14,7 +15,10 @@ class Users(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
     is_email_verified = models.BooleanField(default=False)
-    email_token = models.CharField(max_length=255,null = True,blank = False,unique=True)
+    email_token = models.CharField(max_length=255,null = True,blank = False,unique=True,default=uuid.uuid4())
+    USERNAME_FIELD = ['username']
+    REQUIRED_FIELDS = ['username','first_name','email','phone_no']
+
 
 class UserAddresses(models.Model):
     id = models.AutoField(primary_key=True,null=False)
