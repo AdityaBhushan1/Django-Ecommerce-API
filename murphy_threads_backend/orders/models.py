@@ -25,7 +25,7 @@ class Orders(models.Model):
 class OrderState(models.Model):
     id = models.AutoField(primary_key = True,null = False)
     order_id = models.ForeignKey(Orders, on_delete=models.CASCADE, to_field='orderid',null=False)
-    user_id = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='uid',null=False)
+    username = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='username',null=False)
     is_shipped = models.BooleanField(default = False)
     shipped_date = models.DateTimeField(null = True)
     is_delivered = models.BooleanField(default = False)
