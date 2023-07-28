@@ -7,7 +7,7 @@ class UserManager(BaseUserManager):
             raise ValueError("Username is required!!!")
 
         extra_fields['email'] = self.normalize_email(extra_fields['email'])
-        user = self.model(username=username,email=email,**extra_fields)
+        user = self.model(username=username,**extra_fields)
         user.set_password(password)
         user.save(using=self.db)
 
