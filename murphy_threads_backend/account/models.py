@@ -6,8 +6,8 @@ from .manager import UserManager
 
 # Create your models here.
 class Users(AbstractBaseUser, PermissionsMixin):      
-    username = models.CharField(primary_key=True,max_length=255)
-   # password = models.CharField(max_length=255)
+    username = models.CharField(unique=True,max_length=255)
+    # password = models.CharField(max_length=255)
     first_name = models.CharField(max_length=255,null=False)
     last_name = models.CharField(max_length=255,null=False)
     email = models.EmailField(max_length=255,null=False,unique=True)
