@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'extra',
     'orders',
     'product',
-    'payments'
+    'payments',
+    'wishlist'
 ]
 
 MIDDLEWARE = [
@@ -56,8 +57,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-"murphy_threads_backend.middleware.ApiKeyMiddleware"
+    
 ]
+if config("under_development") == True:
+    MIDDLEWARE.append("murphy_threads_backend.middleware.ApiKeyMiddleware")
 
 ROOT_URLCONF = "murphy_threads_backend.urls"
 
@@ -177,5 +180,6 @@ PAYPLA_LIVE_SECRET_KEY = config("paypal_live_secret_key")
 
 IS_UNDER_DEVELOPMENT = config("under_development")
 
-
 API_KEY = config("api_key")
+
+AUTH_USER_MODEL = 'account.Users'
