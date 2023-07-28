@@ -1,14 +1,14 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 # Create your models here.
-class Users(models.Model):   
-    uid = models.AutoField(primary_key=True,null=False)
+class Users(AbstractBaseUser, PermissionsMixin):      
     user_name = models.CharField(max_length=255,null=False,unique=True)
-    password = models.CharField(max_length=255)
+   # password = models.CharField(max_length=255)
     first_name = models.CharField(max_length=255,null=False)
     last_name = models.CharField(max_length=255,null=False)
-    email = models.EmailField(max_length=255,null=False)
+    email = models.EmailField(max_length=255,null=False,unique=True)
     phone_no = models.IntegerField(null=False)
     country_code = models.CharField(max_length=255, default=None,null=True)
     created_at = models.DateTimeField(default=timezone.now)
@@ -18,7 +18,7 @@ class Users(models.Model):
 
 class UserAddresses(models.Model):
     id = models.AutoField(primary_key=True,null=False)
-    uid = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='uid')
+    username = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='username')
     first_name = models.CharField(max_length=255,null=True)
     last_name = models.CharField(max_length=255,null=True)
     email = models.EmailField(max_length=255,null = True)
