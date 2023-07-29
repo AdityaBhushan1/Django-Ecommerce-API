@@ -16,6 +16,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             'name', 
             'password', 
             'password2',
+            'phone_no'
         ]
 
         extra_kwargs={
@@ -33,3 +34,4 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     
     def create(self, validate_data):
         return Users.objects.create_user(**validate_data)
+
