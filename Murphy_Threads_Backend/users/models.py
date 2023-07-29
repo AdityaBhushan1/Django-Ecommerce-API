@@ -1,3 +1,96 @@
 from django.db import models
 
 # Create your models here.
+from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import AbstractBaseUser
+import uuid
+
+from django.contrib.auth.models import BaseUserManager
+
+
+class UserManager(BaseUserManager):
+    def create_user(
+            self,
+            email,
+            name,
+            password=None,
+            password2=None
+        ):
+        if not email:
+            raise ValueError("email is required!!!")
+
+        user = self.model(
+            email=self.normalize_email(email),
+            name=name
+        )
+        user.set_password(password)
+        user.save(using=self.db)
+
+        return user
+
+
+    def create_superuser(self,email,name,password=None):
+        user = self.create_user(
+            email,
+            password=password,
+            name = name
+        )
+        user.is_admin = True
+        user.is_superuser = True
+        user.is_active = True
+        user.save(using=self._db)
+        return user
+
+# Create your models here.
+class Users(AbstractBaseUser):      
+    email = models.EmailField(primary_key=True,max_length=255,null=False,unique=True)
+    # password = models.CharField(max_length=255)
+    name = models.CharField(max_length=255,null=False)
+    phone_no = models.CharField(null=False,max_length=13)
+    country_code = models.CharField(max_length=255, default=None,null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
+    is_email_verified = models.BooleanField(default=False)
+    email_token = models.CharField(max_length=255,null = True,unique=True)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['name','phone_no']
+
+    def __str__(self):
+        return self.email
+
+    def has_perm(self,perm,obj = None):
+        return self.is_admin
+    
+    def has_module_perms(self, app_label):
+        return True
+    
+
+    @property
+    def is_staff(self):
+        "Is the user a member of staff?"
+        # Simplest possible answer: All admins are staff
+        return self.is_admin
+
+
+
+# class UserAddresses(models.Model):
+#     id = models.AutoField(primary_key=True,null=False)
+#     user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='email')
+#     first_name = models.CharField(max_length=255,null=True)
+#     last_name = models.CharField(max_length=255,null=True)
+#     email = models.EmailField(max_length=255,null = True)
+#     address_line_1 = models.CharField(max_length=800,null=False)
+#     address_line_2 = models.CharField(max_length=800,null=True)
+#     state = models.CharField(max_length=255,null=False)
+#     district = models.CharField(max_length=255,null=False)
+#     country = models.CharField(max_length=255,null=False)
+#     postal_code = models.CharField(max_length=255,null=False)
+#     phone_no_1 = models.CharField(max_length=255,null=False)
+#     phone_no_2 = models.CharField(max_length=255,null=True)
+
