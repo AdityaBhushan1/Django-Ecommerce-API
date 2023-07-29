@@ -46,8 +46,9 @@ class UserManager(BaseUserManager):
         return user
 
 # Create your models here.
-class Users(AbstractBaseUser):      
-    email = models.EmailField(primary_key=True,max_length=255,null=False,unique=True)
+class Users(AbstractBaseUser): 
+    id = models.AutoField(primary_key=True)     
+    email = models.EmailField(max_length=255,null=False,unique=True)
     # password = models.CharField(max_length=255)
     name = models.CharField(max_length=255,null=False)
     phone_no = models.CharField(null=False,max_length=13)
