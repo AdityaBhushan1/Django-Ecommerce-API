@@ -1,5 +1,5 @@
 """
-URL configuration for Murphy_Threads_Backend project.
+URL configuration for murphy_threads_backend project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -15,8 +15,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from . import views
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("murphy-threads-admin-panel/", admin.site.urls),
+    path('', views.home, name='home'),
+    path("user/", include("account.urls"),name = 'user'),
+    # path("cart/", include("cart.urls"),name = 'cart'),
+    # path("extra/", include("extra.urls"),name = 'extra'),
+    # path("order/", include("orders.urls"),name = 'order'),
+    # path("payment/", include("payments.urls"),name = 'payment'),
+    # path("product/", include("product.urls"),name = 'product'),
+    # path("wishlist/", include("wishlist.urls"),name = 'wishlist'),
+    
 ]
