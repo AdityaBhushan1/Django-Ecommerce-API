@@ -22,7 +22,7 @@ from . import views
 urlpatterns = [
     path("murphy-threads-admin-panel/", admin.site.urls),
     path('', views.home, name='home'),
-    path("user/", include("account.urls"),name = 'user'),
+    path("users/", include("users.urls"),name = 'user'),
     # path("cart/", include("cart.urls"),name = 'cart'),
     # path("extra/", include("extra.urls"),name = 'extra'),
     # path("order/", include("orders.urls"),name = 'order'),
