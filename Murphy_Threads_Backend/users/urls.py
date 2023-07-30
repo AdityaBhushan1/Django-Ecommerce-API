@@ -22,6 +22,7 @@ urlpatterns = [
     path('delete/', DeleteAccountView.as_view(), name='user_delete'),
     path('logout/', UserLogoutView.as_view(), name='user-logout'),
     path('email-update/', UserEmailUpdateView.as_view(), name='email-update'),
+    path('phone-no-update/', UserPhoneNoUpdateView.as_view(), name='email-update'),
 
     
     #  path('get_user_addresses/<str:username>',views.get_user_addresses,name="get_user_addresses"),

@@ -229,3 +229,28 @@ class UserEmailUpdateView(APIView):
                 )
 
         return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+    
+class UserPhoneNoUpdateView(APIView):
+    renderer_classes = [UserRenderer]
+    def post(self,request):
+        user = request.user
+
+        if 'phone_no' in request.data:
+            new_phone_no = request.data['phone_no']
+            try:
+                user.update_phone_no(new_phone_no)
+                return Response(
+                    {
+                        'message':'user phone no  updated successfully!'
+                    },
+                    status=status.HTTP_200_OK
+                )
+            except ValidationError as e:
+                return Response(
+                    {
+                        "error": str(e)
+                    }, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
