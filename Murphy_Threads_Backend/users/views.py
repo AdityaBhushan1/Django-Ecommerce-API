@@ -6,6 +6,14 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from utils.renderers import UserRenderer
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.conf import settings
+from utils.emails import *
+# from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
+from django.utils.decorators import method_decorator
+# from rest_framework.permissions import AllowAny
+from django.utils.encoding import force_bytes, force_str
 
 # Generate Token Manually
 def get_tokens_for_user(user):
@@ -22,9 +30,13 @@ class UserRegistrationView(APIView):
         serializer = UserRegistrationSerializer(data = request.data)
         if serializer.is_valid(raise_exception = True):
             user = serializer.save()
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            activation_url = f'{settings.SITE_DOMAIN}/users/activate/{uid}/{token}'
+            send_activation_email(user.email, activation_url)
             return Response(
                 {
-                    'message':'Successfully Registered User!'
+                    'message':'Successfully Registered User!,Successfully Sent The Activation Link'
                 },
                 status = status.HTTP_201_CREATED
             )
@@ -32,6 +44,60 @@ class UserRegistrationView(APIView):
             return Response(
                 serializer.errors,
                 status = status.HTTP_400_BAD_REQUEST
+            )
+
+# @method_decorator(csrf_protect, name='dispatch')
+# class ActivateView(APIView):
+#     permission_classes = [AllowAny]
+#     renderer_classes = [UserRenderer]
+
+
+class ActivationConfirm(APIView):
+    renderer_classes = [UserRenderer]
+
+    def post(self, request):
+        uid = request.data.get('uid')
+        token = request.data.get('token')
+        if not uid or not token:
+            return Response(
+                {
+                    'detail': 'Missing uid or token.'
+                }, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        try:
+            uid = force_str(urlsafe_base64_decode(uid))
+            user = Users.objects.get(pk=uid)
+            if default_token_generator.check_token(user, token):
+                if user.is_active:
+                    return Response(
+                        {
+                            'detail': 'Account is already activated.'
+                        }, 
+                        status=status.HTTP_200_OK
+                    )
+
+                user.is_active = True
+                user.save()
+                return Response(
+                    {
+                        'detail': 'Account activated successfully.'
+                    }, 
+                    status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    {
+                        'detail': 'Invalid activation link.'
+                    }, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        except Users.DoesNotExist:
+            return Response(
+                {
+                    'detail': 'Invalid activation link.'
+                }, 
+                status=status.HTTP_400_BAD_REQUEST
             )
 
 class UserLoginView(APIView):

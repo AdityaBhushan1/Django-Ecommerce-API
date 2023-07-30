@@ -13,17 +13,16 @@ class UserModelAdmin(UserAdmin):
     list_filter = ["is_admin"]
     fieldsets = [
         (None, {"fields": ["email", "password"]}),
-        ("Personal info", {"fields": ["first_name","last_name","phone_no"]}),
+        ("Personal info", {"fields": ["name","phone_no"]}),
         ("Permissions", {"fields": ["is_admin"]}),
     ]
-    # add_fieldsets is not a standard ModelAdmin attribute. UserModelAdmin
-    # overrides get_fieldsets to use this attribute when creating a user.
+
     add_fieldsets = [
         (
             None,
             {
                 "classes": ["wide"],
-                "fields": ["email","first_name","last_name","phone_no", "password"],
+                "fields": ["email","name","phone_no", "password"],
             },
         ),
     ]

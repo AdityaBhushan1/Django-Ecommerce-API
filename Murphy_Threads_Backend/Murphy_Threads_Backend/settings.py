@@ -163,7 +163,7 @@ REST_FRAMEWORK = {
 #     )
 
 
-EMAIL_BACKEND = os.environ.get("email_backend")
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get("email_host")
 EMAIL_USE_TLS = os.environ.get("email_use_tls")
 EMAIL_PORT = os.environ.get("email_port")
@@ -197,8 +197,8 @@ API_KEY = os.environ.get("api_key")
 AUTH_USER_MODEL = 'users.Users'
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
 }
 
 # set this to forntend hosts
@@ -209,3 +209,10 @@ CORS_ALLOWED_ORIGINS = [
 
 #IT TAKES VALUES IN SECONDS, 900 SECONDS MEANS 15 MINUTES
 PASSWORD_RESET_TIMEOUT = 900 
+
+if IS_UNDER_DEVELOPMENT == True:
+    SITE_DOMAIN = os.environ.get("site_domain_test")
+else:
+    SITE_DOMAIN = os.environ.get("site_domain_live")
+
+SITE_NAME = os.environ.get("company_name")

@@ -39,6 +39,16 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validate_data):
         return Users.objects.create_user(**validate_data)
 
+    def validate_email(self, value):
+        if Users.objects.filter(email=value).exists():
+            raise serializers.ValidationError('user with this Email already exists.')
+        return value
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.save()
+        return instance
+
 class UserLoginSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(max_length=255)
     class Meta:

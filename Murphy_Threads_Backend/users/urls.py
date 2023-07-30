@@ -12,11 +12,14 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('register/',UserRegistrationView.as_view(),name="register"),
+    # path('account/activate/<str:uid>/<str:token>/', ActivateView.as_view(), name='activate'),
+    path('activate/', ActivationConfirm.as_view(), name='activate'),
     path('login/', UserLoginView.as_view(), name='login'),
     path('profile/', UserProfileView.as_view(), name='profile'),
     path('changepassword/', UserChangePasswordView.as_view(), name='changepassword'),
     path('send-reset-password-email/', SendPasswordResetEmailView.as_view(), name='send-reset-password-email'),
     path('reset-password/<uid>/<token>/', UserPasswordResetView.as_view(), name='reset-password'),
+    path('delete/', DeleteAccountView.as_view(), name='user_delete'),
     
     #  path('get_user_addresses/<str:username>',views.get_user_addresses,name="get_user_addresses"),
 
