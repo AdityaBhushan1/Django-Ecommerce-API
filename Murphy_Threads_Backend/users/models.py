@@ -104,18 +104,18 @@ class Users(AbstractBaseUser):
         self.save()
 
 
-# class UserAddresses(models.Model):
-#     id = models.AutoField(primary_key=True,null=False)
-#     user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='email')
-#     first_name = models.CharField(max_length=255,null=True)
-#     last_name = models.CharField(max_length=255,null=True)
-#     email = models.EmailField(max_length=255,null = True)
-#     address_line_1 = models.CharField(max_length=800,null=False)
-#     address_line_2 = models.CharField(max_length=800,null=True)
-#     state = models.CharField(max_length=255,null=False)
-#     district = models.CharField(max_length=255,null=False)
-#     country = models.CharField(max_length=255,null=False)
-#     postal_code = models.CharField(max_length=255,null=False)
-#     phone_no_1 = models.CharField(max_length=255,null=False)
-#     phone_no_2 = models.CharField(max_length=255,null=True)
+class UserAddresses(models.Model):
+    id = models.AutoField(primary_key=True,null=False)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='id')
+    first_name = models.CharField(max_length=255,null=True)
+    last_name = models.CharField(max_length=255,null=True)
+    email = models.EmailField(max_length=255,null = True)
+    address_line_1 = models.CharField(max_length=800,null=True)
+    address_line_2 = models.CharField(max_length=800,null=True)
+    state = models.CharField(max_length=255,null=True)
+    district = models.CharField(max_length=255,null=True)
+    country = models.CharField(max_length=255,null=True)
+    postal_code = models.CharField(max_length=255,null=True)
+    phone_no_1 = models.CharField(max_length=255,null=True)
+    phone_no_2 = models.CharField(max_length=255,null=True)
 

@@ -13,7 +13,6 @@ urlpatterns = [
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('is_authenticated', TokenVerifyView.as_view(), name='is_authenticated'),
     path('register/',UserRegistrationView.as_view(),name="register"),
-    # path('account/activate/<str:uid>/<str:token>/', ActivateView.as_view(), name='activate'),
     path('activate/', ActivationConfirm.as_view(), name='activate'),
     path('login/', UserLoginView.as_view(), name='login'),
     path('profile/', UserProfileView.as_view(), name='profile'),
