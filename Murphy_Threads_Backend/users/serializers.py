@@ -43,3 +43,13 @@ class UserLoginSerializer(serializers.ModelSerializer):
             'email', 
             'password'
         ]
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Users
+        fields = [
+            'id', 
+            'email', 
+            'name',
+            'phone_no',
+        ]
