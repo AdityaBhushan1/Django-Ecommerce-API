@@ -15,9 +15,9 @@ urlpatterns = [
     path('login/', UserLoginView.as_view(), name='login'),
     path('profile/', UserProfileView.as_view(), name='profile'),
     path('changepassword/', UserChangePasswordView.as_view(), name='changepassword'),
+    path('send-reset-password-email/', SendPasswordResetEmailView.as_view(), name='send-reset-password-email'),
+    # path('reset-password/<uid>/<token>/', UserPasswordResetView.as_view(), name='reset-password'),
     
-    # path('get-user-by-username/<str:username>', views.get_user_by_username, name='get_user_by_username'),
-
     #  path('get_user_addresses/<str:username>',views.get_user_addresses,name="get_user_addresses"),
 
     
@@ -27,9 +27,6 @@ urlpatterns = [
     
     #  path("account/verify/<str:username>/<str:email_token>",views.activate_account,name="account_activation"),
 
-    #  path('request-password-reset/<str:username>',views.request_password_reset,name="pass_reset_request"),
-
-    #  path('password-reset/<str:pass_reset_token>',views.reset_pass,name="pass_reset"),
 
     #  path('add-address/',views.add_new_address,name="add_new_address"),
      
