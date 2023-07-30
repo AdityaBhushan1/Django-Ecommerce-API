@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
 from datetime import timedelta
+import os
 
 
 
@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("secret_key")
+SECRET_KEY = os.environ.get("secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("under_development")
+DEBUG = os.environ.get("under_development")
 
 ALLOWED_HOSTS = []
 
@@ -62,7 +62,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-if config("under_development") == True:
+if os.environ.get("under_development") == True:
     MIDDLEWARE.append("Murphy_Threads_Backend.middleware.ApiKeyMiddleware")
 
 ROOT_URLCONF = "Murphy_Threads_Backend.urls"
@@ -91,12 +91,12 @@ WSGI_APPLICATION = "Murphy_Threads_Backend.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': config("db_engine"),
-        'NAME': config("name"),
-        'USER': config("user"),
-        'PASSWORD': config("password"),
-        'HOST': config("host"),
-        'PORT': config("port"),
+        'ENGINE': os.environ.get("db_engine"),
+        'NAME': os.environ.get("name"),
+        'USER': os.environ.get("user"),
+        'PASSWORD': os.environ.get("password"),
+        'HOST': os.environ.get("host"),
+        'PORT': os.environ.get("port"),
     }
 }
 
@@ -163,36 +163,36 @@ REST_FRAMEWORK = {
 #     )
 
 
-EMAIL_BACKEND = config("email_backend")
-EMAIL_HOST = config("email_host")
-EMAIL_USE_TLS = config("email_use_tls")
-EMAIL_PORT = config("email_port")
-EMAIL_HOST_USER = config("email_host_user")
-EMAIL_HOST_PASSWORD = config("email_host_password")
+EMAIL_BACKEND = os.environ.get("email_backend")
+EMAIL_HOST = os.environ.get("email_host")
+EMAIL_USE_TLS = os.environ.get("email_use_tls")
+EMAIL_PORT = os.environ.get("email_port")
+EMAIL_HOST_USER = os.environ.get("email_host_user")
+EMAIL_HOST_PASSWORD = os.environ.get("email_host_password")
 
 # STRIPE
-STRIPE_PUBLISHABLE_LIVE_KEY = config("stripe_api_publishable_key_live")
-STRIPE_SECRET_LIVE_KEY = config("stripe_api_secret_key_live")
-STRIPE_PUBLISHABLE_TEST_KEY = config("stripe_api_publishable_key_test")
-STRIPE_SECRET_TEST_KEY = config("stripe_api_secret_key_test")
+STRIPE_PUBLISHABLE_LIVE_KEY = os.environ.get("stripe_api_publishable_key_live")
+STRIPE_SECRET_LIVE_KEY = os.environ.get("stripe_api_secret_key_live")
+STRIPE_PUBLISHABLE_TEST_KEY = os.environ.get("stripe_api_publishable_key_test")
+STRIPE_SECRET_TEST_KEY = os.environ.get("stripe_api_secret_key_test")
 
 # INSTAMOJO
-INSTAMOJO_PRIVATE_LIVE_API_KEY = config("instamojo_private_live_api_key")
-INSTAMOJO_PRIVATE_LIVE_AUTH_TOKEN = config("instamojo_private_live_auth_token")
-INSTAMOJO_PRIVATE_LIVE_SALT = config("instamojo_private_live_salt")
-INSTAMOJO_PRIVATE_TEST_API_KEY = config("instamojo_private_test_api_key")
-INSTAMOJO_PRIVATE_TEST_AUTH_TOKEN = config("instamojo_private_test_auth_token")
-INSTAMOJO_PRIVATE_TEST_SALT = config("instamojo_private_test_salt")
+INSTAMOJO_PRIVATE_LIVE_API_KEY = os.environ.get("instamojo_private_live_api_key")
+INSTAMOJO_PRIVATE_LIVE_AUTH_TOKEN = os.environ.get("instamojo_private_live_auth_token")
+INSTAMOJO_PRIVATE_LIVE_SALT = os.environ.get("instamojo_private_live_salt")
+INSTAMOJO_PRIVATE_TEST_API_KEY = os.environ.get("instamojo_private_test_api_key")
+INSTAMOJO_PRIVATE_TEST_AUTH_TOKEN = os.environ.get("instamojo_private_test_auth_token")
+INSTAMOJO_PRIVATE_TEST_SALT = os.environ.get("instamojo_private_test_salt")
 
 # PAYPAL
-PAYPLA_TEST_CLIENT_ID = config("paypal_sandbox_client_id")
-PAYPLA_TEST_SECRET_KEY = config("paypal_sandbox_secret_key")
-PAYPLA_LIVE_CLIENT_ID = config("paypal_live_client_id")
-PAYPLA_LIVE_SECRET_KEY = config("paypal_live_secret_key")
+PAYPLA_TEST_CLIENT_ID = os.environ.get("paypal_sandbox_client_id")
+PAYPLA_TEST_SECRET_KEY = os.environ.get("paypal_sandbox_secret_key")
+PAYPLA_LIVE_CLIENT_ID = os.environ.get("paypal_live_client_id")
+PAYPLA_LIVE_SECRET_KEY = os.environ.get("paypal_live_secret_key")
 
-IS_UNDER_DEVELOPMENT = config("under_development")
+IS_UNDER_DEVELOPMENT = os.environ.get("under_development")
 
-API_KEY = config("api_key")
+API_KEY = os.environ.get("api_key")
 
 AUTH_USER_MODEL = 'users.Users'
 
