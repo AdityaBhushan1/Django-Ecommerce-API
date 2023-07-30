@@ -20,6 +20,7 @@ urlpatterns = [
     path('send-reset-password-email/', SendPasswordResetEmailView.as_view(), name='send-reset-password-email'),
     path('reset-password/<uid>/<token>/', UserPasswordResetView.as_view(), name='reset-password'),
     path('delete/', DeleteAccountView.as_view(), name='user_delete'),
+    path('logout/', UserLogoutView.as_view(), name='user-logout'),
     
     #  path('get_user_addresses/<str:username>',views.get_user_addresses,name="get_user_addresses"),
 
