@@ -11,7 +11,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.conf import settings
 from utils.emails import *
 # from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
-from django.utils.decorators import method_decorator
+# from django.utils.decorators import method_decorator
 # from rest_framework.permissions import AllowAny
 from django.utils.encoding import force_bytes, force_str
 
@@ -182,6 +182,7 @@ class UserPasswordResetView(APIView):
         )
 
 class DeleteAccountView(APIView):
+    renderer_classes = [UserRenderer]
     def delete(self, request):
         user = request.user
         user.delete()
@@ -194,6 +195,7 @@ class DeleteAccountView(APIView):
         )
 
 class UserLogoutView(APIView):
+    renderer_classes = [UserRenderer]
     def post(self, request):
         logout(request)
         return Response(
@@ -202,3 +204,28 @@ class UserLogoutView(APIView):
             }, 
             status=status.HTTP_200_OK
         )
+    
+class UserEmailUpdateView(APIView):
+    renderer_classes = [UserRenderer]
+    def post(self,request):
+        user = request.user
+
+        if 'email' in request.data:
+            new_email = request.data['email']
+            try:
+                user.update_email(new_email)
+                return Response(
+                    {
+                        'message':'user email updated successfully!'
+                    },
+                    status=status.HTTP_200_OK
+                )
+            except ValidationError as e:
+                return Response(
+                    {
+                        "error": str(e)
+                    }, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)

@@ -21,19 +21,16 @@ urlpatterns = [
     path('reset-password/<uid>/<token>/', UserPasswordResetView.as_view(), name='reset-password'),
     path('delete/', DeleteAccountView.as_view(), name='user_delete'),
     path('logout/', UserLogoutView.as_view(), name='user-logout'),
+    path('email-update/', UserEmailUpdateView.as_view(), name='email-update'),
+
     
     #  path('get_user_addresses/<str:username>',views.get_user_addresses,name="get_user_addresses"),
 
     
     #  path("update-user/<str:username>",views.update_user,name="update_user"),
-    
-    #  path('delete-user/<str:username>',views.delete_user,name="delete_user"),
-    
-    #  path("account/verify/<str:username>/<str:email_token>",views.activate_account,name="account_activation"),
-
 
     #  path('add-address/',views.add_new_address,name="add_new_address"),
-     
+
     #  path('update-address/<int:id>',views.update_address,name="address_update"),
 
     #  path("delete-address/<int:id>",views.delete_address,name="address_delete"),

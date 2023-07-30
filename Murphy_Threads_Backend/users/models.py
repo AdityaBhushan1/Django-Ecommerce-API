@@ -2,12 +2,16 @@ from django.db import models
 
 # Create your models here.
 from django.db import models
-from django.utils import timezone
+# from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser
-import uuid
-
+# import uuid
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import BaseUserManager
-
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.tokens import default_token_generator
+from utils.emails import *
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.conf import settings
 
 class UserManager(BaseUserManager):
     def create_user(
@@ -53,7 +57,7 @@ class Users(AbstractBaseUser):
     name = models.CharField(max_length=255,null=False)
     phone_no = models.CharField(null=False,max_length=13)
     country_code = models.CharField(max_length=255, default=None,null=True)
-    created_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
@@ -78,7 +82,26 @@ class Users(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+    
+    def update_email(self, new_email):
+        if Users.objects.filter(email=new_email).exists():
+            raise ValidationError("Email already exists.")
+        
+        self.email = new_email
+        self.is_active = False
+        uid = urlsafe_base64_encode(force_bytes(self.pk))
+        token = default_token_generator.make_token(self)
+        activation_url = f'{settings.SITE_DOMAIN}/users/activate/{uid}/{token}'
+        send_activation_email(self.email, activation_url)
+        self.save()
 
+    def update_phone_no(self, new_phone_no):
+        self.phone_no = new_phone_no
+        self.save()
+
+    def update_name(self, new_name):
+        self.name = new_name
+        self.save()
 
 
 # class UserAddresses(models.Model):
