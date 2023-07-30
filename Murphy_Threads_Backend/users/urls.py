@@ -28,9 +28,6 @@ urlpatterns = [
     
     #  path('get_user_addresses/<str:username>',views.get_user_addresses,name="get_user_addresses"),
 
-    
-    #  path("update-user/<str:username>",views.update_user,name="update_user"),
-
     #  path('add-address/',views.add_new_address,name="add_new_address"),
 
     #  path('update-address/<int:id>',views.update_address,name="address_update"),
