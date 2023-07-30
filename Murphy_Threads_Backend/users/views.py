@@ -5,8 +5,7 @@ from .serializers import *
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
-
-
+from utils.renderers import UserRenderer
 
 # Generate Token Manually
 def get_tokens_for_user(user):
@@ -17,6 +16,8 @@ def get_tokens_for_user(user):
     }
 
 class UserRegistrationView(APIView):
+    renderer_classes = [UserRenderer]
+
     def post(self,request,format=None):
         serializer = UserRegistrationSerializer(data = request.data)
         if serializer.is_valid(raise_exception = True):
@@ -34,6 +35,7 @@ class UserRegistrationView(APIView):
             )
 
 class UserLoginView(APIView):
+    renderer_classes = [UserRenderer]
     def post(self, request, format=None):
         serializer = UserLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
