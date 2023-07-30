@@ -241,7 +241,32 @@ class UserPhoneNoUpdateView(APIView):
                 user.update_phone_no(new_phone_no)
                 return Response(
                     {
-                        'message':'user phone no  updated successfully!'
+                        'message':'user phone no updated successfully!'
+                    },
+                    status=status.HTTP_200_OK
+                )
+            except ValidationError as e:
+                return Response(
+                    {
+                        "error": str(e)
+                    }, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+    
+class UserNameUpdateView(APIView):
+    renderer_classes = [UserRenderer]
+    def post(self,request):
+        user = request.user
+
+        if 'name' in request.data:
+            new_name = request.data['name']
+            try:
+                user.update_name(new_name)
+                return Response(
+                    {
+                        'message':'user name updated successfully!'
                     },
                     status=status.HTTP_200_OK
                 )
