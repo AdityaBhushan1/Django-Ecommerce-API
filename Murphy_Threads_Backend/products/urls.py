@@ -7,4 +7,5 @@ app_name = 'products'
 
 urlpatterns = [ 
     path("", app_urls,{'app_name': app_name},name="user_home_page"), 
+    path("product-categories/",ProductCategoryView.as_view(),name="categories"),
 ]
