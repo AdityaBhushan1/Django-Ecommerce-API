@@ -12,4 +12,31 @@ class ProductCategorySerializer(serializers.ModelSerializer):
             'is_parent_category': {'required': False},
             'is_child_category': {'required': False}
         }
+# class SizeSerializer(serializers.ModelSerializer): 
+#     class Meta: 
+#         model = Size
+#         fields = "__all__"
 
+#         extra_kwargs = { 
+#             'size_nickname': {'required': False}
+#         }
+
+# class ProductColorSerializer(serializers.ModelSerializer): 
+#     class Meta: 
+#         model = ProductColor
+#         fields = "__all__"
+
+#         extra_kwargs = { 
+#             'size_nickname': {'required': False}
+#         }
+
+class ProductsSerializer(serializers.ModelSerializer): 
+    class Meta: 
+        model = Products
+        fields = "__all__"
+
+        extra_kwargs = { 
+            'sale_price': {'required': False},
+            'gallery_image': {'required': False},
+            'slug': {'required': False},
+        }

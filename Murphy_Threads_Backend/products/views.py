@@ -43,10 +43,10 @@ class ProdductCategoriesView(APIView):
     
     def delete(self,request,pk):
         try:
-            address = ProductCategory.objects.get(pk=pk)
+            category = ProductCategory.objects.get(pk=pk)
         except ProductCategory.DoesNotExist:
             return Response({'message':'category does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
-        address.delete()
+        category.delete()
         return Response(
             {
                 'message':'successfully deleted the category'
@@ -66,3 +66,76 @@ class NewProductsCategroyView(APIView):
             }
             return Response(formatted_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+class ProdductView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAdminUser]
+
+    def get(self,request,pk):
+        try:
+            product = Products.objects.get(pk=pk)
+        except Products.DoesNotExist:
+            return Response({'message':'product does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ProductsSerializer(product)
+        formatted_data = {
+            "data": serializer.data
+        }
+        return Response(formatted_data, status=status.HTTP_200_OK)
+        
+    
+    def patch(self,request,pk):
+        try:
+            product = Products.objects.get(pk=pk)
+        except Products.DoesNotExist:
+            return Response({'message':'product does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ProductsSerializer(product, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    'message':'successfully updated category'
+                }, 
+                status=status.HTTP_200_OK
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self,request,pk):
+        try:
+            product = Products.objects.get(pk=pk)
+        except Products.DoesNotExist:
+            return Response({'message':'product does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+        product.delete()
+        return Response(
+            {
+                'message':'successfully deleted the category'
+            },
+            status=status.HTTP_204_NO_CONTENT
+        )
+
+class NewProductView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAdminUser]
+    def post(self,request):
+        serializer = ProductsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            formatted_data = {
+            "message": 'successfully added new product'
+            }
+            return Response(formatted_data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ListProductByCategoryView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAdminUser]
+    def get(self,request,pk):
+        category_id = pk
+        queryset = Products.objects.filter(category_id=category_id)
+        serializer = ProductsSerializer(queryset, many=True)
+        formatted_data = {
+            "category": category_id,
+            "products": serializer.data
+        }
+        return Response(formatted_data, status=status.HTTP_200_OK)
