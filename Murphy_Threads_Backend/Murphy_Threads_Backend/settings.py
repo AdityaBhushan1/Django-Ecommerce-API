@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     # 'cart',
     # 'extra',
     # 'orders',
-    # 'product',
+    'products',
     # 'payments',
     # 'wishlist',
     'rest_framework_simplejwt',
