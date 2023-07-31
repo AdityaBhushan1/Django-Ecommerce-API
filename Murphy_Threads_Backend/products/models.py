@@ -56,6 +56,6 @@ class Inventory(models.Model):
     product_id = models.ForeignKey(Products, on_delete=models.CASCADE,to_field='pid',null = False)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
-    quantity_availabel = models.PositiveIntegerField(default=0)
+    quantity_availabel = models.IntegerField(default=10)
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
