@@ -27,7 +27,7 @@ urlpatterns = [
     # path("extra/", include("extra.urls"),name = 'extra'),
     # path("order/", include("orders.urls"),name = 'order'),
     # path("payment/", include("payments.urls"),name = 'payment'),
-    # path("product/", include("product.urls"),name = 'product'),
+    path("products/", include("products.urls"),name = 'products'),
     # path("wishlist/", include("wishlist.urls"),name = 'wishlist'),
     
 ]
