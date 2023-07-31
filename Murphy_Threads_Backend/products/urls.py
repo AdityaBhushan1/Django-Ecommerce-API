@@ -1,11 +1,11 @@
 from utils.urls import app_urls
-from django.contrib import admin 
-from django.urls import path, include 
+from django.urls import path 
 from .views import *
 
 app_name = 'products'
 
 urlpatterns = [ 
     path("", app_urls,{'app_name': app_name},name="user_home_page"), 
-    path("product-categories/",ProductCategoryView.as_view(),name="categories"),
+    path("categories/<pk>/", ProdductCategoriesView.as_view(),name="categories"), 
+    path("categories-new/", NewProductsCategroyView.as_view(),name="categories-new"), 
 ]

@@ -9,10 +9,10 @@ class ProductCategory(models.Model):
     name = models.CharField(max_length=255,null=False)
     slug = models.SlugField(unique=True)
     desc = models.CharField(max_length=500,null=False)
-    created_at = models.DateTimeField(default=timezone.now)
-    modified_at = models.DateTimeField(default=timezone.now)
-    is_parent_category = models.BooleanField(default = True)
-    is_child_category = models.BooleanField(default = False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    is_parent_category = models.BooleanField(null=True)
+    is_child_category = models.BooleanField(null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -58,5 +58,5 @@ class Inventory(models.Model):
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
     quantity_availabel = models.IntegerField(default=10)
-    created_at = models.DateTimeField(default=timezone.now)
-    modified_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
