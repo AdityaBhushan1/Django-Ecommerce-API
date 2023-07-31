@@ -35,8 +35,8 @@ class Color(models.Model):
         return self.name
 
 class Products(models.Model):
-    pid = models.AutoField(primary_key=True,null = False)
-    name = models.CharField(max_length=255,null=False)
+    pid = models.AutoField(primary_key=True,null = False,unique=True)
+    name = models.CharField(max_length=255,null=False,unique=True)
     slug = models.SlugField(unique=True)
     short_desc = models.CharField(max_length=500,null=False)
     long_desc = models.CharField(max_length=5000,null=False)
