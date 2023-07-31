@@ -161,3 +161,25 @@ class UserPasswordResetSerializer(serializers.Serializer):
         except DjangoUnicodeDecodeError as identifier:
             PasswordResetTokenGenerator().check_token(user, token)
             raise serializers.ValidationError('Token is not Valid or Expired')
+
+
+#-----------------------Addresses Serializers---------------------------------#
+
+class UserAddressesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddresses
+        fields = (
+            'id', 'user', 'first_name', 'last_name', 'email', 'address_line_1', 'address_line_2',
+            'house_no', 'street', 'landmark', 'state', 'district', 'country', 'postal_code', 'phone_no_1',
+            'phone_no_2',
+        )
+        
+        extra_kwargs = {
+            'user': {'required': False},
+            'last_name': {'required': False},
+            'address_line_2': {'required': False},
+            'phone_no_2': {'required': False},
+            'house_no': {'required': False}, 
+            'street': {'required': False}, 
+            'landmark': {'required': False}
+        }

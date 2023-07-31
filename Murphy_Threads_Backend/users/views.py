@@ -183,6 +183,7 @@ class UserPasswordResetView(APIView):
 
 class DeleteAccountView(APIView):
     renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
     def delete(self, request):
         user = request.user
         user.delete()
@@ -196,6 +197,7 @@ class DeleteAccountView(APIView):
 
 class UserLogoutView(APIView):
     renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         logout(request)
         return Response(
@@ -207,6 +209,7 @@ class UserLogoutView(APIView):
     
 class UserEmailUpdateView(APIView):
     renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
     def post(self,request):
         user = request.user
 
@@ -232,6 +235,7 @@ class UserEmailUpdateView(APIView):
     
 class UserPhoneNoUpdateView(APIView):
     renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
     def post(self,request):
         user = request.user
 
@@ -257,6 +261,7 @@ class UserPhoneNoUpdateView(APIView):
     
 class UserNameUpdateView(APIView):
     renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
     def post(self,request):
         user = request.user
 
@@ -279,3 +284,64 @@ class UserNameUpdateView(APIView):
                 )
 
         return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+
+class UserAddressesView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        user_id = request.user.id
+        queryset = UserAddresses.objects.filter(user=user_id)
+        serializer = UserAddressesSerializer(queryset, many=True)
+        formatted_data = {
+            "user_id": user_id,
+            "user_name": request.user.name,
+            "addresses": serializer.data
+        }
+        return Response(formatted_data, status=status.HTTP_200_OK)
+
+    def post(self,request):
+        request.data['user'] = request.user.id
+        serializer = UserAddressesSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            formatted_data = {
+            "user_id": request.user.id,
+            "message": 'successfully added new address'
+            }
+            return Response(formatted_data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserAddressesUpdateView(APIView):
+
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def patch(self,request,pk):
+        try:
+            address = UserAddresses.objects.get(pk=pk,user=request.user.id)
+        except UserAddresses.DoesNotExist:
+            return Response({'message':'address does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = UserAddressesSerializer(address, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    'message':'successfully updated address'
+                }, 
+                status=status.HTTP_200_OK
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self,request,pk):
+        try:
+            address = UserAddresses.objects.get(pk=pk,user=request.user.id)
+        except UserAddresses.DoesNotExist:
+            return Response({'message':'address does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+        address.delete()
+        return Response(
+            {
+                'message':'successfully deleted the address'
+            },
+            status=status.HTTP_204_NO_CONTENT
+        )

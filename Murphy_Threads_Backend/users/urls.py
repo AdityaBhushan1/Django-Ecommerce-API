@@ -24,13 +24,6 @@ urlpatterns = [
     path('email-update/', UserEmailUpdateView.as_view(), name='email-update'),
     path('phone-no-update/', UserPhoneNoUpdateView.as_view(), name='phone-no-update'),
     path('name-update/', UserNameUpdateView.as_view(), name='name-update'),
-
-    
-    #  path('get_user_addresses/<str:username>',views.get_user_addresses,name="get_user_addresses"),
-
-    #  path('add-address/',views.add_new_address,name="add_new_address"),
-
-    #  path('update-address/<int:id>',views.update_address,name="address_update"),
-
-    #  path("delete-address/<int:id>",views.delete_address,name="address_delete"),
+    path('users-addresses/', UserAddressesView.as_view(), name='users-addresses'),
+    path('users-addresses/<pk>/', UserAddressesUpdateView.as_view(), name='users-addresses-update-delete'),
 ]
