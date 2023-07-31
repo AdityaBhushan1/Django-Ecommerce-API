@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class ProductCategory(models.Model):
@@ -20,7 +21,7 @@ class ProductCategory(models.Model):
 class ProductImages(models.Model):
     id = models.AutoField(primary_key=True,null = False)
     main_image = models.URLField(null = False)
-    gallery_image = models.ArrayField(models.URLField(),null = True)
+    gallery_image = ArrayField(models.URLField(),null = True)
 
 class Size(models.Model):
     name = models.CharField(max_length=50)
