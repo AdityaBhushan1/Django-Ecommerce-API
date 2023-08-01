@@ -28,6 +28,6 @@ urlpatterns = [
     # path("order/", include("orders.urls"),name = 'order'),
     # path("payment/", include("payments.urls"),name = 'payment'),
     path("products/", include("products.urls"),name = 'products'),
-    # path("wishlist/", include("wishlist.urls"),name = 'wishlist'),
+    path("wishlist/", include("wishlist.urls"),name = 'wishlist'),
     
 ]

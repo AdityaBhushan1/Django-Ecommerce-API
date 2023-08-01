@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     # 'orders',
     'products',
     # 'payments',
-    # 'wishlist',
+    'wishlist',
     'rest_framework_simplejwt',
     "corsheaders",
 ]
