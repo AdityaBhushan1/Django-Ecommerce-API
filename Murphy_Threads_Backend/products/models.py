@@ -69,3 +69,4 @@ class ProductVariations(models.Model):
     is_available = models.BooleanField(default = True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+

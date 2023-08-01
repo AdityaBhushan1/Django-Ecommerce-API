@@ -140,3 +140,15 @@ class GetProductView(APIView):
             "data": serializer.data
         }
         return Response(formatted_data, status=status.HTTP_200_OK)
+    
+class GetProductVariationView(APIView):
+    renderer_classes = [UserRenderer]
+    def get(self,request,pk):
+        product_id = pk
+        queryset = ProductVariations.objects.filter(product=product_id)
+        serializer = ProductVariationsSerializer(queryset, many=True)
+        formatted_data = {
+            "product_id": product_id,
+            "variations": serializer.data
+        }
+        return Response(formatted_data, status=status.HTTP_200_OK)
