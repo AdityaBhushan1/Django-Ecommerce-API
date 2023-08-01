@@ -2,10 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.postgres.fields import ArrayField
-import re
-from django.core.validators import RegexValidator
 
-COLOR_VALIDATOR = RegexValidator(r'^#(?:[0-9a-fA-F]{3}){1,2}$', 'only valid hex color code is accepted')
 
 # Create your models here.
 class ProductCategory(models.Model):
@@ -27,10 +24,10 @@ class Size(models.Model):
     size_nickname = models.CharField(max_length=256,default='add nickname',null = True)
 
     def __str__(self):
-        return self.name
+        return self.size_nickname
 
 class ProductColor(models.Model):
-    color_in_hex = models.CharField(max_length=256, validators=[COLOR_VALIDATOR], default='#000000')
+    color_in_hex = models.CharField(max_length=256,default='#000000')
     color_nickname = models.CharField(max_length=256,default='add nickname',null = True)
 
     def __str__(self):
@@ -44,7 +41,7 @@ class Products(models.Model):
     long_desc = models.CharField(max_length=5000,null=False)
     main_price = models.DecimalField(decimal_places = 2,max_digits = 20,null = False)
     sale_price = models.DecimalField(decimal_places = 2,max_digits = 20,null = True)
-    category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, to_field='id',null = False)
+    category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE,null = False)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     SKU = models.CharField(max_length=255,null=False)
