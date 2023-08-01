@@ -51,6 +51,7 @@ class ProductsAdmin(admin.ModelAdmin):
         "category_id",
         "SKU",
         "main_image",
+        "gallery_image",
         "default_color",
         "default_size",
         "is_available",
@@ -75,3 +76,4 @@ admin.site.register(ProductCategory, ProductCategoryAdmin)
 admin.site.register(Size, SizeAdmin)
 admin.site.register(Products, ProductsAdmin)
 admin.site.register(ProductVariations, ProductVariationsAdmin)
+admin.site.register(ProductColor, ProductColorAdmin)
