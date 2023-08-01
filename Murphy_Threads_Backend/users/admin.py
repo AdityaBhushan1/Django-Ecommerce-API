@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import Users
+from .models import *
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User 
 
 # Register your models here.
 class UserModelAdmin(UserAdmin):
@@ -30,6 +29,63 @@ class UserModelAdmin(UserAdmin):
     ordering = ["email"]
     filter_horizontal = []
 
+class UserAddressesModelAdmin(UserAdmin):
+
+    # The fields to be used in displaying the User model.
+    # These override the definitions on the base UserModelAdmin
+    # that reference specific fields on auth.User.
+    list_display = ["id","user"]
+    list_filter = ["id","user"]
+    fieldsets = [
+        ("Personal info", {
+            "fields": [
+                "first_name",
+                "last_name",
+                "email",
+                "address_line_1",
+                "address_line_2",
+                "house_no",
+                "street",
+                "landmark",
+                "state",
+                "district",
+                "country",
+                "postal_code",
+                "phone_no_1",
+                "phone_no_2",
+            ]
+        })
+    ]
+
+    add_fieldsets = [
+        (
+            None,
+            {
+                "classes": ["wide"],
+                "fields": [
+                "first_name",
+                "last_name",
+                "email",
+                "address_line_1",
+                "address_line_2",
+                "house_no",
+                "street",
+                "landmark",
+                "state",
+                "district",
+                "country",
+                "postal_code",
+                "phone_no_1",
+                "phone_no_2",
+                ],
+            },
+        ),
+    ]
+    search_fields = ["user"]
+    ordering = ["id"]
+    filter_horizontal = []
+
 
 # Now register the new UserAdmin...
 admin.site.register(Users, UserModelAdmin)
+admin.site.register(UserAddresses, UserAddressesModelAdmin)
