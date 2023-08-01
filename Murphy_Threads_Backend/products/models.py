@@ -50,17 +50,20 @@ class Products(models.Model):
     SKU = models.CharField(max_length=255,null=False)
     main_image = models.URLField(null = True)
     gallery_image = ArrayField(models.URLField(),null = True)
+    default_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE,null = True)
+    default_size = models.ForeignKey(Size, on_delete=models.CASCADE,null = True)
+    is_available = models.BooleanField(default = True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
-class Inventory(models.Model):
+class ProductVariations(models.Model):
     id = models.AutoField(primary_key=True,null = False,unique=True)
-    product_id = models.ForeignKey(Products, on_delete=models.CASCADE,to_field='pid',null = False)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
-    quantity_availabel = models.IntegerField(default=10)
-    sale_price = models.DecimalField(decimal_places = 2,max_digits = 20,null = True)
+    price_addition = models.DecimalField(decimal_places = 2,max_digits = 20,null = True)
+    is_available = models.BooleanField(default = True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
