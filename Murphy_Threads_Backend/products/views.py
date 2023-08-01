@@ -13,18 +13,6 @@ class ProdductCategoriesView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAdminUser]
 
-    def get(self,request,pk):
-        try:
-            category = ProductCategory.objects.get(pk=pk)
-        except ProductCategory.DoesNotExist:
-            return Response({'message':'category does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
-        serializer = ProductCategorySerializer(category)
-        formatted_data = {
-            "data": serializer.data
-        }
-        return Response(formatted_data, status=status.HTTP_200_OK)
-        
-    
     def patch(self,request,pk):
         try:
             category = ProductCategory.objects.get(pk=pk)
@@ -67,23 +55,24 @@ class NewProductsCategroyView(APIView):
             return Response(formatted_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
-
-class ProdductView(APIView):
+class GetCategroyView(APIView):
     renderer_classes = [UserRenderer]
-    permission_classes = [IsAdminUser]
-
     def get(self,request,pk):
         try:
-            product = Products.objects.get(pk=pk)
-        except Products.DoesNotExist:
-            return Response({'message':'product does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
-        serializer = ProductsSerializer(product)
+            category = ProductCategory.objects.get(pk=pk)
+        except ProductCategory.DoesNotExist:
+            return Response({'message':'category does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ProductCategorySerializer(category)
         formatted_data = {
             "data": serializer.data
         }
         return Response(formatted_data, status=status.HTTP_200_OK)
-        
+    
+
+
+class ProductView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAdminUser]        
     
     def patch(self,request,pk):
         try:
@@ -129,7 +118,6 @@ class NewProductView(APIView):
     
 class ListProductByCategoryView(APIView):
     renderer_classes = [UserRenderer]
-    permission_classes = [IsAdminUser]
     def get(self,request,pk):
         category_id = pk
         queryset = Products.objects.filter(category_id=category_id)
@@ -137,5 +125,18 @@ class ListProductByCategoryView(APIView):
         formatted_data = {
             "category": category_id,
             "products": serializer.data
+        }
+        return Response(formatted_data, status=status.HTTP_200_OK)
+    
+class GetProductView(APIView):
+    renderer_classes = [UserRenderer]
+    def get(self,request,pk):
+        try:
+            product = Products.objects.get(pk=pk)
+        except Products.DoesNotExist:
+            return Response({'message':'product does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ProductsSerializer(product)
+        formatted_data = {
+            "data": serializer.data
         }
         return Response(formatted_data, status=status.HTTP_200_OK)
