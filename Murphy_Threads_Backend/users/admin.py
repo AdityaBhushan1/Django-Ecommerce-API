@@ -36,7 +36,7 @@ class UserAddressesModelAdmin(admin.ModelAdmin):
     # that reference specific fields on auth.User.
     list_display = (
         "id",
-        "user"
+        "user",
         "first_name",
         "last_name",
         "email",
