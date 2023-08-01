@@ -7,7 +7,6 @@ class ProductCategoryAdmin(admin.ModelAdmin):
     # These override the definitions on the base UserModelAdmin
     # that reference specific fields on auth.User.
     list_display = (
-        "id",
         "name",
         "slug",
         "desc",
@@ -48,7 +47,7 @@ class ProductsAdmin(admin.ModelAdmin):
         "long_desc",
         "main_price",
         "sale_price",
-        "category_id",
+        "category",
         "SKU",
         "main_image",
         "gallery_image",

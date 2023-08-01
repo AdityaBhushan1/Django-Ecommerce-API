@@ -6,8 +6,7 @@ from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class ProductCategory(models.Model):
-    id = models.AutoField(primary_key=True,null = False)
-    name = models.CharField(max_length=255,null=False)
+    name = models.CharField(primary_key = True,max_length=255,null=False,unique = True)
     slug = models.SlugField(unique=True)
     desc = models.CharField(max_length=500,null=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -18,6 +17,9 @@ class ProductCategory(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.name
 
 class Size(models.Model):
     size = models.CharField(max_length=50)
@@ -54,6 +56,9 @@ class Products(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 
 class ProductVariations(models.Model):
     id = models.AutoField(primary_key=True,null = False,unique=True)
