@@ -14,6 +14,7 @@ class ProductCategorySerializer(serializers.ModelSerializer):
         # }
 
 class ProductsSerializer(serializers.ModelSerializer): 
+    average_rating = serializers.FloatField(read_only=True)
     class Meta: 
         model = Products
         fields = "__all__"
@@ -34,3 +35,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
+
+        extra_kwargs = { 
+            'comment': {'required': False}
+        }

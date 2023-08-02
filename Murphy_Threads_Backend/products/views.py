@@ -122,6 +122,9 @@ class ListProductByCategoryView(APIView):
         category_id = pk
         queryset = Products.objects.filter(category_id=category_id)
         serializer = ProductsSerializer(queryset, many=True)
+        for product in serializer.data:
+            product['average_rating'] = Products.objects.get(pk=product['id']).average_rating()
+
         formatted_data = {
             "category": category_id,
             "products": serializer.data
@@ -136,8 +139,11 @@ class GetProductView(APIView):
         except Products.DoesNotExist:
             return Response({'message':'product does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
         serializer = ProductsSerializer(product)
+        reviews = Review.objects.filter(product_id=pk)
+        reviews_serializer = ReviewSerializer(reviews, many=True)
         formatted_data = {
-            "data": serializer.data
+            "data": serializer.data,
+            "review":reviews_serializer.data
         }
         return Response(formatted_data, status=status.HTTP_200_OK)
     

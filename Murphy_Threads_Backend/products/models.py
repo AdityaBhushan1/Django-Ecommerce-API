@@ -1,8 +1,8 @@
 from django.db import models
-from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.postgres.fields import ArrayField
 from users.models import Users
+from django.db.models import Avg
 
 
 # Create your models here.
@@ -74,6 +74,9 @@ class ProductVariations(models.Model):
 
     def __str__(self):
         return f"{self.product.name} - {self.color.color_nickname} - {self.size.size_nickname}"
+    
+    def average_rating(self):
+        return self.reviews.aggregate(Avg('rating'))['rating__avg']
 
 from django.db import models
 from django.contrib.auth.models import User
