@@ -14,13 +14,13 @@ class DeleteWishlistView(APIView):
     permission_classes = [IsAuthenticated]
     def delete(self,request,pk):
         try:
-            Wishlist = Wishlist.objects.get(pk=pk)
-        except Wishlist.DoesNotExist:
+            wishlist = Wishlist.objects.get(pk=pk)
+        except wishlist.DoesNotExist:
             return Response({'message':'Wish does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
-        Wishlist.delete()
+        wishlist.delete()
         return Response(
             {
-                'message':'Wish deleted the category'
+                'message':'Wish deleted the successfully'
             },
             status=status.HTTP_204_NO_CONTENT
         )
@@ -39,6 +39,7 @@ class WishlistView(APIView):
         return Response(formatted_data, status=status.HTTP_200_OK)
 
     def post(self,request):
+        request.data['user'] = request.user.id
         serializer = WishlistSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
