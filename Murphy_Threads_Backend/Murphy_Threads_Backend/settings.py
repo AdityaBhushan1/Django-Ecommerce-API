@@ -62,8 +62,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-if os.environ.get("under_development") == True:
-    MIDDLEWARE.append("Murphy_Threads_Backend.middleware.ApiKeyMiddleware")
 
 ROOT_URLCONF = "Murphy_Threads_Backend.urls"
 
@@ -191,8 +189,6 @@ PAYPLA_LIVE_CLIENT_ID = os.environ.get("paypal_live_client_id")
 PAYPLA_LIVE_SECRET_KEY = os.environ.get("paypal_live_secret_key")
 
 IS_UNDER_DEVELOPMENT = os.environ.get("under_development")
-
-API_KEY = os.environ.get("api_key")
 
 AUTH_USER_MODEL = 'users.Users'
 
