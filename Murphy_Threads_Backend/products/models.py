@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.postgres.fields import ArrayField
+from users.models import Users
 
 
 # Create your models here.
@@ -73,3 +74,14 @@ class ProductVariations(models.Model):
 
     def __str__(self):
         return f"{self.product.name} - {self.color.color_nickname} - {self.size.size_nickname}"
+
+from django.db import models
+from django.contrib.auth.models import User
+
+class Review(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField()
+    comment = models.TextField(max_length=900,blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
