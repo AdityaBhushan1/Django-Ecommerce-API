@@ -28,3 +28,9 @@ class ProductVariationsSerializer(serializers.ModelSerializer):
     class Meta: 
         model = ProductVariations
         fields = "__all__"
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
