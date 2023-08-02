@@ -28,7 +28,7 @@ class Size(models.Model):
     def __str__(self):
         return self.size_nickname
 
-class ProductColor(models.Model):
+class Color(models.Model):
     color_in_hex = models.CharField(max_length=256,default='#000000')
     color_nickname = models.CharField(max_length=256,default='add nickname',null = True)
 
@@ -49,9 +49,10 @@ class Products(models.Model):
     SKU = models.CharField(max_length=255,null=False)
     main_image = models.URLField(null = True)
     gallery_image = ArrayField(models.URLField(),null = True)
-    default_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE,null = True)
-    default_size = models.ForeignKey(Size, on_delete=models.CASCADE,null = True)
+    colors = models.ManyToManyField(Color)
+    sizes = models.ManyToManyField(Size)
     is_available = models.BooleanField(default = True)
+    generate_variations = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -64,9 +65,11 @@ class ProductVariations(models.Model):
     id = models.AutoField(primary_key=True,null = False,unique=True)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
-    color = models.ForeignKey(ProductColor, on_delete=models.CASCADE)
-    price_addition = models.DecimalField(decimal_places = 2,max_digits = 20,null = True)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE)
+    price_addition = models.DecimalField(decimal_places = 2,max_digits = 20,null = True,default = 00.00)
     is_available = models.BooleanField(default = True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.product.name} - {self.color.color_nickname} - {self.size.size_nickname}"
