@@ -80,6 +80,11 @@ class ProductVariationInline(admin.TabularInline):
     model = ProductVariations
 
 class ProductAdmin(admin.ModelAdmin):
+    list_display = (
+        "pid",
+        "name"
+        )
+    
     form = ProductAdminForm
     filter_horizontal = ('colors',)
 

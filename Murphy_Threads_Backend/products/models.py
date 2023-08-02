@@ -62,6 +62,17 @@ class Products(models.Model):
     def __str__(self):
         return self.name
 
+    def average_rating(self):
+        reviews = Review.objects.filter(product=self)
+        total_reviews = reviews.count()
+        if total_reviews > 0:
+            average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+            average_rating = round(average_rating, 1)
+        else:
+            average_rating = 0
+        return average_rating
+
+
 class ProductVariations(models.Model):
     id = models.AutoField(primary_key=True,null = False,unique=True)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
@@ -74,12 +85,6 @@ class ProductVariations(models.Model):
 
     def __str__(self):
         return f"{self.product.name} - {self.color.color_nickname} - {self.size.size_nickname}"
-    
-    def average_rating(self):
-        return self.reviews.aggregate(Avg('rating'))['rating__avg']
-
-from django.db import models
-from django.contrib.auth.models import User
 
 class Review(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
