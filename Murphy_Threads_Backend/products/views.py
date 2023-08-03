@@ -142,13 +142,14 @@ class GetProductView(APIView):
         serializer = ProductsSerializer(product)
         reviews = Review.objects.filter(product=pk)
         reviews_serializer = ReviewSerializer(reviews, many=True)
+
+        formatted_data = {
+            "data": serializer.data,
+              "review":reviews_serializer.data,}
 if product.genrate_variations == True:
     queryset = ProductVariations.objects.filter(product=pk)
     variations_serializer = ProductVariationsSerializer(queryset, many=True)
-        formatted_data = {
-            "data": serializer.data,
-              "review":reviews_serializer.data.
-"variations":variations_serializer.data}
+formatted_data['variations']=variations_serializer.data
         return Response(formatted_data, status=status.HTTP_200_OK)
     
 class GetProductVariationView(APIView):
