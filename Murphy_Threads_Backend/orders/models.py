@@ -4,6 +4,18 @@ from products.models import Products,ProductVariations
 from cart.models import Cart
 from django.db import models
 
+ORDER_STATUS_CHOICES = (
+    ('PENDING', 'Pending'),
+    ('CONFIRMED','Confirmed'),
+    ('PROCESSING', 'Processing'),
+    ('SHIPPED', 'Shipped'),
+    ('DELIVERED', 'Delivered'),
+    ('CANCELLED', 'Cancelled'),
+    ('RETURING','Returning'),
+    ('RETIRNED','Returned'),
+    ('REFUNDED','Refunded'),
+)
+
 class Orders(models.Model):
     orderid = models.AutoField(primary_key=True,null=False)
     user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='email',null=False)
