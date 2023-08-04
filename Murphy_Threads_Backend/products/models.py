@@ -23,14 +23,14 @@ class ProductCategory(models.Model):
         return self.name
 
 class Size(models.Model):
-    size = models.CharField(max_length=50)
+    size = models.CharField(max_length=50,primary_key = True)
     size_nickname = models.CharField(max_length=256,default='add nickname',null = True)
 
     def __str__(self):
         return self.size_nickname
 
 class Color(models.Model):
-    color_in_hex = models.CharField(max_length=256,default='#000000')
+    color_in_hex = models.CharField(max_length=256,default='#000000',primary_key = True)
     color_nickname = models.CharField(max_length=256,default='add nickname',null = True)
 
     def __str__(self):

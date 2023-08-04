@@ -41,6 +41,12 @@ class CartView(APIView):
                 cart_item.save()
             except Cart.DoesNotExist:
                 request.data['user'] = request.user.id
+                if not request.data.get('size'):
+                    pr = Products.objects.get(pk = product)
+                    request.data['size'] = pr.default_size
+                if not request.data.get('color'):
+                    pr = Products.objects.get(pk = product)
+                    request.data['color'] = pr.default_color
                 serializer = CartSerializer(data = request.data)
                 if serializer.is_valid():
                     serializer.save()
