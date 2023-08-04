@@ -50,8 +50,10 @@ class Products(models.Model):
     SKU = models.CharField(max_length=255,null=False)
     main_image = models.URLField(null = True)
     gallery_image = ArrayField(models.URLField(),null = True)
-    colors = models.ManyToManyField(Color)
-    sizes = models.ManyToManyField(Size)
+    colors = models.ManyToManyField(Color, related_name='products_with_color')
+    default_color = models.ForeignKey(Color, on_delete=models.CASCADE, related_name='products_with_default_color',null = True)
+    sizes = models.ManyToManyField(Size, related_name='products_with_size')
+    default_size = models.ForeignKey(Size, on_delete=models.CASCADE, related_name='products_with_default_size',null = True)
     is_available = models.BooleanField(default = True)
     generate_variations = models.BooleanField(default=False)
 
