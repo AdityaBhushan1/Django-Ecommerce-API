@@ -1,6 +1,6 @@
 from django.db import models
 from users.models import Users,UserAddresses
-from products.models import Products
+from products.models import *
 from cart.models import Cart
 from django.db import models
 
@@ -31,7 +31,10 @@ class Order(models.Model):
 class OrderItem():
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    size = models.ForeignKey(Size,on_delet=models.CASCADE)
+    color = models.ForeignKey(Color,on_delet=models.CASCADE)
     quantity = models.IntegerField(default = 1)
+
     def __str__(self):
         return self.product.name
 
