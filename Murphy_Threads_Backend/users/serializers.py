@@ -121,8 +121,7 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
             # Send EMail
             send_reset_password_email(user.email, link)
             return attrs
-        else:
-            raise serializers.ValidationError('You are not a Registered User')
+        raise serializers.ValidationError('You are not a Registered User')
 
 class UserPasswordResetSerializer(serializers.Serializer):
     password = serializers.CharField(
