@@ -31,8 +31,8 @@ class Order(models.Model):
 class OrderItem():
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    size = models.ForeignKey(Size,on_delet=models.CASCADE)
-    color = models.ForeignKey(Color,on_delet=models.CASCADE)
+    size = models.ForeignKey(Size,on_delete=models.CASCADE)
+    color = models.ForeignKey(Color,on_delete=models.CASCADE)
     quantity = models.IntegerField(default = 1)
 
     def __str__(self):
