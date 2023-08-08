@@ -206,7 +206,7 @@ CORS_ALLOWED_ORIGINS = [
 #IT TAKES VALUES IN SECONDS, 900 SECONDS MEANS 15 MINUTES
 PASSWORD_RESET_TIMEOUT = 900 
 
-if IS_UNDER_DEVELOPMENT == True:
+if IS_UNDER_DEVELOPMENT is True:
     SITE_DOMAIN = os.environ.get("site_domain_test")
 else:
     SITE_DOMAIN = os.environ.get("site_domain_live")
