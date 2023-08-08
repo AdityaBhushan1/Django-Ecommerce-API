@@ -139,31 +139,36 @@ class GetProductView(APIView):
             product = Products.objects.get(pk=pk)
         except Products.DoesNotExist:
             return Response({'message':'product does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
-        serializer = ProductsSerializer(product)
+        try:
+            serializer_product = ProductsSerializer(product)
+        except:
+            return Response(serializer_product.errors, status=status.HTTP_400_BAD_REQUEST)
         reviews = Review.objects.filter(product=pk)
         reviews_serializer = ReviewSerializer(reviews, many=True)
+        variations = product.generate_variations()
 
         formatted_data = {
-            "data": serializer.data,
+            "data": serializer_product.data,
+            "variations":variations,
             "review":reviews_serializer.data
         }
-        if product.generate_variations == True:
-            queryset = ProductVariations.objects.filter(product=pk)
-            variations_serializer = ProductVariationsSerializer(queryset, many=True)
-            formatted_data['variations']=variations_serializer.data
+        # if product.generate_variations == True:
+        #     queryset = ProductVariations.objects.filter(product=pk)
+        #     variations_serializer = ProductVariationsSerializer(queryset, many=True)
+        #     formatted_data['variations']=variations_serializer.data
         return Response(formatted_data, status=status.HTTP_200_OK)
     
-class GetProductVariationView(APIView):
-    renderer_classes = [UserRenderer]
-    def get(self,request,pk):
-        product_id = pk
-        queryset = ProductVariations.objects.filter(product=product_id)
-        serializer = ProductVariationsSerializer(queryset, many=True)
-        formatted_data = {
-            "product_id": product_id,
-            "variations": serializer.data
-        }
-        return Response(formatted_data, status=status.HTTP_200_OK)
+# class GetProductVariationView(APIView):
+#     renderer_classes = [UserRenderer]
+#     def get(self,request,pk):
+#         product_id = pk
+#         queryset = ProductVariations.objects.filter(product=product_id)
+#         serializer = ProductVariationsSerializer(queryset, many=True)
+#         formatted_data = {
+#             "product_id": product_id,
+#             "variations": serializer.data
+#         }
+#         return Response(formatted_data, status=status.HTTP_200_OK)
 
 class ReviewView(APIView):
     renderer_classes = [UserRenderer]

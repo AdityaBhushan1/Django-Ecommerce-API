@@ -15,6 +15,31 @@ class ProductCategoryAdmin(admin.ModelAdmin):
         "is_child_category"
         )
     
+    
+# class ProductAdmin(admin.ModelAdmin):
+
+#     # The fields to be used in displaying the User model.
+#     # These override the definitions on the base UserModelAdmin
+#     # that reference specific fields on auth.User.
+#     list_display = (
+#         "id",
+#         "name",
+#         "slug",
+#         "short_desc",
+#         "short_desc",
+#         "main_price",
+#         "sale_price",
+#         "category",
+#         "created_at",
+#         "modified_at",
+#         "SKU",
+#         "main_image",
+#         "gallery_image",
+#         "colors",
+#         "size",
+#         "is_available",
+#         )
+    
 class SizeAdmin(admin.ModelAdmin):
 
     # The fields to be used in displaying the User model.
@@ -57,36 +82,36 @@ class ColorAdmin(admin.ModelAdmin):
 #         "is_available",
 #         )
 
-class ProductVariationsAdmin(admin.ModelAdmin):
+# class ProductVariationsAdmin(admin.ModelAdmin):
 
-    # The fields to be used in displaying the User model.
-    # These override the definitions on the base UserModelAdmin
-    # that reference specific fields on auth.User.
-    list_display = (
-        "id",
-        "product",
-        "size",
-        "color",
-        "price_addition",
-        "is_available",
-        )
+#     # The fields to be used in displaying the User model.
+#     # These override the definitions on the base UserModelAdmin
+#     # that reference specific fields on auth.User.
+#     list_display = (
+#         "id",
+#         "product",
+#         "size",
+#         "color",
+#         "price_addition",
+#         "is_available",
+#         )
 
 class ProductAdminForm(forms.ModelForm):
     class Meta:
         model = Products
         fields = '__all__'
 
-class ProductVariationInline(admin.TabularInline):
-    model = ProductVariations
+# class ProductVariationInline(admin.TabularInline):
+#     model = ProductVariations
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
-        "pid",
+        "id",
         "name"
         )
     
     form = ProductAdminForm
-    filter_horizontal = ('colors',)
+    # filter_horizontal = ('colors',)
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
@@ -94,26 +119,12 @@ class ProductAdmin(admin.ModelAdmin):
     def save_related(self, request, form, formsets, change):
         super().save_related(request, form, formsets, change)
 
-        if form.instance.generate_variations:
-            colors = form.instance.colors.all()
-            sizes = Size.objects.all()
-
-            for color in colors:
-                for size in sizes:
-                    ProductVariations.objects.get_or_create(
-                        product=form.instance,
-                        color=color,
-                        size=size
-                    )
-
-    inlines = [ProductVariationInline]
-
 admin.site.register(Products, ProductAdmin)
 
 # Register your models here.
 admin.site.register(ProductCategory, ProductCategoryAdmin)
 admin.site.register(Size, SizeAdmin)
 # admin.site.register(Products, ProductsAdmin)
-admin.site.register(ProductVariations, ProductVariationsAdmin)
+# admin.site.register(ProductVariations, ProductVariationsAdmin)
 admin.site.register(Color, ColorAdmin)
 admin.site.register(Review)

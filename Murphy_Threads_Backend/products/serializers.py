@@ -25,10 +25,10 @@ class ProductsSerializer(serializers.ModelSerializer):
         #     'slug': {'required': False},
         # }
 
-class ProductVariationsSerializer(serializers.ModelSerializer): 
-    class Meta: 
-        model = ProductVariations
-        fields = "__all__"
+# class ProductVariationsSerializer(serializers.ModelSerializer): 
+#     class Meta: 
+#         model = ProductVariations
+#         fields = "__all__"
 
 
 class ReviewSerializer(serializers.ModelSerializer):
