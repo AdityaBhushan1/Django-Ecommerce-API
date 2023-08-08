@@ -1,6 +1,6 @@
 from django.db import models
 from users.models import Users,UserAddresses
-from products.models import Products,ProductVariations
+from products.models import Products
 from cart.models import Cart
 from django.db import models
 
@@ -20,7 +20,6 @@ class Order(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='email',null=False)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    product_variation = models.ForeignKey(ProductVariations, on_delete=models.CASCADE)
     shipping_address_id = models.ForeignKey(UserAddresses, on_delete=models.CASCADE)
     status = models.CharField(choices=ORDER_STATUS_CHOICES, default='PENDING', max_length=20)
     status_message = models.CharField(max_length = 500,null = True)
