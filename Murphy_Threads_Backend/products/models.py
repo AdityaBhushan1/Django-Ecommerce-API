@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.postgres.fields import ArrayField
-from users.models import Users
 from django.db.models import Avg
+from users.models import Users
 
 # Create your models here.
 class ProductCategory(models.Model):

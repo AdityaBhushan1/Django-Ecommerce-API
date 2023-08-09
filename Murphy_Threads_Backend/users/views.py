@@ -1,19 +1,16 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 from .serializers import *
 from django.contrib.auth import authenticate, logout
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import IsAuthenticated
-from utils.renderers import UserRenderer
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.conf import settings
-from utils.emails import *
-# from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
-# from django.utils.decorators import method_decorator
-# from rest_framework.permissions import AllowAny
+from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from rest_framework_simplejwt.tokens import RefreshToken
+from utils.renderers import UserRenderer
+from utils.emails import *
 
 # Generate Token Manually
 def get_tokens_for_user(user):
