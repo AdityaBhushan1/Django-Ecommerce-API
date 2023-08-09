@@ -1,4 +1,4 @@
-from django.db import models, models
+from django.db import models
 from users.models import Users,UserAddresses
 from products.models import *
 from cart.models import Cart
