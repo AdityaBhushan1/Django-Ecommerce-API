@@ -2,7 +2,6 @@ from django.db import models
 from users.models import Users,UserAddresses
 from products.models import *
 from cart.models import Cart
-from django.db import models
 
 ORDER_STATUS_CHOICES = (
     ('PENDING', 'Pending'),

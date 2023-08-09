@@ -6,9 +6,9 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import BaseUserManager
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
-from utils.emails import *
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.conf import settings
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from utils.emails import *
 
 class UserManager(BaseUserManager):
     def create_user(
