@@ -66,8 +66,7 @@ class CartView(APIView):
                     if remaining_quantity <= 0:
                         cart_item.delete()
                         return Response({'message':'cart updated successfully'}, status=status.HTTP_200_OK)
-                    else:
-                        cart_item.quantity = remaining_quantity
+                    cart_item.quantity = remaining_quantity
                 else:
                     return Response({"error": "Invalid action provided. Use 'add' or 'deduct'."}, status=status.HTTP_400_BAD_REQUEST)
 

@@ -185,8 +185,7 @@ class ReviewView(APIView):
             serializer.save(user=user)
             formated_data = {"message":"successfull reviewed the product"}
             return Response(formated_data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     
     def delete(self, request,pk):

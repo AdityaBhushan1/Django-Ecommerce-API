@@ -40,11 +40,10 @@ class UserRegistrationView(APIView):
                 },
                 status = status.HTTP_201_CREATED
             )
-        else:
-            return Response(
-                serializer.errors,
-                status = status.HTTP_400_BAD_REQUEST
-            )
+        return Response(
+            serializer.errors,
+            status = status.HTTP_400_BAD_REQUEST
+        )
 
 class ActivationConfirm(APIView):
     renderer_classes = [UserRenderer]
@@ -79,13 +78,12 @@ class ActivationConfirm(APIView):
                     }, 
                     status=status.HTTP_200_OK
                 )
-            else:
-                return Response(
-                    {
-                        'detail': 'Invalid activation link.'
-                    }, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+            return Response(
+                {
+                    'detail': 'Invalid activation link.'
+                }, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
         except Users.DoesNotExist:
             return Response(
                 {
@@ -111,17 +109,16 @@ class UserLoginView(APIView):
                 },
                 status=status.HTTP_200_OK
             )
-        else:
-            return Response(
-                {
-                    'errors':{
-                    'non_field_errors':[
-                        'Email or Password is not Valid'
-                        ]
-                    }
-                }, 
-                status=status.HTTP_404_NOT_FOUND
-            )
+        return Response(
+            {
+                'errors':{
+                'non_field_errors':[
+                    'Email or Password is not Valid'
+                    ]
+                }
+            }, 
+            status=status.HTTP_404_NOT_FOUND
+        )
 
 class UserProfileView(APIView):
     renderer_classes = [UserRenderer]
