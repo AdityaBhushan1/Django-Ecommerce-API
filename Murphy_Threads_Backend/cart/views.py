@@ -13,7 +13,7 @@ from rest_framework.exceptions import ValidationError
 class CartView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
-    
+
     def get(self,request):
         try:
             user_id = request.user.id
@@ -71,7 +71,7 @@ class CartView(APIView):
                     return Response({"error": "Invalid action provided. Use 'add' or 'deduct'."}, status=status.HTTP_400_BAD_REQUEST)
 
                 cart_item.save()
-                
+
                 serializer = CartSerializer(cart_item)
                 return Response({'message':'cart updated successfully'}, status=status.HTTP_200_OK)
 
@@ -79,7 +79,7 @@ class CartView(APIView):
                 return Response({"error": "Cart item not found."}, status=status.HTTP_404_NOT_FOUND)
         except:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
     def delete(self, request):
         user = request.user
         product_id = request.data.get('product')

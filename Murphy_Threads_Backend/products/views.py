@@ -29,7 +29,7 @@ from rest_framework.exceptions import ValidationError
 #                 status=status.HTTP_200_OK
 #             )
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 #     def delete(self,request,pk):
 #         try:
 #             category = ProductCategory.objects.get(pk=pk)
@@ -55,7 +55,7 @@ from rest_framework.exceptions import ValidationError
 #             }
 #             return Response(formatted_data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 class GetCategroyView(APIView):
     renderer_classes = [UserRenderer]
     def get(self,request,pk):
@@ -68,13 +68,13 @@ class GetCategroyView(APIView):
             "data": serializer.data
         }
         return Response(formatted_data, status=status.HTTP_200_OK)
-    
+
 
 
 # class ProductView(APIView):
 #     renderer_classes = [UserRenderer]
 #     permission_classes = [IsAdminUser]        
-    
+
 #     def patch(self,request,pk):
 #         try:
 #             product = Products.objects.get(pk=pk)
@@ -90,7 +90,7 @@ class GetCategroyView(APIView):
 #                 status=status.HTTP_200_OK
 #             )
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 #     def delete(self,request,pk):
 #         try:
 #             product = Products.objects.get(pk=pk)
@@ -116,7 +116,7 @@ class GetCategroyView(APIView):
 #             }
 #             return Response(formatted_data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 class ListProductByCategoryView(APIView):
     renderer_classes = [UserRenderer]
     def get(self,request,pk):
@@ -131,7 +131,7 @@ class ListProductByCategoryView(APIView):
             "products": serializer.data
         }
         return Response(formatted_data, status=status.HTTP_200_OK)
-    
+
 class GetProductView(APIView):
     renderer_classes = [UserRenderer]
     def get(self,request,pk):
@@ -157,7 +157,7 @@ class GetProductView(APIView):
         #     variations_serializer = ProductVariationsSerializer(queryset, many=True)
         #     formatted_data['variations']=variations_serializer.data
         return Response(formatted_data, status=status.HTTP_200_OK)
-    
+
 # class GetProductVariationView(APIView):
 #     renderer_classes = [UserRenderer]
 #     def get(self,request,pk):
@@ -187,7 +187,7 @@ class ReviewView(APIView):
             return Response(formated_data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    
+
     def delete(self, request,pk):
         product_id = pk
         try:

@@ -69,21 +69,21 @@ class Users(AbstractBaseUser):
 
     def has_perm(self,perm,obj = None):
         return self.is_admin
-    
+
     def has_module_perms(self, app_label):
         return True
-    
+
 
     @property
     def is_staff(self):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
-    
+
     def update_email(self, new_email):
         if Users.objects.filter(email=new_email).exists():
             raise ValidationError("Email already exists.")
-        
+
         self.email = new_email
         self.is_active = False
         uid = urlsafe_base64_encode(force_bytes(self.pk))

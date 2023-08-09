@@ -14,8 +14,8 @@ class ProductCategoryAdmin(admin.ModelAdmin):
         "is_parent_category",
         "is_child_category"
         )
-    
-    
+
+
 # class ProductAdmin(admin.ModelAdmin):
 
 #     # The fields to be used in displaying the User model.
@@ -39,7 +39,7 @@ class ProductCategoryAdmin(admin.ModelAdmin):
 #         "size",
 #         "is_available",
 #         )
-    
+
 class SizeAdmin(admin.ModelAdmin):
 
     # The fields to be used in displaying the User model.
@@ -49,7 +49,7 @@ class SizeAdmin(admin.ModelAdmin):
         "size",
         "size_nickname"
         )
-    
+
 class ColorAdmin(admin.ModelAdmin):
 
     # The fields to be used in displaying the User model.
@@ -59,7 +59,7 @@ class ColorAdmin(admin.ModelAdmin):
         "color_in_hex",
         "color_nickname"
         )
-    
+
 # class ProductsAdmin(admin.ModelAdmin):
 
 #     # The fields to be used in displaying the User model.
@@ -109,7 +109,7 @@ class ProductAdmin(admin.ModelAdmin):
         "id",
         "name"
         )
-    
+
     form = ProductAdminForm
     # filter_horizontal = ('colors',)
 
