@@ -147,7 +147,7 @@ class UserChangePasswordView(APIView):
             }, 
             status=status.HTTP_200_OK
         )
-    
+
 class SendPasswordResetEmailView(APIView):
     renderer_classes = [UserRenderer]
     def post(self, request, format=None):
@@ -203,7 +203,7 @@ class UserLogoutView(APIView):
             }, 
             status=status.HTTP_200_OK
         )
-    
+
 class UserEmailUpdateView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
@@ -229,7 +229,7 @@ class UserEmailUpdateView(APIView):
                 )
 
         return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 class UserPhoneNoUpdateView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
@@ -255,7 +255,7 @@ class UserPhoneNoUpdateView(APIView):
                 )
 
         return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 class UserNameUpdateView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
@@ -329,7 +329,7 @@ class UserAddressesUpdateView(APIView):
                 status=status.HTTP_200_OK
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self,request,pk):
         try:
             address = UserAddresses.objects.get(pk=pk,user=request.user.id)

@@ -36,7 +36,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         if password != password2:
             raise serializers.ValidationError("Password and Confirm Password doesn't match")
         return attrs
-    
+
     def create(self, validate_data):
         return Users.objects.create_user(**validate_data)
 
@@ -172,7 +172,7 @@ class UserAddressesSerializer(serializers.ModelSerializer):
             'house_no', 'street', 'landmark', 'state', 'district', 'country', 'postal_code', 'phone_no_1',
             'phone_no_2',
         )
-        
+
         extra_kwargs = {
             'user': {'required': False},
             'last_name': {'required': False},
