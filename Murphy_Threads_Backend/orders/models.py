@@ -9,10 +9,17 @@ ORDER_STATUS_CHOICES = (
     ('PROCESSING', 'Processing'),
     ('SHIPPED', 'Shipped'),
     ('DELIVERED', 'Delivered'),
+    ('CANCELLATION_REQUESTED', 'Cancellation Requested'),
+    ('CANCELLATION_APPROVED', 'Cancellation Approved'),
+    ('CANCELLATION_DECLINED', 'Cancellation Declined'),
     ('CANCELLED', 'Cancelled'),
     ('RETURING','Returning'),
     ('RETIRNED','Returned'),
     ('REFUNDED','Refunded'),
+)
+
+REFUND_STATUS_CHOICES = (
+    
 )
 
 class Order(models.Model):

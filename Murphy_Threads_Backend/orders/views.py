@@ -46,7 +46,13 @@ class OrderView(APIView):
         OrderItem.objects.bulk_create(order_items)
         order.save()
         Cart.objects.filter(user = user).delete()
-        return Response({'message':'Successfully created order'},status=status.HTTP_200_OK)
+        return Response(
+            {
+                'message':'Successfully created order',
+                'order_id':order.id
+            },
+            status=status.HTTP_200_OK
+        )
 
 
 class SpecificOrderView(APIView):
@@ -58,7 +64,7 @@ class SpecificOrderView(APIView):
             order_queryset = Order.objects.get(pk=pk)
         except:
             return Response({'message':'no order found'},status=status.HTTP_400_BAD_REQUEST)
-        order_serializer = OrderSerializer(order_queryset, many=True)
+        order_serializer = OrderSerializer(order_queryset)
         queryset = Order.objects.filter(user=request.user.id)
         serializer = OrderItemSerializer(queryset, many=True)
         formatted_data = {
@@ -66,4 +72,7 @@ class SpecificOrderView(APIView):
             "Items": serializer.data
         }
         return Response(formatted_data, status=status.HTTP_200_OK)
+
+    # def patch(self,request,pk):
+    #     ...
 

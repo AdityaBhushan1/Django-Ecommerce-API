@@ -11,6 +11,11 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItem
         fields = '__all__'
 
+        extra_kwargs = { 
+            'color': {'required': False},
+            'size': {'required': False}
+        }
+
 
 # class RefundSerializer(serializers.ModelSerializer):
 #     class Meta:
