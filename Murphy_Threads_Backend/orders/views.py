@@ -24,23 +24,25 @@ class OrderView(APIView):
         }
         return Response(formatted_data, status=status.HTTP_200_OK)
 
-    def post(self,request):
+    def post(self,request,format=None):
         user = request.user
-        cart_items = Cart.object.filter(user = user)
+        cart_items = Cart.objects.filter(user = user)
+        shipping_address = UserAddresses.objects.get(id=request.data.get('shipping_address'))
         if not cart_items:
             return Response({'message':'no item found'},status=status.HTTP_400_BAD_REQUEST)
         order = Order.objects.create(
             user = user,
-            shipping_address_id = request.data.get('shipping_address'),
+            shipping_address_id = shipping_address,
             ammount_paid = request.data.get('ammount')
             )
         order_items = [
-                OrderItem(order=order, 
-                    product=item.product, 
-                    quantity=item.quantity,
-                    size = item.size,
-                    color = item.color
-                    )
+            OrderItem(
+                order=order, 
+                product=item.product, 
+                size = item.size,
+                color = item.color,
+                quantity=item.quantity,
+            )
             for item in cart_items
         ]
         OrderItem.objects.bulk_create(order_items)

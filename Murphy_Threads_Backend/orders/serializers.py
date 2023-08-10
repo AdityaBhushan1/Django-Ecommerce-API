@@ -1,11 +1,6 @@
 from rest_framework import serializers
 from .models import *
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = '__all__'
-
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
@@ -15,6 +10,13 @@ class OrderItemSerializer(serializers.ModelSerializer):
             'color': {'required': False},
             'size': {'required': False}
         }
+
+class OrderSerializer(serializers.ModelSerializer):
+    order_items = OrderItemSerializer(many=True, write_only=True)
+    class Meta:
+        model = Order
+        fields = '__all__'
+
 
 
 # class RefundSerializer(serializers.ModelSerializer):
