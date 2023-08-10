@@ -8,6 +8,7 @@ from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from .models import *
 from cart.models import *
+from django.db import transaction
 
 class OrderView(APIView):
     renderer_classes = [UserRenderer]
@@ -25,17 +26,18 @@ class OrderView(APIView):
         return Response(formatted_data, status=status.HTTP_200_OK)
 
     def post(self,request,format=None):
-        user = request.user
-        cart_items = Cart.objects.filter(user = user)
-        shipping_address = UserAddresses.objects.get(id=request.data.get('shipping_address'))
-        if not cart_items:
-            return Response({'message':'no item found'},status=status.HTTP_400_BAD_REQUEST)
-        order = Order.objects.create(
-            user = user,
-            shipping_address_id = shipping_address,
+        with transaction.atomic():
+            user = request.user
+            cart_items = Cart.objects.filter(user = user)
+            shipping_address = UserAddresses.objects.get(id=request.data.get('shipping_address'))
+            if not cart_items:
+                return Response({'message':'no item found'},status=status.HTTP_400_BAD_REQUEST)
+            order = Order.objects.create(
+                user = user,
+                shipping_address_id = shipping_address,
             ammount_paid = request.data.get('ammount')
             )
-        order_items = [
+            order_items = [
             OrderItem(
                 order=order, 
                 product=item.product, 
@@ -44,11 +46,10 @@ class OrderView(APIView):
                 quantity=item.quantity,
             )
             for item in cart_items
-        ]
-        OrderItem.objects.bulk_create(order_items)
-        order.save()
-        Cart.objects.filter(user = user).delete()
-        return Response(
+        ] OrderItem.objects.bulk_create(order_items)
+            order.save()
+            Cart.objects.filter(user = user).delete()
+            return Response(
             {
                 'message':'Successfully created order',
                 'order_id':order.id
