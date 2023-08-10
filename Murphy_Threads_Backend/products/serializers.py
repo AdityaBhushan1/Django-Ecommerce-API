@@ -7,11 +7,11 @@ class ProductCategorySerializer(serializers.ModelSerializer):
         model = ProductCategory
         fields = "__all__"
 
-        # extra_kwargs = { 
-        #     'desc': {'required': False},
-        #     'is_parent_category': {'required': False},
-        #     'is_child_category': {'required': False}
-        # }
+        extra_kwargs = { 
+            'desc': {'required': False},
+            'is_parent_category': {'required': False},
+            'is_child_category': {'required': False}
+        }
 
 class ProductsSerializer(serializers.ModelSerializer): 
     average_rating = serializers.FloatField(read_only=True)

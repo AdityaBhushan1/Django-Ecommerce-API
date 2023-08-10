@@ -120,14 +120,14 @@ class GetCategroyView(APIView):
 class ListProductByCategoryView(APIView):
     renderer_classes = [UserRenderer]
     def get(self,request,pk):
-        category_id = pk
-        queryset = Products.objects.filter(category=category_id)
+        category = ProductCategory.objects.get(name = pk)
+        queryset = Products.objects.filter(category=category)
         serializer = ProductsSerializer(queryset, many=True)
         for product in serializer.data:
-            product['average_rating'] = Products.objects.get(pk=product['pid']).average_rating()
+            product['average_rating'] = Products.objects.get(pk=product['id']).average_rating()
 
         formatted_data = {
-            "category": category_id,
+            "category": category.name,
             "products": serializer.data
         }
         return Response(formatted_data, status=status.HTTP_200_OK)
@@ -145,11 +145,11 @@ class GetProductView(APIView):
             return Response(serializer_product.errors, status=status.HTTP_400_BAD_REQUEST)
         reviews = Review.objects.filter(product=pk)
         reviews_serializer = ReviewSerializer(reviews, many=True)
-        variations = product.generate_variations()
+        # variations = product.generate_variations()
 
         formatted_data = {
             "data": serializer_product.data,
-            "variations":variations,
+            # "variations":variations,
             "review":reviews_serializer.data
         }
         # if product.generate_variations == True:

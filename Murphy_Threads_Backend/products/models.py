@@ -71,13 +71,13 @@ class Products(models.Model):
             average_rating = 0
         return average_rating
 
-    def generate_variations(self):
-        variations = []
-        for color in self.colors:
-            for size in self.sizes:
-                variations.append({"color": color, "size": size})
-        return variations
-        return variations
+    # def generate_variations(self):
+    #     variations = []
+    #     for color in self.colors:
+    #         for size in self.sizes:
+    #             variations.append({"color": color, "size": size})
+    #     return variations
+
 
 
 # class ProductVariations(models.Model):

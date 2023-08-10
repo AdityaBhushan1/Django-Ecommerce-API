@@ -19,14 +19,14 @@ ORDER_STATUS_CHOICES = (
 )
 
 REFUND_STATUS_CHOICES = (
-    
+
 )
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     shipping_address_id = models.ForeignKey(UserAddresses, on_delete=models.CASCADE)
-    status = models.CharField(choices=ORDER_STATUS_CHOICES, default='PENDING', max_length=20)
+    status = models.CharField(choices=ORDER_STATUS_CHOICES, default='PENDING', max_length=1000)
     status_message = models.CharField(max_length = 500,null = True)
     ammount_paid = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
     shipped_date = models.DateTimeField(null = True)
