@@ -42,12 +42,14 @@ class OrderView(APIView):
                 )
                 
                 for cart_item in cart_items:
-                    OrderItem.objects.create(
+                    order_item = OrderItem(
                         order=order,
                         product=cart_item.product,
                         size=cart_item.size,
                         color=cart_item.color,
                         quantity=cart_item.quantity
+                    )
+                    order_item.save()
                     )
                 
                 cart_items.delete()
