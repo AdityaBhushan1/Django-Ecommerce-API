@@ -26,42 +26,40 @@ class OrderView(APIView):
         return Response(formatted_data, status=status.HTTP_200_OK)
 
     def post(self, request):
-    user = request.user
-    cart_items = Cart.objects.filter(user=user)
-    shipping_address_id = request.data.get('shipping_address')
+        user = request.user
+        cart_items = Cart.objects.filter(user=user)
+        shipping_address_id = request.data.get('shipping_address')
         
-    if not cart_items:
-        return Response({'message': 'No items found in cart'}, status=status.HTTP_400_BAD_REQUEST)
-        
-     shipping_address = UserAddresses.objects.get(id=shipping_address_id)
-        
-    try:
-         with transaction.atomic():
-         order = Order.objects.create(
-             user=user,
-                    shipping_address_id=shipping_address_id,
+        if not cart_items:
+            return Response({'message': 'No items found in cart'}, status=status.HTTP_400_BAD_REQUEST)
+        shipping_address = UserAddresses.objects.get(id=shipping_address_id)
+        try:
+            with transaction.atomic():
+                order = Order.objects.create(
+                    user=user,
+                    shipping_address_id=shipping_address,
                     ammount_paid=request.data.get('ammount')
                 )
                 
-            for cart_item in cart_items:
-                OrderItem.objects.create(
-                    order=order,
+                for cart_item in cart_items:
+                    OrderItem.objects.create(
+                        order=order,
                         product=cart_item.product,
                         size=cart_item.size,
                         color=cart_item.color,
                         quantity=cart_item.quantity
                     )
                 
-            cart_items.delete()
+                cart_items.delete()
             
-        return Response(
+            return Response(
                 {
                     'message': 'Successfully created order',
                     'order_id': order.id
                 },
                 status=status.HTTP_200_OK
             )
-    except Exception as e:
+        except Exception as e:
             return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
