@@ -45,12 +45,11 @@ class OrderView(APIView):
                     order_item = OrderItem(
                         order=order,
                         product=cart_item.product,
-                        size=cart_item.size,
-                        color=cart_item.color,
+                        size=Size.objects.get(size = cart_item.size),
+                        color=Color.objects.get(color_in_hex = cart_item.color),
                         quantity=cart_item.quantity
                     )
                     order_item.save()
-                    )
                 
                 cart_items.delete()
             

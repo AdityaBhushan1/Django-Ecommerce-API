@@ -34,7 +34,7 @@ class Order(models.Model):
     ordered_on = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
-class OrderItem():
+class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     size = models.ForeignKey(Size,on_delete=models.CASCADE)
@@ -43,6 +43,14 @@ class OrderItem():
 
     def __str__(self):
         return self.product.name
+
+    def __init__(self, order, product, size, color, quantity, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.order = order
+        self.product = product
+        self.size = size
+        self.color = color
+        self.quantity = quantity
 
 # class Refund(models.Model):
 #     order = models.OneToOneField(Order, on_delete=models.CASCADE)
