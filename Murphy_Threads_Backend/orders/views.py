@@ -74,14 +74,27 @@ class SpecificOrderView(APIView):
         except:
             return Response({'message':'no order found'},status=status.HTTP_400_BAD_REQUEST)
         order_serializer = OrderSerializer(order_queryset)
-        queryset = Order.objects.filter(user=request.user.id)
-        serializer = OrderItemSerializer(queryset, many=True)
+        ordeer_item_queryset = OrderItem.objects.filter(order=order_queryset)
+        serializer = OrderItemSerializer(ordeer_item_queryset, many=True)
         formatted_data = {
             "order_details": order_serializer.data,
             "Items": serializer.data
         }
         return Response(formatted_data, status=status.HTTP_200_OK)
 
-    # def patch(self,request,pk):
-    #     ...
+    def patch(self,request,pk):
+        try:
+            order = Order.objects.get(pk=pk)
+        except Products.DoesNotExist:
+            return Response({'message':'order does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = OrderSerializer(order, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    'message':'successfully updated order'
+                }, 
+                status=status.HTTP_200_OK
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

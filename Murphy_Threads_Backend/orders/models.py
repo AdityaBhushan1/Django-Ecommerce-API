@@ -42,15 +42,15 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default = 1)
 
     def __str__(self):
-        return self.product.name
+        return self.order.user
 
-    def __init__(self, order, product, size, color, quantity, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.order = order
-        self.product = product
-        self.size = size
-        self.color = color
-        self.quantity = quantity
+    # def __init__(self, order, product, size, color, quantity, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.order = order
+    #     self.product = product
+    #     self.size = size
+    #     self.color = color
+    #     self.quantity = quantity
 
 # class Refund(models.Model):
 #     order = models.OneToOneField(Order, on_delete=models.CASCADE)
