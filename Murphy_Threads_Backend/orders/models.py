@@ -1,7 +1,6 @@
 from django.db import models
-from users.models import Users,UserAddresses
+from users.models import *
 from products.models import *
-from cart.models import Cart
 
 ORDER_STATUS_CHOICES = (
     ('PENDING', 'Pending'),
@@ -14,7 +13,7 @@ ORDER_STATUS_CHOICES = (
     ('CANCELLATION_DECLINED', 'Cancellation Declined'),
     ('CANCELLED', 'Cancelled'),
     ('RETURING','Returning'),
-    ('RETIRNED','Returned'),
+    ('RETURNED','Returned'),
     ('REFUNDED','Refunded'),
 )
 
@@ -43,14 +42,6 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.order.user
-
-    # def __init__(self, order, product, size, color, quantity, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.order = order
-    #     self.product = product
-    #     self.size = size
-    #     self.color = color
-    #     self.quantity = quantity
 
 # class Refund(models.Model):
 #     order = models.OneToOneField(Order, on_delete=models.CASCADE)
