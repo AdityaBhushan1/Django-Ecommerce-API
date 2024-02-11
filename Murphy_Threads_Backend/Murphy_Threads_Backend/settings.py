@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'wishlist',
     'rest_framework_simplejwt',
     "corsheaders",
+    'shipping',
 ]
 
 MIDDLEWARE = [
