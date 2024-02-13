@@ -6,6 +6,7 @@ ORDER_STATUS_CHOICES = (
     ('PENDING', 'Pending'),
     ('CONFIRMED','Confirmed'),
     ('PROCESSING', 'Processing'),
+    ('DISPATCHED', 'Dispatched'),
     ('SHIPPED', 'Shipped'),
     ('DELIVERED', 'Delivered'),
     ('CANCELLATION_REQUESTED', 'Cancellation Requested'),
@@ -15,10 +16,6 @@ ORDER_STATUS_CHOICES = (
     ('RETURING','Returning'),
     ('RETURNED','Returned'),
     ('REFUNDED','Refunded'),
-)
-
-REFUND_STATUS_CHOICES = (
-
 )
 
 class Order(models.Model):
@@ -42,12 +39,6 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.order.user
-
-# class Refund(models.Model):
-#     order = models.OneToOneField(Order, on_delete=models.CASCADE)
-#     reason = models.TextField(max_length=500)
-#     ammount_paid = models.DecimalField(max_digits = 20,decimal_places = 2,null = False)
-#     created_at = models.DateTimeField(auto_now_add=True)
 
 # class Return(models.Model):
 #     order = models.OneToOneField(Order, on_delete=models.CASCADE)

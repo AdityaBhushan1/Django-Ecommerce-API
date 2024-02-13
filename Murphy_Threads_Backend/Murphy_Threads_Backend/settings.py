@@ -23,6 +23,7 @@ if IS_UNDER_DEVELOPMENT == 'True':
     # INSTAMOJO_SALT = env_vars.get("instamojo_private_test_salt")
     STRIPE_PUBLIC_KEY = env_vars.get("stripe_api_publishable_key_test")
     STRIPE_SECRET_KEY = env_vars.get("stripe_api_secret_key_test")
+    STRIPE_WEBHOOK_SECRET = env_vars.get("stripe_webhook_secret_test")
     DATABASES = {
         'default': {
             'ENGINE': env_vars.get("db_engine"),
@@ -47,6 +48,7 @@ else:
     # INSTAMOJO_SALT = env_vars.get("instamojo_private_live_salt")
     STRIPE_PUBLIC_KEY = env_vars.get("stripe_api_publishable_key_live")
     STRIPE_SECRET_KEY = env_vars.get("stripe_api_secret_key_live")
+    STRIPE_WEBHOOK_SECRET = env_vars.get("stripe_webhook_secret_live")
     DATABASES = {
         'default': {
             'ENGINE': env_vars.get("db_engine"),
@@ -89,6 +91,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     "corsheaders",
     # 'Shipping',
+    # 'Webhooks'
 ]
 
 MIDDLEWARE = [

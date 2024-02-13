@@ -1,32 +1,52 @@
-from django.conf import settings
 import stripe
 
-stripe.api_key(settings.STRIPE_SECRET_KEY)
+def createPaymentIntent(amount,email,cid,oid,mid,save_method,currency = 'inr'):
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount = amount,
+            currency = currency,
+            receipt_email=email,
+            customer = cid,
+            metadata = {
+                'order_id':oid
+            }
+        )
 
-# def create_checkout_session(return_url,success_url,cart_id,user,email,expiry,price):
-#     try:
-#         checkout_session = stripe.checkout.Session.create(
-#             line_items = [
-#                 {
-#                     'price_data':{
-#                         'currency':'inr',
-#                         'unit_ammount':price,
-#                         'product_data':{
-#                             'name':f'Cart ID: {cart_id}'
-#                         },
-#                         'quantity':1
-#                     }
-#                 }
-#             ],
-#             mode='payment',
-#             return_url = return_url,
-#             success_url = success_url,
-#             client_reference_id = cart_id,
-#             customer = user,
-#             customer_email = email,
-#             expires_at = expiry,
-#         )
-#     except Exception as e:
-#         return str(e)
+        if mid:
+            stripe.PaymentIntent.modify(
+                intent.id,
+                metadata = {
+                    "payment_method":mid
+                }
+            )
 
-#     return(checkout_session.id)
+        if save_method == True:
+            stripe.PaymentIntent.modify(
+                intent.id,
+                metadata = {
+                    "setup_future_usage":"off_session"
+                }
+            )
+
+    except Exception as e:
+        return str(e)
+    
+    return intent.clinet_secret
+
+
+def createCustomer(email,name):
+    customer = stripe.Customer.list(email = email)
+    try:
+        if customer:
+            return customer
+        else:
+            customer = stripe.Customer.create(
+                name = name,
+                email = email
+            )
+            return customer
+    except Exception as e:
+        return str(e)
+    
+def createRefund():
+    ...#Todod write code to create a refund

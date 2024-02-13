@@ -9,35 +9,40 @@ from rest_framework.permissions import IsAuthenticated
 from .models import *
 from Cart.models import *
 from django.db import transaction
-from .StripeHandler import *
+from . import StripeHandler as stripe
+from Utils.ErrorHandler import StripeErrors as handlestripe
 
-# class CreatePaymentSession(APIView):
-#     renderer_classes = [UserRenderer]
-#     permission_classes = [IsAuthenticated]
+class StirpePaymentIntent(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
 
+    @handlestripe
+    def post(self,request):
+        try:
+            customer = stripe.createCustomer(
+                email = request.user.email,
+                name = request.user.name
+            )
 
-#     def post(self,request):
-#         price = request.data.get('price')
-#         return_url = f'{settings.SITE_DOMAIN}/{request.data.get('return_path')}'
-#         redirection_url = f'{settings.SITE_DOMAIN}/{request.data.get('redirect_path')}'
-#         cart_id = request.data.get("cart_id")
-#         email = request.data.get("user_email")
-#         expires_at = request.data.get("expiry")
+            intent = stripe.createPaymentIntent(
+                email = customer.email,
+                cid = customer.id,
+                oid = request.data.get("oid"),
+                amount = request.data.get("amount"),
+                mid = (
+                    request.data.get('mid') if request.data.get('mid') != None else None
+                ),
+                save_method = (
+                    True if request.data.get("save_method") != False else False
+                )
+            )
+        except Exception as e:
+            return Response({'error':e}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response(
+            {
+                'client_secret':intent
+            },
+            status=status.HTTP_201_CREATED
+        )
 
-#         session = create_checkout_session(
-#             price = price,
-#             return_url = return_url,
-#             success_url = redirection_url,
-#             card_id = cart_id,
-#             user = request.user.id,
-#             email = email,
-#             expiry = expires_at,
-#         )
-
-#         return Response(
-#                 {
-#                     'message': 'Successfully created payment session',
-#                     'session_id': session
-#                 },
-#                 status=status.HTTP_200_OK
-#             )
