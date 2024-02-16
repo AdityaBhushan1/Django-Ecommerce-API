@@ -20,6 +20,7 @@ django-cors-headers = "^4.2.0"
 django-dotenv = "^1.4.2"
 python-dotenv = "^1.0.1"
 ipinfo-django = "^2.0.0"
+requests = "^2.31.0"
 
 
 [build-system]

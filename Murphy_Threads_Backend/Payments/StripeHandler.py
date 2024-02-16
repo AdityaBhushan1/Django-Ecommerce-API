@@ -48,5 +48,14 @@ def createCustomer(email,name):
     except Exception as e:
         return str(e)
     
-def createRefund():
-    ...#Todod write code to create a refund
+def createRefund(payid,ammount,oid,uid):
+    stripe.Refund.create(
+        payment_inten = payid,
+        amount = ammount,
+        reason = 'requested_by_customer',
+        refund_application_fee=True,
+        metadata = {    
+            "order_id":oid,
+            "user_id":uid
+        }
+        )

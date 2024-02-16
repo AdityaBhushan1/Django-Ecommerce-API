@@ -1,6 +1,7 @@
 from django.db import models
 from Users.models import *
 from Products.models import *
+from Utils.AutoField import CustomAutoField as AutoField
 
 ORDER_STATUS_CHOICES = (
     ('PENDING', 'Pending'),
@@ -9,26 +10,66 @@ ORDER_STATUS_CHOICES = (
     ('DISPATCHED', 'Dispatched'),
     ('SHIPPED', 'Shipped'),
     ('DELIVERED', 'Delivered'),
-    ('CANCELLATION_REQUESTED', 'Cancellation Requested'),
-    ('CANCELLATION_APPROVED', 'Cancellation Approved'),
-    ('CANCELLATION_DECLINED', 'Cancellation Declined'),
+    # ('CANCELLATION_REQUESTED', 'Cancellation Requested'),
+    # ('CANCELLATION_APPROVED', 'Cancellation Approved'),
     ('CANCELLED', 'Cancelled'),
+    ("RETURN_REQUESTED","return_requested"),
     ('RETURING','Returning'),
     ('RETURNED','Returned'),
-    ('REFUNDED','Refunded'),
+    # ("REQUESTED_REFUND","Requestedrefund"),
+    ("REFUNDED_INITIATED","Refundedinitiated"),
+    ("REFUNDED","Refunded"),
+    ("REFUND_REJECTED","Refundrejected"),
+)
+
+PAYMENT_MODE = (
+    ("ONLINE","Online"),
+    ("COD","Cash On Delivery")
+)
+
+CANCELLATION_STATUS = (
+    # ('CANCELLATION_REQUESTED', 'Cancellation Requested'),
+    # ('CANCELLATION_APPROVED', 'Cancellation Approved'),
+    ('CANCELLED', 'Cancelled'),
 )
 
 class Order(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = AutoField(prefix= "or_",primary_key=True)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     shipping_address_id = models.ForeignKey(UserAddresses, on_delete=models.CASCADE)
     status = models.CharField(choices=ORDER_STATUS_CHOICES, default='PENDING', max_length=1000)
+    payment_mode = models.CharField(choices=PAYMENT_MODE, default='ONLINE', max_length=1000)
     status_message = models.CharField(max_length = 500,null = True)
     ammount_paid = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
+    shipping_charges = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
+    gateway_charges = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
+    dispatched_date = models.DateTimeField(null = True)
     shipped_date = models.DateTimeField(null = True)
     delivered_date = models.DateTimeField(null = True)
     ordered_on = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+
+# class OrderStatus(models.Model):
+#     id = models.AutoField(primary_key = True)
+#     order = models.ForeignKey(Order,on_delete = models.CASCADE)
+#     is_pending = models.BooleanField(default = True)
+#     is_confirmed = models.BooleanField()
+#     is_processing = models.BooleanField()
+#     is_processing = models.BooleanField()
+#     is_dispatched = models.BooleanField()
+#     is_shiped = models.BooleanField()
+#     is_delivered = models.BooleanField()
+#     cancellation_requested = models.BooleanField()
+#     cancellation_approved = models.BooleanField()
+#     is_cancelled = models.BooleanField()
+#     is_cancelled = models.BooleanField()
+#     return_requested = models.BooleanField()
+#     is_returning = models.BooleanField()
+#     is_returned = models.BooleanField()
+#     refund_requested = models.BooleanField()
+#     refund_requested = models.BooleanField()
+#     refund_initiated = models.BooleanField()
+#     is_refunded = models.BooleanField()
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -40,12 +81,17 @@ class OrderItem(models.Model):
     def __str__(self):
         return self.order.user
 
-# class Return(models.Model):
-#     order = models.OneToOneField(Order, on_delete=models.CASCADE)
-#     reason = models.TextField(max_length=500)
-#     created_at = models.DateTimeField(auto_now_add=True)
 
-# class Cancellation(models.Model):
+class Cancellation(models.Model):
+    id = AutoField(prefix = "can_",primary_key=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    reason = models.TextField(max_length=500)
+    status = models.CharField(choices=CANCELLATION_STATUS,max_length=1000)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+# class Return(models.Model):
 #     order = models.OneToOneField(Order, on_delete=models.CASCADE)
 #     reason = models.TextField(max_length=500)
 #     created_at = models.DateTimeField(auto_now_add=True)

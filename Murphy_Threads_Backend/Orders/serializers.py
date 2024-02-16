@@ -29,7 +29,7 @@ class OrderSerializer(serializers.ModelSerializer):
 #         model = Return
 #         fields = '__all__'
 
-# class CancellationSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Cancellation
-#         fields = '__all__'
+class CancellationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cancellation
+        fields = '__all__'

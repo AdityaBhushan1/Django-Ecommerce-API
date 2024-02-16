@@ -1,6 +1,7 @@
 from django.db import models
 from Users.models import *
 from Orders.models import *
+from Utils.AutoField import CustomAutoField as AutoField
 
 PAYMENT_METHOD_CHOICES = (
     ("PAYPAL", "Paypal"),
@@ -28,7 +29,7 @@ REFUND_STATUS = (
 )
 
 class Payments(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = AutoField(prefix="pay_",primary_key=True)
     payment_menthod = models.CharField(choices=PAYMENT_METHOD_CHOICES, max_length=500)
     payment_id = models.CharField(max_length = 255)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -40,7 +41,7 @@ class Payments(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
 class Refunds(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = AutoField(prefix= "ref_",primary_key=True)
     refund_id = models.CharField(max_length = 255)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     payment = models.ForeignKey(Payments,on_delete = models.CASCADE)

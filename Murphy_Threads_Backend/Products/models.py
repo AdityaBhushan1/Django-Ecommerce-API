@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django.contrib.postgres.fields import ArrayField
 from django.db.models import Avg
 from Users.models import Users
+from Utils.AutoField import CustomAutoField as AutoField
 
 # Create your models here.
 class ProductCategory(models.Model):
@@ -36,7 +37,7 @@ class Color(models.Model):
         return self.color_nickname
 
 class Products(models.Model):
-    id = models.AutoField(primary_key=True,null = False,unique=True)
+    id = AutoField(prefix= "prod_",primary_key=True,null = False,unique=True)
     name = models.CharField(max_length=255,null=False)
     slug = models.SlugField(unique=True)
     short_desc = models.CharField(max_length=500,null=False)

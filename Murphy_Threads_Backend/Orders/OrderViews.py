@@ -40,8 +40,10 @@ class OrderView(APIView):
                 order = Order.objects.create(
                     user=user,
                     shipping_address_id=shipping_address,
-                    ammount_paid=request.data.get('ammount')
+                    ammount_paid=request.data.get('ammount'),
+                    payment_mode = request.data.get('payment_mode')
                 )
+                # OrderStatus.objects.create(order=order.id)
                 
                 for cart_item in cart_items:
                     order_item = OrderItem(

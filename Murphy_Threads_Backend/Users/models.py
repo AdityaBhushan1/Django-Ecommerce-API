@@ -9,6 +9,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from Utils.Emails import *
+from Utils.AutoField import CustomAutoField as AutoField
 
 class UserManager(BaseUserManager):
     def create_user(
@@ -52,7 +53,7 @@ class UserManager(BaseUserManager):
 
 # Create your models here.
 class Users(AbstractBaseUser): 
-    id = models.AutoField(primary_key=True)     
+    id = AutoField(prefix = "user_",primary_key=True)     
     email = models.EmailField(max_length=255,null=False,unique=True)
     # password = models.CharField(max_length=255)
     name = models.CharField(max_length=255,null=False)
@@ -113,7 +114,7 @@ class UserAddresses(models.Model):
 
     # ADDRESS_CHOICES = ((BILLING, _("billing")), (SHIPPING, _("shipping")))
 
-    id = models.AutoField(primary_key=True,null=False)
+    id = AutoField(prefix = "addr_",primary_key=True,null=False)
     # address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
     user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='id')
     first_name = models.CharField(max_length=255,null=False)
