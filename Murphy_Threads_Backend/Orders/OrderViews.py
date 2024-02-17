@@ -9,6 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 from .models import *
 from Cart.models import *
 from django.db import transaction
+from Payments.models import Refunds
+from Payments.serializers import RefundSearializer
 
 class OrderView(APIView):
     renderer_classes = [UserRenderer]
@@ -78,27 +80,22 @@ class SpecificOrderView(APIView):
         except:
             return Response({'message':'no order found'},status=status.HTTP_400_BAD_REQUEST)
         order_serializer = OrderSerializer(order_queryset)
-        ordeer_item_queryset = OrderItem.objects.filter(order=order_queryset)
-        serializer = OrderItemSerializer(ordeer_item_queryset, many=True)
+        order_item_queryset = OrderItem.objects.filter(order=order_queryset)
+        serializer = OrderItemSerializer(order_item_queryset, many=True)
         formatted_data = {
             "order_details": order_serializer.data,
             "Items": serializer.data
         }
-        return Response(formatted_data, status=status.HTTP_200_OK)
 
-    def patch(self,request,pk):
-        try:
-            order = Order.objects.get(pk=pk)
-        except Products.DoesNotExist:
-            return Response({'message':'order does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
-        serializer = OrderSerializer(order, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {
-                    'message':'successfully updated order'
-                }, 
-                status=status.HTTP_200_OK
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        refund = Refunds.object.get(order = order_queryset.id)
+        if refund:
+            refund_serializer = RefundSearializer(refund)
+            formatted_data['refund_data'] = refund_serializer.data
+
+        returns = Return.object.get(order = order_queryset.id)
+        if returns:
+            return_serializer = ReturnsSerializer(returns)
+            formatted_data['return_data'] = return_serializer.data
+
+        return Response(formatted_data, status=status.HTTP_200_OK)
 

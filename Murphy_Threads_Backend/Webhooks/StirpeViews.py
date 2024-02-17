@@ -257,7 +257,7 @@ class Stripe:
             charge = event['data']['object']
             payments.update(status = "REFUNDED")
             order.update(status = "REFUNDED")
-            refund.update(status = "REFUNDED")
+            refund.update(status = "REFUNDED",refund_date = ...)#Todo set date of refund
             SendDiscordWebhook(
                 webhook_url=settings.DISCORD_STRIPE_REFUND,
                 title = "Refund",

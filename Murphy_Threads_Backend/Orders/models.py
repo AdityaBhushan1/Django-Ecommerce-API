@@ -14,6 +14,8 @@ ORDER_STATUS_CHOICES = (
     # ('CANCELLATION_APPROVED', 'Cancellation Approved'),
     ('CANCELLED', 'Cancelled'),
     ("RETURN_REQUESTED","return_requested"),
+    ("RETURN_APPROVED","return_approved"),
+    ("RETURN_REJECTED","return_rejected"),
     ('RETURING','Returning'),
     ('RETURNED','Returned'),
     # ("REQUESTED_REFUND","Requestedrefund"),
@@ -33,6 +35,14 @@ CANCELLATION_STATUS = (
     ('CANCELLED', 'Cancelled'),
 )
 
+RETURN_STATUS = (
+    ("RETURN_REQUESTED","return_requested"),
+    ("RETURN_APPROVED","return_approved"),
+    ("RETURN_REJECTED","return_rejected"),
+    ('RETURING','Returning'),
+    ('RETURNED','Returned'),
+)
+
 class Order(models.Model):
     id = AutoField(prefix= "or_",primary_key=True)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
@@ -43,9 +53,10 @@ class Order(models.Model):
     ammount_paid = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
     shipping_charges = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
     gateway_charges = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
-    dispatched_date = models.DateTimeField(null = True)
-    shipped_date = models.DateTimeField(null = True)
-    delivered_date = models.DateTimeField(null = True)
+    dispatched_date = models.DateField(null = True)
+    shipped_date = models.DateField(null = True)
+    delivered_date = models.DateField(null = True)
+    consignment_id = models.DateField(max_length = 1000)
     ordered_on = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
@@ -91,7 +102,13 @@ class Cancellation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-# class Return(models.Model):
-#     order = models.OneToOneField(Order, on_delete=models.CASCADE)
-#     reason = models.TextField(max_length=500)
-#     created_at = models.DateTimeField(auto_now_add=True)
+class Return(models.Model):
+    id = AutoField(prefix = "ret_",primary_key=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    reason = models.TextField(max_length=500)
+    status = models.CharField(choices=RETURN_STATUS,default = "RETURN_REQUESTED",max_length=1000)
+    return_recived_date = models.DateField()
+    consignment_id = models.CharField(max_lenght = 1000)
+    return_charges = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
+    created_at = models.DateTimeField(auto_now_add=True)

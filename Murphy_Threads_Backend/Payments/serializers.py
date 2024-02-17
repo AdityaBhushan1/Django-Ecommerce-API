@@ -10,3 +10,9 @@ class PaymentSearializer(serializers.ModelSerializer):
         extra_kwargs = {
             'rejection_reason':{'required':False}
         }
+
+
+class RefundSearializer(serializers.ModelSerializer):
+    class Meta:
+        model = Refunds
+        fields = '__all__'

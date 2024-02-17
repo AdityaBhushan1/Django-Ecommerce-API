@@ -33,3 +33,8 @@ class CancellationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cancellation
         fields = '__all__'
+
+class ReturnsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Return
+        fields = '__all__'
