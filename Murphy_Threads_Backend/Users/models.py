@@ -1,7 +1,5 @@
 from django.db import models
-# from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser
-# import uuid
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import BaseUserManager
 from django.utils.encoding import force_bytes, force_str
@@ -125,10 +123,13 @@ class UserAddresses(models.Model):
     house_no =  models.CharField(max_length=800,null=True)
     street=  models.CharField(max_length=800,null=True)
     landmark =  models.CharField(max_length=800,null=True)
+    city =  models.CharField(max_length=800,null=True)
     state = models.CharField(max_length=255,null=False)
     district = models.CharField(max_length=255,null=False)
     country = models.CharField(max_length=255,null=False)
     postal_code = models.CharField(max_length=255,null=False)
     phone_no_1 = models.CharField(max_length=255,null=False)
     phone_no_2 = models.CharField(max_length=255,null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 

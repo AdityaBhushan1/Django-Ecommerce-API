@@ -15,5 +15,7 @@ urlpatterns = [
     # path("wishlist/", include("Wishlist.urls"),name = 'wishlist'),
     path("payments/", include("Payments.urls"),name = 'payments'),
     path("webhooks/", include("Webhooks.urls"),name = 'webhooks'),
+    # path('auth/', include('djoser.urls')),
+    # path('auth/', include('djoser.urls.jwt')),
 
 ]

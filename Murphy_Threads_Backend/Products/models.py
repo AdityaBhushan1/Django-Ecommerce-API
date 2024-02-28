@@ -47,7 +47,7 @@ class Products(models.Model):
     category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE,null = False)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    SKU = models.CharField(max_length=255,null=False)
+    sku = models.CharField(max_length=255,null=False)
     main_image = models.URLField(null = True)
     gallery_image = ArrayField(models.URLField(),null = True)
     colors = models.ManyToManyField(Color)

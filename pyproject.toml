@@ -21,6 +21,9 @@ django-dotenv = "^1.4.2"
 python-dotenv = "^1.0.1"
 ipinfo-django = "^2.0.0"
 requests = "^2.31.0"
+djoser = "^2.2.2"
+celery = "^5.3.6"
+redis = "^5.0.2"
 
 
 [build-system]

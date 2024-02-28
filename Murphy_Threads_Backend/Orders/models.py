@@ -44,7 +44,7 @@ RETURN_STATUS = (
 )
 
 class Order(models.Model):
-    id = AutoField(prefix= "or_",primary_key=True)
+    id = AutoField(prefix= "ord_",primary_key=True)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     shipping_address_id = models.ForeignKey(UserAddresses, on_delete=models.CASCADE)
     status = models.CharField(choices=ORDER_STATUS_CHOICES, default='PENDING', max_length=1000)
@@ -53,10 +53,6 @@ class Order(models.Model):
     ammount_paid = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
     shipping_charges = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
     gateway_charges = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
-    dispatched_date = models.DateField(null = True)
-    shipped_date = models.DateField(null = True)
-    delivered_date = models.DateField(null = True)
-    consignment_id = models.DateField(max_length = 1000)
     ordered_on = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
