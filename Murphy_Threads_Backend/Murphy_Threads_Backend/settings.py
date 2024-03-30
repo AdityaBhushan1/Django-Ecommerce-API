@@ -3,6 +3,7 @@ from datetime import timedelta
 from dotenv import dotenv_values
 import stripe
 import paypalrestsdk
+from cashfree_pg.api_client import Cashfree
 
 env_vars = dotenv_values()
 
@@ -196,3 +197,12 @@ IPINFO_TOKEN = env_vars.get("ipinfo_token")
 #DISCORD_RETURNS = env_vars.get("return_logs_webhook_url_discord")
 #DISCORD_REFUNDS = env_vars.get("refunds_logs_webhook_url_discord")
 #DISCORD_CANCELLATIONS = env_vars.get("cancellation_logs_webhook_url_discord")
+
+# cashfree
+CASHFREE_APP_ID = env_vars.get('cashfree_appid')
+CASHFREE_CLIENT_SECRET = env_vars.get('cashfree_secret_key')
+CASHFREE_MODE = env_vars.get('cashfree_mode')
+CASHFREE_API_VERSION = env_vars.get('cashfree_version')
+Cashfree.XClientId = CASHFREE_APP_ID
+Cashfree.XClientSecret = CASHFREE_CLIENT_SECRET
+Cashfree.XEnvironment = Cashfree.SANDBOX if CASHFREE_MODE == 'SANDBOX' else Cashfree.PRODUCTION

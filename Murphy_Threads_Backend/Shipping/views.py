@@ -1,3 +1,4 @@
-from django.shortcuts import render
+from django.conf import settings
+from .ShiprocketWrapper import ShiprocketWrapper as ShipRocket
 
-# Create your views here.
+Shiprocket = ShipRocket(settings.SHIPROCKET_API_KEY)

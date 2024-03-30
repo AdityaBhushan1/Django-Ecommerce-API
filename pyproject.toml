@@ -24,6 +24,8 @@ requests = "^2.31.0"
 djoser = "^2.2.2"
 celery = "^5.3.6"
 redis = "^5.0.2"
+cashfree-pg = "^4.0.7"
+cashfree-pg-sdk-python = "^2.0.1"
 
 
 [build-system]

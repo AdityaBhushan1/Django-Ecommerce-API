@@ -11,8 +11,9 @@ from Cart.models import *
 from django.db import transaction
 from . import StripeHandler as stripe
 from Utils.ErrorHandler import StripeErrors as handlestripe
+from . import CashFreeHandler as cashfree
 
-class StirpePaymentIntent(APIView):
+class StripePaymentIntent(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
 
@@ -46,3 +47,25 @@ class StirpePaymentIntent(APIView):
             status=status.HTTP_201_CREATED
         )
 
+class CashfreeOrder(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+
+        try:
+            order = cashfree.CreateOrder(
+                oid = request.data.get("oid"),
+                amount = request.data.get("amount"),
+                customer = request.user
+            )
+
+        except Exception as e:
+            return Response({'error':e}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response(
+            {
+                'session':order
+            },
+            status=status.HTTP_201_CREATED
+        )

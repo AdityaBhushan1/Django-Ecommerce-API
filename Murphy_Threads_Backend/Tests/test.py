@@ -1,7 +1,9 @@
-import os
-from dotenv import dotenv_values
-env_vars = dotenv_values()
+from django.utils import timezone
 
-IS_UNDER_DEVELOPMENT = env_vars.get("under_development")
+def get_current_date():
+    current_datetime = timezone.localtime(timezone.now())
+    formatted_datetime = current_datetime.strftime('%d-%m-%Y')
+    return formatted_datetime
 
-print(IS_UNDER_DEVELOPMENT)
+
+get_current_date()
