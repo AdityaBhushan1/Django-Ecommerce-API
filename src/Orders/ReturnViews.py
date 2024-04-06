@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import *
-from Payments.StripeHandler import createRefund as StripeRefund
+from Payments.Stripe.StripeHandler import createRefund as StripeRefund
 from Payments.models import Payments
 from Utils.DiscordWebhooks import send_discord_message as DiscordWebhook
 

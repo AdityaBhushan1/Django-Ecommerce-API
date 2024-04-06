@@ -7,6 +7,7 @@ PAYMENT_METHOD_CHOICES = (
     ("PAYPAL", "Paypal"),
     ("STRIPE", "Stripe"),
     ("INSTAMOJO", "Instamojo"),
+    ("CASHFREE", "Cashfree"),
 )
 
 PAYMENT_STATUS = (
@@ -26,6 +27,13 @@ REFUND_STATUS = (
     ("REFUNDED_INITIATED","Refundedinitiated"),
     ("REFUNDED","Refunded"),
     ("REFUND_REJECTED","Refundrejected"),
+)
+
+SETTLEMENTS_STATUS = (
+    ("INITIATED","Initiated"),
+    ("SUCCESS","Success"),
+    ("FAILED","Failed"),
+    ("REVERSED","Reversed"),
 )
 
 class Payments(models.Model):
@@ -49,5 +57,16 @@ class Refunds(models.Model):
     ammount_to_refund = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
     status = models.CharField(choices = REFUND_STATUS,default = "REQUESTED_REFUND")
     refund_date = models.DateField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+class Settlements(models.Model):
+    id = AutoField(prefix= "settle_",primary_key=True)
+    settlement_id = models.CharField(null = True)
+    amount_settled = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
+    payment_amount = models.DecimalField(max_digits = 20,decimal_places = 2,null = True)
+    status = models.CharField(choices = SETTLEMENTS_STATUS)
+    settlement_type = models.CharField(null= True)
+    settled_on = models.DateTimeField(null = False)
     created_on = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

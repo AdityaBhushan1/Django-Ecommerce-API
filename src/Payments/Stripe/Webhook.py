@@ -50,7 +50,7 @@ class Stripe:
         payments = Payments.objects.get(payment_id = event['data']['object']['id'])
         
         if event['type'] == 'payment_intent.canceled':
-            payment_intent = event['data']['object']
+            # payment_intent = event['data']['object']
 
             payment_serializer = PaymentSearializer(payments,data = {'status':'CANCELED'})
 
@@ -62,7 +62,7 @@ class Stripe:
             return HttpResponse(status = 200)
 
         elif event['type'] == 'payment_intent.payment_failed':
-            payment_intent = event['data']['object']
+            # payment_intent = event['data']['object']
 
             payment_serializer = PaymentSearializer(payments,data = {'status':'REJECTED'})
 
@@ -74,7 +74,7 @@ class Stripe:
             return HttpResponse(status = 200)
 
         elif event['type'] == 'payment_intent.processing':
-            payment_intent = event['data']['object']
+            # payment_intent = event['data']['object']
 
             payment_serializer = PaymentSearializer(payments,data = {'status':'PROCESSING'})
 
@@ -91,7 +91,7 @@ class Stripe:
 
 
         elif event['type'] == 'payment_intent.succeeded':
-            payment_intent = event['data']['object']
+            # payment_intent = event['data']['object']
 
             order_serializer = OrderSerializer(order, data={'status':'CONFIRMED'}, partial=True)
 

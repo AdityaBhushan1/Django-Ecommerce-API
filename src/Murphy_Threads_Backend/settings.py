@@ -29,17 +29,25 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     # "django.contrib.staticfiles",
     'rest_framework',
+    'rest_framework_simplejwt',
+    "corsheaders",
+    
+]
+
+EXTERNAL_APPS = [
     'Users',
     # 'Cart',
     # 'Orders',
     # 'Products',
     # 'Payments',
+    # 'Payments.Stripe',
+    # 'Payments.Paypal',
+    # 'Payments.Cashfree',
     # 'Wishlist',
-    'rest_framework_simplejwt',
-    "corsheaders",
     # 'Shipping',
-    # 'Webhooks',
-    #'djsoser',
+    # 'Shipping.Shiprocket',
+    # 'Shipping.Ithinklogistics',
+    # 'Coupons',
 ]
 
 MIDDLEWARE = [
