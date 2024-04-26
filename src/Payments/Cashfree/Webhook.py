@@ -8,7 +8,7 @@ from Orders.serializers import *
 from Payments.serializers import *
 from Utils.DiscordWebhooks import send_discord_message as SendDiscordWebhook
 
-class Cashfree:
+class CashfreeWebhook:
     @csrf_exempt
     def payment_session(request):
         payload = request.body
@@ -148,26 +148,26 @@ class Cashfree:
             return HttpResponse(status=200)
 
 
-    @csrf_exempt
-    def disputes(request):
-        payload = request.body
-        timestamp = request.headers['x-webhook-timestamp']
-        signature = request.headers['x-webhook-signature']
+    # @csrf_exempt
+    # def disputes(request):
+    #     payload = request.body
+    #     timestamp = request.headers['x-webhook-timestamp']
+    #     signature = request.headers['x-webhook-signature']
 
-        try:
-            cashfreeWebhookResponse = Cashfree.PGVerifyWebhookSignature(signature, payload, timestamp)
-            data = payload['data']
+    #     try:
+    #         cashfreeWebhookResponse = Cashfree.PGVerifyWebhookSignature(signature, payload, timestamp)
+    #         data = payload['data']
             
-        except Exception as e:
-            return HttpResponse(status = 400)
+    #     except Exception as e:
+    #         return HttpResponse(status = 400)
         
-        payments = Payments.objects.get(payment_id = data['data']['payment']['cf_payment_id'])
-        order = Order.objects.get(pk=data['data']['order']['order_id'])
-        user = Users.objects.get(email = data['data']['customer_details']['customer_id'])
+    #     payments = Payments.objects.get(payment_id = data['data']['payment']['cf_payment_id'])
+    #     order = Order.objects.get(pk=data['data']['order']['order_id'])
+    #     user = Users.objects.get(email = data['data']['customer_details']['customer_id'])
 
-        if data['type'] == 'DISPUTE_CREATED':
-            ...
-        elif data['type'] == 'DISPUTE_UPDATED':
-            ...
-        elif data['type'] == 'DISPUTE_CLOSED':
-            ...
+    #     if data['type'] == 'DISPUTE_CREATED':
+    #         ...
+    #     elif data['type'] == 'DISPUTE_UPDATED':
+    #         ...
+    #     elif data['type'] == 'DISPUTE_CLOSED':
+    #         ...

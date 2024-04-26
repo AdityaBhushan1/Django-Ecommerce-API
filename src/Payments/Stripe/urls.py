@@ -7,6 +7,6 @@ app_name = 'Cashfree'
 
 urlpatterns = [ 
     path('create-payment/', PaymentIntent.as_view(), name='create_payment'),
-    path('webhook/payment_intent/', Stripe.payment_intent, name='payment_intent'),
-    path('webhook/refund/', Stripe.refund, name='payment_intent'),
+    path('webhook/payment_intent/', StripeWebhook.payment_intent, name='payment_intent'),
+    path('webhook/refund/', StripeWebhook.refund, name='refund'),
 ]

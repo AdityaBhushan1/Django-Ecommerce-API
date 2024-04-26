@@ -50,6 +50,8 @@ EXTERNAL_APPS = [
     # 'Coupons',
 ]
 
+INSTALLED_APPS += EXTERNAL_APPS
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -198,13 +200,18 @@ DATABASES = {
 IPINFO_TOKEN = env_vars.get("ipinfo_token")
 
 # disocrd
-#DISCORD_RETURN_LOGS = env_vars.get("return_logs_webhook_url_discord")
-#DISCORD_STRIPE_REFUND = env_vars.get("stripe_refund_logs_webhook_url_discord")
-#DISCORD_STRIPE_PAYMENT = env_vars.get("stripe_payment_intent_logs_webhook_url_discord")
-#DISCORD_ORDERS = env_vars.get("order_logs_webhook_url_discord")
-#DISCORD_RETURNS = env_vars.get("return_logs_webhook_url_discord")
-#DISCORD_REFUNDS = env_vars.get("refunds_logs_webhook_url_discord")
-#DISCORD_CANCELLATIONS = env_vars.get("cancellation_logs_webhook_url_discord")
+class DISCORDWEBHOOKS:
+    RETURN_LOGS = env_vars.get("return_logs_webhook_url_discord")
+    STRIPE_REFUND = env_vars.get("stripe_refund_logs_webhook_url_discord")
+    STRIPE_PAYMENT = env_vars.get("stripe_payment_intent_logs_webhook_url_discord")
+    ORDERS = env_vars.get("order_logs_webhook_url_discord")
+    RETURNS = env_vars.get("return_logs_webhook_url_discord")
+    REFUNDS = env_vars.get("refunds_logs_webhook_url_discord")
+    CANCELLATIONS = env_vars.get("cancellation_logs_webhook_url_discord")
+    CASHFREE_PAYMENTS = env_vars.get("cashfree_payments_webhook_discord_url")
+    CASHFREE_REFUNDS = env_vars.get("cashfree_refunds_webhook_discord_url")
+    CASHFREE_SETTLEMENTS = env_vars.get("cashfree_settlements_webhook_discord_url")
+    CASHFREE_DISPUTES = env_vars.get("cashfree_disputes_webhook_discord_url")
 
 # cashfree
 CASHFREE_APP_ID = env_vars.get('cashfree_appid')

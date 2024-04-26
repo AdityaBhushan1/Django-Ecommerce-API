@@ -8,7 +8,7 @@ from Orders.serializers import *
 from Payments.serializers import *
 from Utils.DiscordWebhooks import send_discord_message as SendDiscordWebhook
 
-class Stripe:
+class StripeWebhook:
 # ******************************Payment Webhooks*******************************#
     @csrf_exempt
     def payment_intent(request):
