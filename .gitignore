@@ -1,8 +1,6 @@
 poetry.lock
-migrations
 __pycache__
 *.pyc
 murphy_threads_backend/murphy_threads_backend/__pycache__/__init__.cpython-311.pyc
 *.pyc
-murphy_threads_backend/.vscode/settings.json
 Murphy_Threads_Backend/.env

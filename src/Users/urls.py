@@ -26,4 +26,6 @@ urlpatterns = [
     path('name-update/', UserNameUpdateView.as_view(), name='name-update'),
     path('users-addresses/', UserAddressesView.as_view(), name='users-addresses'),
     path('users-addresses/<pk>/', UserAddressesUpdateView.as_view(), name='users-addresses-update-delete'),
+    path('dj-rest-auth/',include('dj_rest_auth.urls')),
+    path('dj-rest-auth/registration/',include('dj_rest_auth.registration.urls')),
 ]

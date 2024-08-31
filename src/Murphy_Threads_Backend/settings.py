@@ -17,6 +17,7 @@ DEBUG = env_vars.get("under_development")
 
 ALLOWED_HOSTS = [
     'localhost',
+    '127.0.0.1'
 ]
 
 # Application definition
@@ -29,12 +30,16 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     # "django.contrib.staticfiles",
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_simplejwt',
     "corsheaders",
-    
-]
-
-EXTERNAL_APPS = [
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    "django.contrib.sites",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'Users',
     # 'Cart',
     # 'Orders',
@@ -50,8 +55,6 @@ EXTERNAL_APPS = [
     # 'Coupons',
 ]
 
-INSTALLED_APPS += EXTERNAL_APPS
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -62,6 +65,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'ipinfo_django.middleware.IPinfoMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = "Murphy_Threads_Backend.urls"
@@ -87,7 +91,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-in"
 
 TIME_ZONE = "Asia/Kolkata"
 
@@ -105,6 +109,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
     ],
 
 }
@@ -125,15 +130,39 @@ TEMPLATES = [
     },
 ]
 
+# STATIC_URL = '/static/'
+
 
 AUTH_USER_MODEL = 'Users.Users'
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=35),
 }
 
-PASSWORD_RESET_TIMEOUT = 900 
+PASSWORD_RESET_TIMEOUT = 900
+
+# allauth
+SITE_ID = 1
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+# restauth
+REST_AUTH = {
+    'USE_JWT':True,
+    'JWT_AUTH_COOKIE':'access',
+    'JWT_AUTH_REFRESH_COOKIE':'refresh',
+    'JWT_AUTH_HTTPONLY':False,
+    'SESSION_LOGIN':False,
+    'OLD_PASSWORD_FIELD_ENABLED':True,
+}
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000"
+]
 
 # if DEBUG == False:
 #     REST_FRAMEWORK.update(
@@ -143,12 +172,12 @@ PASSWORD_RESET_TIMEOUT = 900
 #     )
 
 # email
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_HOST = env_vars.get("email_host")
-#EMAIL_USE_TLS = env_vars.get("email_use_tls")
-#EMAIL_PORT = env_vars.get("email_port")
-#EMAIL_HOST_USER = env_vars.get("email_host_user")
-#EMAIL_HOST_PASSWORD = env_vars.get("email_host_password")
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env_vars.get("email_host")
+EMAIL_USE_TLS = env_vars.get("email_use_tls")
+EMAIL_PORT = env_vars.get("email_port")
+EMAIL_HOST_USER = env_vars.get("email_host_user")
+EMAIL_HOST_PASSWORD = env_vars.get("email_host_password")
 
 
 SITE_NAME = env_vars.get("company_name")
@@ -200,24 +229,24 @@ DATABASES = {
 IPINFO_TOKEN = env_vars.get("ipinfo_token")
 
 # disocrd
-class DISCORDWEBHOOKS:
-    RETURN_LOGS = env_vars.get("return_logs_webhook_url_discord")
-    STRIPE_REFUND = env_vars.get("stripe_refund_logs_webhook_url_discord")
-    STRIPE_PAYMENT = env_vars.get("stripe_payment_intent_logs_webhook_url_discord")
-    ORDERS = env_vars.get("order_logs_webhook_url_discord")
-    RETURNS = env_vars.get("return_logs_webhook_url_discord")
-    REFUNDS = env_vars.get("refunds_logs_webhook_url_discord")
-    CANCELLATIONS = env_vars.get("cancellation_logs_webhook_url_discord")
-    CASHFREE_PAYMENTS = env_vars.get("cashfree_payments_webhook_discord_url")
-    CASHFREE_REFUNDS = env_vars.get("cashfree_refunds_webhook_discord_url")
-    CASHFREE_SETTLEMENTS = env_vars.get("cashfree_settlements_webhook_discord_url")
-    CASHFREE_DISPUTES = env_vars.get("cashfree_disputes_webhook_discord_url")
+# class DISCORDWEBHOOKS:
+#     RETURN_LOGS = env_vars.get("return_logs_webhook_url_discord")
+#     STRIPE_REFUND = env_vars.get("stripe_refund_logs_webhook_url_discord")
+#     STRIPE_PAYMENT = env_vars.get("stripe_payment_intent_logs_webhook_url_discord")
+#     ORDERS = env_vars.get("order_logs_webhook_url_discord")
+#     RETURNS = env_vars.get("return_logs_webhook_url_discord")
+#     REFUNDS = env_vars.get("refunds_logs_webhook_url_discord")
+#     CANCELLATIONS = env_vars.get("cancellation_logs_webhook_url_discord")
+#     CASHFREE_PAYMENTS = env_vars.get("cashfree_payments_webhook_discord_url")
+#     CASHFREE_REFUNDS = env_vars.get("cashfree_refunds_webhook_discord_url")
+#     CASHFREE_SETTLEMENTS = env_vars.get("cashfree_settlements_webhook_discord_url")
+#     CASHFREE_DISPUTES = env_vars.get("cashfree_disputes_webhook_discord_url")
 
-# cashfree
-CASHFREE_APP_ID = env_vars.get('cashfree_appid')
-CASHFREE_CLIENT_SECRET = env_vars.get('cashfree_secret_key')
-CASHFREE_MODE = env_vars.get('cashfree_mode')
-CASHFREE_API_VERSION = env_vars.get('cashfree_version')
-Cashfree.XClientId = CASHFREE_APP_ID
-Cashfree.XClientSecret = CASHFREE_CLIENT_SECRET
-Cashfree.XEnvironment = Cashfree.SANDBOX if CASHFREE_MODE == 'SANDBOX' else Cashfree.PRODUCTION
+# # cashfree
+# CASHFREE_APP_ID = env_vars.get('cashfree_appid')
+# CASHFREE_CLIENT_SECRET = env_vars.get('cashfree_secret_key')
+# CASHFREE_MODE = env_vars.get('cashfree_mode')
+# CASHFREE_API_VERSION = env_vars.get('cashfree_version')
+# Cashfree.XClientId = CASHFREE_APP_ID
+# Cashfree.XClientSecret = CASHFREE_CLIENT_SECRET
+# Cashfree.XEnvironment = Cashfree.SANDBOX if CASHFREE_MODE == 'SANDBOX' else Cashfree.PRODUCTION
