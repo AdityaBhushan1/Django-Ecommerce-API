@@ -28,18 +28,16 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.sites",
     # "django.contrib.staticfiles",
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     "corsheaders",
-    'dj_rest_auth',
-    'dj_rest_auth.registration',
-    "django.contrib.sites",
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2',
     'Users',
     # 'Cart',
     # 'Orders',
@@ -65,7 +63,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'ipinfo_django.middleware.IPinfoMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = "Murphy_Threads_Backend.urls"
@@ -106,13 +103,20 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'drf_social_oauth2.authentication.SocialAuthentication',
     ],
 
 }
+
+AUTHENTICATION_BACKENDS = (
+    'drf_social_oauth2.backends.DjangoOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+)
 
 TEMPLATES = [
     {
@@ -125,6 +129,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -136,29 +142,13 @@ TEMPLATES = [
 AUTH_USER_MODEL = 'Users.Users'
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=35),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ROTATE_REFRESH_TOKENS":False,
+    "BLACKLIST_AFTER_ROTATION":True,
 }
 
 PASSWORD_RESET_TIMEOUT = 900
-
-# allauth
-SITE_ID = 1
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-
-# restauth
-REST_AUTH = {
-    'USE_JWT':True,
-    'JWT_AUTH_COOKIE':'access',
-    'JWT_AUTH_REFRESH_COOKIE':'refresh',
-    'JWT_AUTH_HTTPONLY':False,
-    'SESSION_LOGIN':False,
-    'OLD_PASSWORD_FIELD_ENABLED':True,
-}
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"
@@ -250,3 +240,26 @@ IPINFO_TOKEN = env_vars.get("ipinfo_token")
 # Cashfree.XClientId = CASHFREE_APP_ID
 # Cashfree.XClientSecret = CASHFREE_CLIENT_SECRET
 # Cashfree.XEnvironment = Cashfree.SANDBOX if CASHFREE_MODE == 'SANDBOX' else Cashfree.PRODUCTION
+
+
+# OAuth2 provider settings
+OAUTH2_PROVIDER = {
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 36000,
+}
+
+# social oauth
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env_vars.get('google_oauth2_client_id')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env_vars.get('google_oauth2_secret')
+
+# SOCIAL_AUTH_FACEBOOK_KEY = env_vars.get('cashfree_appid')
+# SOCIAL_AUTH_FACEBOOK_SECRET = env_vars.get('cashfree_appid')
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email'
+}
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]

@@ -204,6 +204,9 @@ class UserLogoutView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
     def post(self, request):
+        refresh_token = request.data['refresh_token']
+        token = RefreshToken(refresh_token)
+        token.blacklist()
         logout(request)
         return Response(
             {
