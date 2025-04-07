@@ -1,34 +1,33 @@
-[tool.poetry]
-name = "murphy threads backend"
+[project]
+name = "murphy-threads-backend"
 version = "0.1.0"
-description = "Backend Of Murphy Threads Website"
-authors = ["Aditya Bhushan <adityapanto123@gmail.com>"]
+description = "Add your description here"
 readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "cashfree-pg>=4.3.10",
+    "cashfree-pg-sdk-python>=2.0.1",
+    "celery>=5.5.0",
+    "django>=5.2",
+    "django-cors-headers>=4.7.0",
+    "django-dotenv>=1.4.2",
+    "django-filter>=25.1",
+    "djangorestframework>=3.16.0",
+    "djangorestframework-simplejwt>=5.5.0",
+    "djoser>=2.3.1",
+    "drf-social-oauth2>=3.1.0",
+    "instamojo-wrapper>=1.2.0",
+    "ipinfo-django>=2.0.0",
+    "markdown>=3.7",
+    "paypalrestsdk>=1.13.3",
+    "psycopg2-binary>=2.9.10",
+    "python-dotenv>=1.1.0",
+    "redis>=5.2.1",
+    "requests>=2.32.3",
+    "stripe>=12.0.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-Django = "^4.2.3"
-djangorestframework = "^3.14.0"
-markdown = "^3.4.3"
-django-filter = "^23.2"
-psycopg2-binary = "^2.9.6"
-stripe = "^5.5.0"
-instamojo-wrapper = "^1.2.0"
-paypalrestsdk = "^1.13.1"
-djangorestframework-simplejwt = "^5.2.2"
-django-cors-headers = "^4.2.0"
-django-dotenv = "^1.4.2"
-python-dotenv = "^1.0.1"
-ipinfo-django = "^2.0.0"
-requests = "^2.31.0"
-djoser = "^2.2.2"
-celery = "^5.3.6"
-redis = "^5.0.2"
-cashfree-pg = "^4.0.7"
-cashfree-pg-sdk-python = "^2.0.1"
-drf-social-oauth2 = "^3.1.0"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+dev = [
+    "ruff>=0.11.4",
+]
