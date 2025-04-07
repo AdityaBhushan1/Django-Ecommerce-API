@@ -1,5 +1,6 @@
 from collections import Counter
 from glob import glob
+
 ctr = Counter()
 for ctr["files"], f in enumerate(glob("./**/*.py", recursive=True)):
     with open(f, encoding="UTF-8") as fp:

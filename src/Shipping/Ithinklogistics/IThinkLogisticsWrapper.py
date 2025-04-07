@@ -6,20 +6,18 @@ from Users.models import *
 from Orders.models import *
 from django.utils import formats
 
+
 class ShiprocketWrapper:
-    def __init__(self, access_token,baseurl):
+    def __init__(self, access_token, baseurl):
         self.access_token = access_token
         self.base_url = baseurl
-        self.headers = {
-            'content-type': "application/json",
-            'cache-control': "no-cache"
-        }
+        self.headers = {"content-type": "application/json", "cache-control": "no-cache"}
 
-    def CreateOrder(self,oid,baddrid,paymenttype,price,logistic):
-        url = self.base_url + f'/order/add.json'
+    def CreateOrder(self, oid, baddrid, paymenttype, price, logistic):
+        url = self.base_url + f"/order/add.json"
 
-        usr_addr = UserAddresses.objects.get(id = baddrid)
-        order_item = OrderItem.objects.filter(order = oid)
+        usr_addr = UserAddresses.objects.get(id=baddrid)
+        order_item = OrderItem.objects.filter(order=oid)
 
         order_items = []
 
@@ -29,7 +27,7 @@ class ShiprocketWrapper:
                 "product_sku": item.product.sku,
                 "product_quantity": item.quantity,
                 "product_price": item.product.sale_price,
-                }
+            }
             order_items.append(item_data)
 
         payload = {
@@ -67,14 +65,14 @@ class ShiprocketWrapper:
                         "weight": settings.PACKAGE_WEIGHT,  # in Kg
                         "payment_mode": "Prepaid" if paymenttype == "ONLINE" else "COD",
                         "return_address_id": settings.SHIPMENT_RETURN_ADDR_ID_ITHINGS_LOGISTICS,
-                        "store_id": settings.STORE_ID_ITHINGS_LOGISTICS
+                        "store_id": settings.STORE_ID_ITHINGS_LOGISTICS,
                     }
                 ],
                 "pickup_address_id": settings.PICKUP_ADDR_ID_ITHINGS_LOGISTICS,
                 "access_token": settings.ACCESS_TOKEN_ITHINGS_LOGISTICS,
                 "secret_key": settings.SECRET_KEY_ITHINGS_LOGISTICS,
                 "logistics": logistic,
-                "order_type":"forward"
+                "order_type": "forward",
             }
         }
 
@@ -83,8 +81,8 @@ class ShiprocketWrapper:
                 {
                     "cod_amount": "300",
                 }
-                )
-        
+            )
+
         if logistic == "fedex":
             payload.update(
                 {
@@ -93,7 +91,9 @@ class ShiprocketWrapper:
             )
 
         payload_json = json.dumps(payload)
-        response = requests.request("POST", url, headers=self.headers, data=payload_json)
+        response = requests.request(
+            "POST", url, headers=self.headers, data=payload_json
+        )
 
         return response.json()
 

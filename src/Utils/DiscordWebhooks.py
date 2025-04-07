@@ -1,10 +1,10 @@
 import requests
 from datetime import datetime
 
-def send_discord_message(webhook_url,tile,desciption,fields):
 
+def send_discord_message(webhook_url, tile, desciption, fields):
     current_time_utc = datetime.utcnow()
-    timestamp_str = current_time_utc.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+    timestamp_str = current_time_utc.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
 
     payload = {
         "embed": {
@@ -12,7 +12,7 @@ def send_discord_message(webhook_url,tile,desciption,fields):
             "description": desciption,
             # "color": 14560253,
             "timestamp": timestamp_str,
-            "fields": fields
+            "fields": fields,
         }
     }
 

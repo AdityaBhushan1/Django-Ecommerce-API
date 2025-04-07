@@ -2,18 +2,12 @@ from django.contrib import admin
 from .models import *
 from django import forms
 
-class ProductCategoryAdmin(admin.ModelAdmin):
 
+class ProductCategoryAdmin(admin.ModelAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserModelAdmin
     # that reference specific fields on auth.User.
-    list_display = (
-        "name",
-        "slug",
-        "desc",
-        "is_parent_category",
-        "is_child_category"
-        )
+    list_display = ("name", "slug", "desc", "is_parent_category", "is_child_category")
 
 
 # class ProductAdmin(admin.ModelAdmin):
@@ -40,25 +34,20 @@ class ProductCategoryAdmin(admin.ModelAdmin):
 #         "is_available",
 #         )
 
-class SizeAdmin(admin.ModelAdmin):
 
+class SizeAdmin(admin.ModelAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserModelAdmin
     # that reference specific fields on auth.User.
-    list_display = (
-        "size",
-        "size_nickname"
-        )
+    list_display = ("size", "size_nickname")
+
 
 class ColorAdmin(admin.ModelAdmin):
-
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserModelAdmin
     # that reference specific fields on auth.User.
-    list_display = (
-        "color_in_hex",
-        "color_nickname"
-        )
+    list_display = ("color_in_hex", "color_nickname")
+
 
 # class ProductsAdmin(admin.ModelAdmin):
 
@@ -96,19 +85,19 @@ class ColorAdmin(admin.ModelAdmin):
 #         "is_available",
 #         )
 
+
 class ProductAdminForm(forms.ModelForm):
     class Meta:
         model = Products
-        fields = '__all__'
+        fields = "__all__"
+
 
 # class ProductVariationInline(admin.TabularInline):
 #     model = ProductVariations
 
+
 class ProductAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "name"
-        )
+    list_display = ("id", "name")
 
     form = ProductAdminForm
     # filter_horizontal = ('colors',)
@@ -118,6 +107,7 @@ class ProductAdmin(admin.ModelAdmin):
 
     def save_related(self, request, form, formsets, change):
         super().save_related(request, form, formsets, change)
+
 
 admin.site.register(Products, ProductAdmin)
 

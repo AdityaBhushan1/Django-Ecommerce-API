@@ -16,56 +16,54 @@ class RequestReturnView(APIView):
 
     def post(self, request):
         user = request.user
-        order = Order.object.get(id = request.data.get("order_id"))
-        pay = Payments.objects.get(order = order.id)
+        order = Order.object.get(id=request.data.get("order_id"))
+        pay = Payments.objects.get(order=order.id)
 
         try:
             returns = Return.objects.create(
-                    user=user,
-                    order=order,
-                    reason = request.data.get("reason")
-                )
-            order.update(status = "RETURN_REQUESTED")
+                user=user, order=order, reason=request.data.get("reason")
+            )
+            order.update(status="RETURN_REQUESTED")
 
             DiscordWebhook(
                 webhook_url=settings.DISCORD_RETURN_LOGS,
-                title = "Return",
+                title="Return",
                 desciption="Return Requested",
-                fields = [
+                fields=[
                     {
-                        'name':'Return ID:',
-                        'value':returns.id,
-
+                        "name": "Return ID:",
+                        "value": returns.id,
                     },
                     {
-                        'name':'Order ID:',
-                        'value':order.id,
-
+                        "name": "Order ID:",
+                        "value": order.id,
                     },
                     {
-                        'name':'User Name:',
-                        'value':user.name,
+                        "name": "User Name:",
+                        "value": user.name,
                     },
                     {
-                        'name':'Amount:',
-                        'value':pay.ammount,
+                        "name": "Amount:",
+                        "value": pay.ammount,
                     },
                     {
-                        'name':'Status:',
-                        'value':'Return Requested',
+                        "name": "Status:",
+                        "value": "Return Requested",
                     },
-                ]
+                ],
             )
 
             # Todo send email to user with instructions to verify return request
 
             return Response(
                 {
-                    'message': 'Successfully Created Return Request, Request will be updated in 2 to 3 bussiness days and you will recive an email with further instrunctions.',
-                    'return_id': returns.id
+                    "message": "Successfully Created Return Request, Request will be updated in 2 to 3 bussiness days and you will recive an email with further instrunctions.",
+                    "return_id": returns.id,
                 },
-                status=status.HTTP_200_OK
+                status=status.HTTP_200_OK,
             )
 
         except Exception as e:
-            return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

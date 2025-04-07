@@ -6,20 +6,21 @@ from Users.models import *
 from Orders.models import *
 from django.utils import formats
 
+
 class ShiprocketWrapper:
     def __init__(self, access_token):
         self.access_token = access_token
-        self.base_url = 'https://apiv2.shiprocket.in/v1/external'
+        self.base_url = "https://apiv2.shiprocket.in/v1/external"
         self.headers = {
-            'Content-Type': 'application/json',
-            'Authorization': f'Bearer {access_token}'
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}",
         }
 
-    def CreateOrder(self,oid,user,baddrid,saddrid,paymenttype,price):
-        url = self.base_url + '/orders/create'
+    def CreateOrder(self, oid, user, baddrid, saddrid, paymenttype, price):
+        url = self.base_url + "/orders/create"
 
-        b_usr_addr = UserAddresses.objects.get(id = baddrid)
-        order_item = OrderItem.objects.filter(order = oid)
+        b_usr_addr = UserAddresses.objects.get(id=baddrid)
+        order_item = OrderItem.objects.filter(order=oid)
 
         order_items = []
 
@@ -29,9 +30,9 @@ class ShiprocketWrapper:
                 "sku": item.product.sku,
                 "units": item.quantity,
                 "selling_price": item.product.sale_price,
-                }
+            }
             order_items.append(item_data)
-        
+
         payload = {
             "order_id": oid,
             "order_date": get_current_datetime(),
@@ -51,61 +52,67 @@ class ShiprocketWrapper:
             "length": settings.PACKAGE_LENGTH,
             "breadth": settings.PACKAGE_BREADTH,
             "height": settings.PACKAGE_HEIGHT,
-            "weight": settings.PACKAGE_WEIGHT
+            "weight": settings.PACKAGE_WEIGHT,
         }
 
         if baddrid != saddrid:
-            s_usr_addr = UserAddresses.objects.get(id = saddrid) 
+            s_usr_addr = UserAddresses.objects.get(id=saddrid)
 
-            payload.update({
-                "shipping_is_billing": False,
-                "shipping_customer_name": s_usr_addr.name,
-                "shipping_address": s_usr_addr.address_line_1,
-                "shipping_address_2": s_usr_addr.address_line_2,
-                "shipping_city": s_usr_addr.city,
-                "shipping_pincode": s_usr_addr.postal_code,
-                "shipping_country": s_usr_addr.country,
-                "shipping_state": s_usr_addr.state,
-                "shipping_email": s_usr_addr.email,
-                "shipping_phone": s_usr_addr.phone_no_1,
-            })
+            payload.update(
+                {
+                    "shipping_is_billing": False,
+                    "shipping_customer_name": s_usr_addr.name,
+                    "shipping_address": s_usr_addr.address_line_1,
+                    "shipping_address_2": s_usr_addr.address_line_2,
+                    "shipping_city": s_usr_addr.city,
+                    "shipping_pincode": s_usr_addr.postal_code,
+                    "shipping_country": s_usr_addr.country,
+                    "shipping_state": s_usr_addr.state,
+                    "shipping_email": s_usr_addr.email,
+                    "shipping_phone": s_usr_addr.phone_no_1,
+                }
+            )
         else:
-            payload.update({
-                "shipping_is_billing": True,
-            })
+            payload.update(
+                {
+                    "shipping_is_billing": True,
+                }
+            )
 
         payload_json = json.dumps(payload)
-        response = requests.request("POST", url, headers=self.headers, data=payload_json)
+        response = requests.request(
+            "POST", url, headers=self.headers, data=payload_json
+        )
 
         return response.json()
-    
-    def CancelOrder(self,oid):
-        url = self.base_url + '/orders/cancel'
-        
-        payload = {
-            "ids":[
-                oid
-            ]
-        }
+
+    def CancelOrder(self, oid):
+        url = self.base_url + "/orders/cancel"
+
+        payload = {"ids": [oid]}
 
         payload_json = json.dumps(payload)
-        response = requests.request("POST", url, headers=self.headers, data=payload_json)
+        response = requests.request(
+            "POST", url, headers=self.headers, data=payload_json
+        )
 
         return response.json()
-    
-    def GenrateAWB(self,shipmentid):
+
+    def GenrateAWB(self, shipmentid):
         url = self.base_url + "/courier/assign/awb"
 
         payload = {
-            "shipment_id":shipmentid,
+            "shipment_id": shipmentid,
         }
 
         payload_json = json.dumps(payload)
-        response = requests.request("POST", url, headers=self.headers, data=payload_json)
+        response = requests.request(
+            "POST", url, headers=self.headers, data=payload_json
+        )
 
         return response.json()
-    
-    def GetOrderDetails(self,oid):
+
+    def GetOrderDetails(self, oid):
         url = self.base_url + f"/orders/show/{oid}"
 
         payload = {}
@@ -114,12 +121,12 @@ class ShiprocketWrapper:
         response = requests.request("GET", url, headers=self.headers, data=payload_json)
 
         return response.json()
-    
-    def CreateReturn(self,oid,odate,sid,paymentmode,price):
+
+    def CreateReturn(self, oid, odate, sid, paymentmode, price):
         url = self.base_url + "/orders/create/return"
 
-        s_addr = UserAddresses.objects.get(id = sid)
-        order_item = OrderItem.objects.filter(order = oid)
+        s_addr = UserAddresses.objects.get(id=sid)
+        order_item = OrderItem.objects.filter(order=oid)
 
         order_items = []
 
@@ -133,14 +140,14 @@ class ShiprocketWrapper:
                 "selling_price": item.product.sale_price,
                 "qc_brand": settings.SITE_NAME,
                 "qc_product_image": item.product.main_image,
-                "qc_color":item.color.color_nickname,
-                "qc_size":item.size.size
-                }
+                "qc_color": item.color.color_nickname,
+                "qc_size": item.size.size,
+            }
             order_items.append(item_data)
 
         payload = {
             "order_id": oid,
-            "order_date": formats.date_format(odate,"Y-m-d"),
+            "order_date": formats.date_format(odate, "Y-m-d"),
             "channel_id": settings.SHIPROCKET_CHANNEL_ID,
             "pickup_customer_name": s_addr.first_name,
             "pickup_last_name": s_addr.last_name,
@@ -166,15 +173,17 @@ class ShiprocketWrapper:
             "length": settings.PACKAGE_LENGTH,
             "breadth": settings.PACKAGE_BREADTH,
             "height": settings.PACKAGE_HEIGHT,
-            "weight": settings.PACKAGE_WEIGHT
+            "weight": settings.PACKAGE_WEIGHT,
         }
 
         payload_json = json.dumps(payload)
-        response = requests.request("POST", url, headers=self.headers, data=payload_json)
+        response = requests.request(
+            "POST", url, headers=self.headers, data=payload_json
+        )
 
         return response.json()
-    
-    def GetShipmentDetails(self,sid):
+
+    def GetShipmentDetails(self, sid):
         url = self.base_url + f"/shipments/{sid}"
 
         payload = {}
@@ -183,22 +192,24 @@ class ShiprocketWrapper:
         response = requests.request("GET", url, headers=self.headers, data=payload_json)
 
         return response.json()
-    
-    def CancelShipment(self,awb):
+
+    def CancelShipment(self, awb):
         url = self.base_url + f"/orders/cancel/shipment/awbs"
 
         payload = {
-            "awbs":[
-                awb,    
+            "awbs": [
+                awb,
             ]
         }
 
         payload_json = json.dumps(payload)
-        response = requests.request("POST", url, headers=self.headers, data=payload_json)
+        response = requests.request(
+            "POST", url, headers=self.headers, data=payload_json
+        )
 
         return response.json()
-    
-    def GetTrackingDetails(self,awb_code):
+
+    def GetTrackingDetails(self, awb_code):
         url = self.base_url + f"/courier/track/awb/{awb_code}"
 
         payload = {}
@@ -207,8 +218,8 @@ class ShiprocketWrapper:
         response = requests.request("GET", url, headers=self.headers, data=payload_json)
 
         return response.json()
-    
-    def GetTrackingDetailsViaSID(self,sid):
+
+    def GetTrackingDetailsViaSID(self, sid):
         url = self.base_url + f"/courier/track/shipment/{sid}"
 
         payload = {}
@@ -217,5 +228,3 @@ class ShiprocketWrapper:
         response = requests.request("GET", url, headers=self.headers, data=payload_json)
 
         return response.json()
-    
-    

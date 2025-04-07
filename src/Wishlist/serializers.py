@@ -7,6 +7,4 @@ class WishlistSerializer(serializers.ModelSerializer):
         model = Wishlist
         fields = "__all__"
 
-        extra_kwargs = { 
-            'product': {'required': False}
-        }
+        extra_kwargs = {"product": {"required": False}}

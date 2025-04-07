@@ -48,7 +48,7 @@ shiprocket_couriers = {
     240: "SRX Priority",
     313: "Wholemark",
     501: "Bluedart CE Savex",
-    777: "Shadowfax DS"
+    777: "Shadowfax DS",
 }
 
 shipment_statuses = {
@@ -85,7 +85,7 @@ shipment_statuses = {
     55: "Connection Aligned",
     56: "Reached Overseas Warehouse",
     57: "Custom Cleared Overseas",
-    59: "Box Packing"
+    59: "Box Packing",
 }
 
 
@@ -138,5 +138,5 @@ tracking_shipment_statuses = {
     63: "Packed",
     67: "FC MANIFEST GENERATED",
     71: "HANDOVER EXCEPTION",
-    72: "PACKED EXCEPTION"
+    72: "PACKED EXCEPTION",
 }

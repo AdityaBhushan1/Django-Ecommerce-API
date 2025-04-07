@@ -12,39 +12,37 @@ from .models import *
 class DeleteWishlistView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
-    def delete(self,request,pk):
+
+    def delete(self, request, pk):
         try:
             wishlist = Wishlist.objects.get(pk=pk)
         except wishlist.DoesNotExist:
-            return Response({'message':'Wish does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "Wish does not exsist"}, status=status.HTTP_400_BAD_REQUEST
+            )
         wishlist.delete()
         return Response(
-            {
-                'message':'Wish deleted the successfully'
-            },
-            status=status.HTTP_204_NO_CONTENT
+            {"message": "Wish deleted the successfully"},
+            status=status.HTTP_204_NO_CONTENT,
         )
+
 
 class WishlistView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
-    def get(self,request):
+
+    def get(self, request):
         user_id = request.user.id
         queryset = Wishlist.objects.filter(user=user_id)
         serializer = WishlistSerializer(queryset, many=True)
-        formatted_data = {
-            "user_id": user_id,
-            "wishlist's": serializer.data
-        }
+        formatted_data = {"user_id": user_id, "wishlist's": serializer.data}
         return Response(formatted_data, status=status.HTTP_200_OK)
 
-    def post(self,request):
-        request.data['user'] = request.user.id
+    def post(self, request):
+        request.data["user"] = request.user.id
         serializer = WishlistSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            formatted_data = {
-            "message": 'successfully added new wish'
-            }
+            formatted_data = {"message": "successfully added new wish"}
             return Response(formatted_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

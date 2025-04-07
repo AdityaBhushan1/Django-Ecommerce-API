@@ -10,25 +10,20 @@ from Cart.models import *
 from Utils.ErrorHandler import StripeErrors as handlestripe
 from ..Cashfree import CashFreeHandler as cashfree
 
+
 class CashfreeOrder(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
 
-    def post(self,request):
-
+    def post(self, request):
         try:
             order = cashfree.CreateOrder(
-                oid = request.data.get("oid"),
-                amount = request.data.get("amount"),
-                customer = request.user
+                oid=request.data.get("oid"),
+                amount=request.data.get("amount"),
+                customer=request.user,
             )
 
         except Exception as e:
-            return Response({'error':e}, status=status.HTTP_400_BAD_REQUEST)
-        
-        return Response(
-            {
-                'session':order
-            },
-            status=status.HTTP_201_CREATED
-        )
+            return Response({"error": e}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"session": order}, status=status.HTTP_201_CREATED)

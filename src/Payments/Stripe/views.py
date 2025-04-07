@@ -17,31 +17,25 @@ class PaymentIntent(APIView):
     permission_classes = [IsAuthenticated]
 
     @handlestripe
-    def post(self,request):
+    def post(self, request):
         try:
             customer = stripe.createCustomer(
-                email = request.user.email,
-                name = request.user.name
+                email=request.user.email, name=request.user.name
             )
 
             intent = stripe.createPaymentIntent(
-                email = customer.email,
-                cid = customer.id,
-                oid = request.data.get("oid"),
-                amount = request.data.get("amount"),
-                mid = (
-                    request.data.get('mid') if request.data.get('mid') != None else None
+                email=customer.email,
+                cid=customer.id,
+                oid=request.data.get("oid"),
+                amount=request.data.get("amount"),
+                mid=(
+                    request.data.get("mid") if request.data.get("mid") != None else None
                 ),
-                save_method = (
+                save_method=(
                     True if request.data.get("save_method") != False else False
-                )
+                ),
             )
         except Exception as e:
-            return Response({'error':e}, status=status.HTTP_400_BAD_REQUEST)
-        
-        return Response(
-            {
-                'client_secret':intent
-            },
-            status=status.HTTP_201_CREATED
-        )
+            return Response({"error": e}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"client_secret": intent}, status=status.HTTP_201_CREATED)

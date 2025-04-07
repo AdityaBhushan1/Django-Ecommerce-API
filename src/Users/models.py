@@ -9,17 +9,17 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from Utils.Emails import *
 from Utils.AutoField import CustomAutoField as AutoField
 
+
 class UserManager(BaseUserManager):
     def create_user(
-            self,
-            email,
-            name,
-            phone_no,
-            country_code,
-            password=None,
-            password2=None,
-            
-        ):
+        self,
+        email,
+        name,
+        phone_no,
+        country_code,
+        password=None,
+        password2=None,
+    ):
         if not email:
             raise ValueError("email is required!!!")
 
@@ -27,15 +27,20 @@ class UserManager(BaseUserManager):
             email=self.normalize_email(email),
             name=name,
             phone_no=phone_no,
-            country_code=country_code
+            country_code=country_code,
         )
         user.set_password(password)
         user.save(using=self.db)
 
         return user
 
-
-    def create_superuser(self,email,name,phone_no,password=None,):
+    def create_superuser(
+        self,
+        email,
+        name,
+        phone_no,
+        password=None,
+    ):
         if not email:
             raise ValueError("email is required!!!")
 
@@ -52,14 +57,15 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 # Create your models here.
-class Users(AbstractBaseUser): 
-    id = AutoField(prefix = "user_",primary_key=True)     
-    email = models.EmailField(max_length=255,null=False,unique=True)
+class Users(AbstractBaseUser):
+    id = AutoField(prefix="user_", primary_key=True)
+    email = models.EmailField(max_length=255, null=False, unique=True)
     # password = models.CharField(max_length=255)
-    name = models.CharField(max_length=255,null=False)
-    phone_no = models.CharField(null=False,max_length=13)
-    country_code = models.CharField(max_length=3, default=None,null=True)
+    name = models.CharField(max_length=255, null=False)
+    phone_no = models.CharField(null=False, max_length=13)
+    country_code = models.CharField(max_length=3, default=None, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=False)
@@ -67,18 +73,17 @@ class Users(AbstractBaseUser):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name','phone_no']
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["name", "phone_no"]
 
     def __str__(self):
         return self.email
 
-    def has_perm(self,perm,obj = None):
+    def has_perm(self, perm, obj=None):
         return self.is_admin
 
     def has_module_perms(self, app_label):
         return True
-
 
     @property
     def is_staff(self):
@@ -94,7 +99,7 @@ class Users(AbstractBaseUser):
         self.is_active = False
         uid = urlsafe_base64_encode(force_bytes(self.pk))
         token = default_token_generator.make_token(self)
-        activation_url = f'{settings.SITE_DOMAIN}/users/activate/{uid}/{token}'
+        activation_url = f"{settings.SITE_DOMAIN}/users/activate/{uid}/{token}"
         send_activation_email(self.email, activation_url)
         self.save()
 
@@ -115,24 +120,23 @@ class UserAddresses(models.Model):
 
     # ADDRESS_CHOICES = ((BILLING, _("billing")), (SHIPPING, _("shipping")))
 
-    id = AutoField(prefix = "addr_",primary_key=True,null=False)
+    id = AutoField(prefix="addr_", primary_key=True, null=False)
     # address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
-    user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field='id')
-    first_name = models.CharField(max_length=255,null=False)
-    last_name = models.CharField(max_length=255,null=True)
-    email = models.EmailField(max_length=255,null = False)
-    address_line_1 = models.CharField(max_length=800,null=False)
-    address_line_2 = models.CharField(max_length=800,null=True)
-    house_no =  models.CharField(max_length=800,null=True)
-    street=  models.CharField(max_length=800,null=True)
-    landmark =  models.CharField(max_length=800,null=True)
-    city =  models.CharField(max_length=800,null=True)
-    state = models.CharField(max_length=255,null=False)
-    district = models.CharField(max_length=255,null=False)
-    country = models.CharField(max_length=255,null=False)
-    postal_code = models.CharField(max_length=255,null=False)
-    phone_no_1 = models.CharField(max_length=255,null=False)
-    phone_no_2 = models.CharField(max_length=255,null=True)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, to_field="id")
+    first_name = models.CharField(max_length=255, null=False)
+    last_name = models.CharField(max_length=255, null=True)
+    email = models.EmailField(max_length=255, null=False)
+    address_line_1 = models.CharField(max_length=800, null=False)
+    address_line_2 = models.CharField(max_length=800, null=True)
+    house_no = models.CharField(max_length=800, null=True)
+    street = models.CharField(max_length=800, null=True)
+    landmark = models.CharField(max_length=800, null=True)
+    city = models.CharField(max_length=800, null=True)
+    state = models.CharField(max_length=255, null=False)
+    district = models.CharField(max_length=255, null=False)
+    country = models.CharField(max_length=255, null=False)
+    postal_code = models.CharField(max_length=255, null=False)
+    phone_no_1 = models.CharField(max_length=255, null=False)
+    phone_no_2 = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-

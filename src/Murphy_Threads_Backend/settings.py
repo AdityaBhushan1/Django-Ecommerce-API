@@ -15,10 +15,7 @@ SECRET_KEY = env_vars.get("secret")
 
 DEBUG = env_vars.get("under_development")
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1'
-]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # Application definition
 
@@ -30,15 +27,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.sites",
     # "django.contrib.staticfiles",
-    'rest_framework',
-    'rest_framework.authtoken',
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
+    "rest_framework",
+    "rest_framework.authtoken",
+    "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
-    'oauth2_provider',
-    'social_django',
-    'drf_social_oauth2',
-    'Users',
+    "oauth2_provider",
+    "social_django",
+    "drf_social_oauth2",
+    "Users",
     # 'Cart',
     # 'Orders',
     # 'Products',
@@ -62,7 +59,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'ipinfo_django.middleware.IPinfoMiddleware',
+    "ipinfo_django.middleware.IPinfoMiddleware",
 ]
 
 ROOT_URLCONF = "Murphy_Threads_Backend.urls"
@@ -99,38 +96,37 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-        'drf_social_oauth2.authentication.SocialAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
+        "drf_social_oauth2.authentication.SocialAuthentication",
     ],
-
 }
 
 AUTHENTICATION_BACKENDS = (
-    'drf_social_oauth2.backends.DjangoOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-    'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.facebook.FacebookAppOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
+    "drf_social_oauth2.backends.DjangoOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+    "social_core.backends.google.GoogleOAuth2",
+    "social_core.backends.facebook.FacebookAppOAuth2",
+    "social_core.backends.facebook.FacebookOAuth2",
 )
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -139,20 +135,18 @@ TEMPLATES = [
 # STATIC_URL = '/static/'
 
 
-AUTH_USER_MODEL = 'Users.Users'
+AUTH_USER_MODEL = "Users.Users"
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
-    "ROTATE_REFRESH_TOKENS":False,
-    "BLACKLIST_AFTER_ROTATION":True,
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
 }
 
 PASSWORD_RESET_TIMEOUT = 900
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"
-]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
 
 # if DEBUG == False:
 #     REST_FRAMEWORK.update(
@@ -162,7 +156,7 @@ CORS_ALLOWED_ORIGINS = [
 #     )
 
 # email
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = env_vars.get("email_host")
 EMAIL_USE_TLS = env_vars.get("email_use_tls")
 EMAIL_PORT = env_vars.get("email_port")
@@ -172,37 +166,37 @@ EMAIL_HOST_PASSWORD = env_vars.get("email_host_password")
 
 SITE_NAME = env_vars.get("company_name")
 STATIC_URL = None
-DEFAULT_CURRENCY = 'INR'
+DEFAULT_CURRENCY = "INR"
 # SITE_DOMAIN = env_vars.get("frontend_site_domain")
 
 # database
 DATABASES = {
-    'default': {
-        'ENGINE': env_vars.get("db_engine"),
-        'NAME': env_vars.get("name"),
-        'USER': env_vars.get("user"),
-        'PASSWORD': env_vars.get("password"),
-        'HOST': env_vars.get("host"),
-        'PORT': env_vars.get("port"),
+    "default": {
+        "ENGINE": env_vars.get("db_engine"),
+        "NAME": env_vars.get("name"),
+        "USER": env_vars.get("user"),
+        "PASSWORD": env_vars.get("password"),
+        "HOST": env_vars.get("host"),
+        "PORT": env_vars.get("port"),
     }
 }
 
 # paypal
-#PAYPLA_CLIENT_ID = env_vars.get("paypal_client_id")
-#PAYPLA_SECRET_KEY = env_vars.get("paypal_secret_key")
-#PAYPAL_MODE = env_vars.get("paypal_mode")
+# PAYPLA_CLIENT_ID = env_vars.get("paypal_client_id")
+# PAYPLA_SECRET_KEY = env_vars.get("paypal_secret_key")
+# PAYPAL_MODE = env_vars.get("paypal_mode")
 
-#paypalrestsdk.configure(
-   # {
-  #  "mode": PAYPAL_MODE,
-   # "client_id": PAYPLA_CLIENT_ID,
-  #  "client_secret": PAYPLA_SECRET_KEY
- #   }
-#)
+# paypalrestsdk.configure(
+# {
+#  "mode": PAYPAL_MODE,
+# "client_id": PAYPLA_CLIENT_ID,
+#  "client_secret": PAYPLA_SECRET_KEY
+#   }
+# )
 
 # CORS_ALLOWED_ORIGINS = [
-    # str(env_vars.get("frontend_site_domain")),
-    # str(env_vars.get("frontend_site_ip"))
+# str(env_vars.get("frontend_site_domain")),
+# str(env_vars.get("frontend_site_ip"))
 # ]
 
 # instamojo
@@ -211,10 +205,10 @@ DATABASES = {
 # INSTAMOJO_SALT = env_vars.get("instamojo_salt")
 
 # stripe
-#STRIPE_PUBLIC_KEY = env_vars.get("stripe_public_key")
-#STRIPE_SECRET_KEY = env_vars.get("stripe_api_key")
-#STRIPE_WEBHOOK_SECRET = env_vars.get("stripe_webhook_secret")
-#stripe.api_key = STRIPE_SECRET_KEY
+# STRIPE_PUBLIC_KEY = env_vars.get("stripe_public_key")
+# STRIPE_SECRET_KEY = env_vars.get("stripe_api_key")
+# STRIPE_WEBHOOK_SECRET = env_vars.get("stripe_webhook_secret")
+# stripe.api_key = STRIPE_SECRET_KEY
 
 IPINFO_TOKEN = env_vars.get("ipinfo_token")
 
@@ -244,22 +238,20 @@ IPINFO_TOKEN = env_vars.get("ipinfo_token")
 
 # OAuth2 provider settings
 OAUTH2_PROVIDER = {
-    'ACCESS_TOKEN_EXPIRE_SECONDS': 36000,
+    "ACCESS_TOKEN_EXPIRE_SECONDS": 36000,
 }
 
 # social oauth
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env_vars.get('google_oauth2_client_id')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env_vars.get('google_oauth2_secret')
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env_vars.get("google_oauth2_client_id")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env_vars.get("google_oauth2_secret")
 
 # SOCIAL_AUTH_FACEBOOK_KEY = env_vars.get('cashfree_appid')
 # SOCIAL_AUTH_FACEBOOK_SECRET = env_vars.get('cashfree_appid')
 
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'id, name, email'
-}
+SOCIAL_AUTH_FACEBOOK_SCOPE = ["email"]
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {"fields": "id, name, email"}
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    'https://www.googleapis.com/auth/userinfo.email',
-    'https://www.googleapis.com/auth/userinfo.profile',
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
 ]

@@ -12,90 +12,93 @@ from django.db import transaction
 from Payments.models import Refunds
 from Payments.serializers import RefundSearializer
 
+
 class OrderView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
 
-    def get(self,request):
+    def get(self, request):
         queryset = Order.objects.filter(user=request.user.id)
         if not queryset:
-            return Response({'message':'no orders found'},status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "no orders found"}, status=status.HTTP_400_BAD_REQUEST
+            )
         serializer = OrderSerializer(queryset, many=True)
-        formatted_data = {
-            "user": request.user.id,
-            "orders": serializer.data
-        }
+        formatted_data = {"user": request.user.id, "orders": serializer.data}
         return Response(formatted_data, status=status.HTTP_200_OK)
 
     def post(self, request):
         permission_classes = [IsAuthenticated]
-        
+
         user = request.user
         cart_items = Cart.objects.filter(user=user)
-        shipping_address_id = request.data.get('shipping_address')
-        
+        shipping_address_id = request.data.get("shipping_address")
+
         if not cart_items:
-            return Response({'message': 'No items found in cart'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "No items found in cart"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         shipping_address = UserAddresses.objects.get(id=shipping_address_id)
         try:
             with transaction.atomic():
                 order = Order.objects.create(
                     user=user,
                     shipping_address_id=shipping_address,
-                    ammount_paid=request.data.get('ammount'),
-                    payment_mode = request.data.get('payment_mode')
+                    ammount_paid=request.data.get("ammount"),
+                    payment_mode=request.data.get("payment_mode"),
                 )
                 # OrderStatus.objects.create(order=order.id)
-                
+
                 for cart_item in cart_items:
                     order_item = OrderItem(
                         order=order,
                         product=cart_item.product,
-                        size=Size.objects.get(size = cart_item.size),
-                        color=Color.objects.get(color_in_hex = cart_item.color),
-                        quantity=cart_item.quantity
+                        size=Size.objects.get(size=cart_item.size),
+                        color=Color.objects.get(color_in_hex=cart_item.color),
+                        quantity=cart_item.quantity,
                     )
                     order_item.save()
-                
+
                 cart_items.delete()
-            
+
             return Response(
-                {
-                    'message': 'Successfully created order',
-                    'order_id': order.id
-                },
-                status=status.HTTP_200_OK
+                {"message": "Successfully created order", "order_id": order.id},
+                status=status.HTTP_200_OK,
             )
         except Exception as e:
-            return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class SpecificOrderView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
 
-    def get(self,request,pk):
+    def get(self, request, pk):
         try:
             order_queryset = Order.objects.get(pk=pk)
         except:
-            return Response({'message':'no order found'},status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "no order found"}, status=status.HTTP_400_BAD_REQUEST
+            )
         order_serializer = OrderSerializer(order_queryset)
         order_item_queryset = OrderItem.objects.filter(order=order_queryset)
         serializer = OrderItemSerializer(order_item_queryset, many=True)
         formatted_data = {
             "order_details": order_serializer.data,
-            "Items": serializer.data
+            "Items": serializer.data,
         }
 
-        refund = Refunds.object.get(order = order_queryset.id)
+        refund = Refunds.object.get(order=order_queryset.id)
         if refund:
             refund_serializer = RefundSearializer(refund)
-            formatted_data['refund_data'] = refund_serializer.data
+            formatted_data["refund_data"] = refund_serializer.data
 
-        returns = Return.object.get(order = order_queryset.id)
+        returns = Return.object.get(order=order_queryset.id)
         if returns:
             return_serializer = ReturnsSerializer(returns)
-            formatted_data['return_data'] = return_serializer.data
+            formatted_data["return_data"] = return_serializer.data
 
         return Response(formatted_data, status=status.HTTP_200_OK)
-

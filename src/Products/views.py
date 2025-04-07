@@ -25,7 +25,7 @@ from .models import *
 #             return Response(
 #                 {
 #                     'message':'successfully updated category'
-#                 }, 
+#                 },
 #                 status=status.HTTP_200_OK
 #             )
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -56,40 +56,42 @@ from .models import *
 #             return Response(formatted_data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class GetCategroyView(APIView):
     renderer_classes = [UserRenderer]
-    def get(self,request,pk):
+
+    def get(self, request, pk):
         try:
             category = ProductCategory.objects.get(pk=pk)
         except ProductCategory.DoesNotExist:
-            return Response({'message':'category does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "category does not exsist"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         serializer = ProductCategorySerializer(category)
-        formatted_data = {
-            "data": serializer.data
-        }
+        formatted_data = {"data": serializer.data}
         return Response(formatted_data, status=status.HTTP_200_OK)
-
 
 
 # class ProductView(APIView):
 #     renderer_classes = [UserRenderer]
-#     permission_classes = [IsAdminUser]        
+#     permission_classes = [IsAdminUser]
 
 #     def patch(self,request,pk):
-        # try:
-        #     product = Products.objects.get(pk=pk)
-        # except Products.DoesNotExist:
-        #     return Response({'message':'product does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
-        # serializer = ProductsSerializer(product, data=request.data, partial=True)
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return Response(
-        #         {
-        #             'message':'successfully updated category'
-        #         }, 
-        #         status=status.HTTP_200_OK
-        #     )
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# try:
+#     product = Products.objects.get(pk=pk)
+# except Products.DoesNotExist:
+#     return Response({'message':'product does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+# serializer = ProductsSerializer(product, data=request.data, partial=True)
+# if serializer.is_valid():
+#     serializer.save()
+#     return Response(
+#         {
+#             'message':'successfully updated category'
+#         },
+#         status=status.HTTP_200_OK
+#     )
+# return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #     def delete(self,request,pk):
 #         try:
@@ -117,32 +119,40 @@ class GetCategroyView(APIView):
 #             return Response(formatted_data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class ListProductByCategoryView(APIView):
     renderer_classes = [UserRenderer]
-    def get(self,request,pk):
-        category = ProductCategory.objects.get(name = pk)
+
+    def get(self, request, pk):
+        category = ProductCategory.objects.get(name=pk)
         queryset = Products.objects.filter(category=category)
         serializer = ProductsSerializer(queryset, many=True)
         for product in serializer.data:
-            product['average_rating'] = Products.objects.get(pk=product['id']).average_rating()
+            product["average_rating"] = Products.objects.get(
+                pk=product["id"]
+            ).average_rating()
 
-        formatted_data = {
-            "category": category.name,
-            "products": serializer.data
-        }
+        formatted_data = {"category": category.name, "products": serializer.data}
         return Response(formatted_data, status=status.HTTP_200_OK)
+
 
 class GetProductView(APIView):
     renderer_classes = [UserRenderer]
-    def get(self,request,pk):
+
+    def get(self, request, pk):
         try:
             product = Products.objects.get(pk=pk)
         except Products.DoesNotExist:
-            return Response({'message':'product does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "product does not exsist"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         try:
             serializer_product = ProductsSerializer(product)
         except:
-            return Response(serializer_product.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer_product.errors, status=status.HTTP_400_BAD_REQUEST
+            )
         reviews = Review.objects.filter(product=pk)
         reviews_serializer = ReviewSerializer(reviews, many=True)
         # variations = product.generate_variations()
@@ -150,13 +160,14 @@ class GetProductView(APIView):
         formatted_data = {
             "data": serializer_product.data,
             # "variations":variations,
-            "review":reviews_serializer.data
+            "review": reviews_serializer.data,
         }
         # if product.generate_variations == True:
         #     queryset = ProductVariations.objects.filter(product=pk)
         #     variations_serializer = ProductVariationsSerializer(queryset, many=True)
         #     formatted_data['variations']=variations_serializer.data
         return Response(formatted_data, status=status.HTTP_200_OK)
+
 
 # class GetProductVariationView(APIView):
 #     renderer_classes = [UserRenderer]
@@ -170,34 +181,38 @@ class GetProductView(APIView):
 #         }
 #         return Response(formatted_data, status=status.HTTP_200_OK)
 
+
 class ReviewView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
 
-    def post(self, request,pk):
+    def post(self, request, pk):
         user = request.user
         if Review.objects.filter(user=user, product=pk).exists():
-            return Response({"message":"You have already reviewed this product."}, status=status.HTTP_400_BAD_REQUEST)
-        request.data['product'] = pk
-        request.data['user'] = request.user.id
-        serializer = ReviewSerializer(data = request.data)
+            return Response(
+                {"message": "You have already reviewed this product."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        request.data["product"] = pk
+        request.data["user"] = request.user.id
+        serializer = ReviewSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=user)
-            formated_data = {"message":"successfull reviewed the product"}
+            formated_data = {"message": "successfull reviewed the product"}
             return Response(formated_data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-    def delete(self, request,pk):
+    def delete(self, request, pk):
         product_id = pk
         try:
-            review = Review.objects.get(user=request.user,product=product_id)
+            review = Review.objects.get(user=request.user, product=product_id)
         except review.DoesNotExist:
-            return Response({'message':'review does not exsist'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "review does not exsist"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         review.delete()
         return Response(
-            {
-                'message':'successfully deleted the review'
-            },
-            status=status.HTTP_204_NO_CONTENT
+            {"message": "successfully deleted the review"},
+            status=status.HTTP_204_NO_CONTENT,
         )
