@@ -5,7 +5,20 @@ from rest_framework.permissions import AllowAny
 
 @api_view(["GET"])
 def home(request):
-    data = {"status": "200", "message": "Welcome To Murphy Threads Backend API!!!"}
+    data = {
+        "name": "Django E-Commerce API",
+        "version": "1.0.0",
+        "status": "online",
+        "docs": "/api/docs/",
+        "redoc": "/api/redoc/",
+        "health": "/health/",
+    }
+    return Response(data)
+
+
+@api_view(["GET"])
+def health(request):
+    data = {"status": "ok", "database": "connected"}
     return Response(data)
 
 

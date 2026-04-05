@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     path("murphy-threads-admin-panel/", admin.site.urls),
     path("", views.home, name="home"),
+    path("/health", views.health, name="health"),
     path("users/", include("Users.urls"), name="user"),
     # path("cart/", include("Cart.urls"),name = 'cart'),
     # # path("extra/", include("Extra.urls"),name = 'extra'),
