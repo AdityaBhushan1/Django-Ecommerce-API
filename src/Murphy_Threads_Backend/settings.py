@@ -21,15 +21,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.sites",
-    # "django.contrib.staticfiles",
+    "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
-    "oauth2_provider",
-    "social_django",
-    "drf_social_oauth2",
     "Users",
     # 'Cart',
     # 'Orders',
@@ -43,6 +40,7 @@ INSTALLED_APPS = [
     # 'Shipping.Shiprocket',
     # 'Shipping.Ithinklogistics',
     # 'Coupons',
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -96,18 +94,17 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
-        "drf_social_oauth2.authentication.SocialAuthentication",
     ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
-AUTHENTICATION_BACKENDS = (
-    "drf_social_oauth2.backends.DjangoOAuth2",
-    "django.contrib.auth.backends.ModelBackend",
-    "social_core.backends.google.GoogleOAuth2",
-    "social_core.backends.facebook.FacebookAppOAuth2",
-    "social_core.backends.facebook.FacebookOAuth2",
-)
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
 
 TEMPLATES = [
     {
@@ -159,7 +156,9 @@ EMAIL_HOST_USER = env_vars.get("email_host_user")
 EMAIL_HOST_PASSWORD = env_vars.get("email_host_password")
 
 
-STATIC_URL = None
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 DEFAULT_CURRENCY = "INR"
 
 # database
@@ -175,3 +174,11 @@ DATABASES = {
 }
 
 IPINFO_TOKEN = env_vars.get("ipinfo_token")
+
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Django E-Commerce API",
+    "DESCRIPTION": "A reusable production-style e-commerce backend built with Django REST Framework.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}

@@ -5,8 +5,6 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "cashfree-pg>=4.3.10",
-    "cashfree-pg-sdk-python>=2.0.1",
     "celery>=5.5.0",
     "django>=5.2",
     "django-cors-headers>=4.7.0",
@@ -15,8 +13,7 @@ dependencies = [
     "djangorestframework>=3.16.0",
     "djangorestframework-simplejwt>=5.5.0",
     "djoser>=2.3.1",
-    "drf-social-oauth2>=3.1.0",
-    "instamojo-wrapper>=1.2.0",
+    "drf-spectacular>=0.29.0",
     "ipinfo-django>=2.0.0",
     "markdown>=3.7",
     "paypalrestsdk>=1.13.3",
@@ -24,7 +21,6 @@ dependencies = [
     "python-dotenv>=1.1.0",
     "redis>=5.2.1",
     "requests>=2.32.3",
-    "stripe>=12.0.0",
 ]
 
 [dependency-groups]

@@ -1,12 +1,16 @@
 from django.contrib import admin
 from django.urls import path, include
 from . import views
-
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
 
 urlpatterns = [
-    path("murphy-threads-admin-panel/", admin.site.urls),
+    path("admin-panel/", admin.site.urls),
     path("", views.home, name="home"),
-    path("/health", views.health, name="health"),
+    path("health/", views.health, name="health"),
     path("users/", include("Users.urls"), name="user"),
     # path("cart/", include("Cart.urls"),name = 'cart'),
     # # path("extra/", include("Extra.urls"),name = 'extra'),
@@ -17,4 +21,12 @@ urlpatterns = [
     # path("webhooks/", include("Webhooks.urls"),name = 'webhooks'),
     # path('auth/', include('djoser.urls')),
     # path('auth/', include('djoser.urls.jwt')),
+    # OpenAPI schema + docs
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "api/docs/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
 ]
