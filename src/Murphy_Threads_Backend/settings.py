@@ -1,13 +1,8 @@
 from pathlib import Path
 from datetime import timedelta
 from dotenv import dotenv_values
-import stripe
-import paypalrestsdk
-from cashfree_pg.api_client import Cashfree
 
 env_vars = dotenv_values()
-
-IS_UNDER_DEVELOPMENT = env_vars.get("under_development")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -164,10 +159,8 @@ EMAIL_HOST_USER = env_vars.get("email_host_user")
 EMAIL_HOST_PASSWORD = env_vars.get("email_host_password")
 
 
-SITE_NAME = env_vars.get("company_name")
 STATIC_URL = None
 DEFAULT_CURRENCY = "INR"
-# SITE_DOMAIN = env_vars.get("frontend_site_domain")
 
 # database
 DATABASES = {
@@ -181,77 +174,4 @@ DATABASES = {
     }
 }
 
-# paypal
-# PAYPLA_CLIENT_ID = env_vars.get("paypal_client_id")
-# PAYPLA_SECRET_KEY = env_vars.get("paypal_secret_key")
-# PAYPAL_MODE = env_vars.get("paypal_mode")
-
-# paypalrestsdk.configure(
-# {
-#  "mode": PAYPAL_MODE,
-# "client_id": PAYPLA_CLIENT_ID,
-#  "client_secret": PAYPLA_SECRET_KEY
-#   }
-# )
-
-# CORS_ALLOWED_ORIGINS = [
-# str(env_vars.get("frontend_site_domain")),
-# str(env_vars.get("frontend_site_ip"))
-# ]
-
-# instamojo
-# INSTAMOJO_API_KEY = env_vars.get("instamojo_api_key")
-# INSTAMOJO_AUTH_TOKEN = env_vars.get("instamojo_auth_token")
-# INSTAMOJO_SALT = env_vars.get("instamojo_salt")
-
-# stripe
-# STRIPE_PUBLIC_KEY = env_vars.get("stripe_public_key")
-# STRIPE_SECRET_KEY = env_vars.get("stripe_api_key")
-# STRIPE_WEBHOOK_SECRET = env_vars.get("stripe_webhook_secret")
-# stripe.api_key = STRIPE_SECRET_KEY
-
 IPINFO_TOKEN = env_vars.get("ipinfo_token")
-
-# disocrd
-# class DISCORDWEBHOOKS:
-#     RETURN_LOGS = env_vars.get("return_logs_webhook_url_discord")
-#     STRIPE_REFUND = env_vars.get("stripe_refund_logs_webhook_url_discord")
-#     STRIPE_PAYMENT = env_vars.get("stripe_payment_intent_logs_webhook_url_discord")
-#     ORDERS = env_vars.get("order_logs_webhook_url_discord")
-#     RETURNS = env_vars.get("return_logs_webhook_url_discord")
-#     REFUNDS = env_vars.get("refunds_logs_webhook_url_discord")
-#     CANCELLATIONS = env_vars.get("cancellation_logs_webhook_url_discord")
-#     CASHFREE_PAYMENTS = env_vars.get("cashfree_payments_webhook_discord_url")
-#     CASHFREE_REFUNDS = env_vars.get("cashfree_refunds_webhook_discord_url")
-#     CASHFREE_SETTLEMENTS = env_vars.get("cashfree_settlements_webhook_discord_url")
-#     CASHFREE_DISPUTES = env_vars.get("cashfree_disputes_webhook_discord_url")
-
-# # cashfree
-# CASHFREE_APP_ID = env_vars.get('cashfree_appid')
-# CASHFREE_CLIENT_SECRET = env_vars.get('cashfree_secret_key')
-# CASHFREE_MODE = env_vars.get('cashfree_mode')
-# CASHFREE_API_VERSION = env_vars.get('cashfree_version')
-# Cashfree.XClientId = CASHFREE_APP_ID
-# Cashfree.XClientSecret = CASHFREE_CLIENT_SECRET
-# Cashfree.XEnvironment = Cashfree.SANDBOX if CASHFREE_MODE == 'SANDBOX' else Cashfree.PRODUCTION
-
-
-# OAuth2 provider settings
-OAUTH2_PROVIDER = {
-    "ACCESS_TOKEN_EXPIRE_SECONDS": 36000,
-}
-
-# social oauth
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env_vars.get("google_oauth2_client_id")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env_vars.get("google_oauth2_secret")
-
-# SOCIAL_AUTH_FACEBOOK_KEY = env_vars.get('cashfree_appid')
-# SOCIAL_AUTH_FACEBOOK_SECRET = env_vars.get('cashfree_appid')
-
-SOCIAL_AUTH_FACEBOOK_SCOPE = ["email"]
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {"fields": "id, name, email"}
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/userinfo.profile",
-]
