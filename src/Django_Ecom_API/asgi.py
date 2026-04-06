@@ -1,5 +1,5 @@
 """
-ASGI config for Murphy_Threads_Backend project.
+ASGI config for Django_Ecom_API project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Murphy_Threads_Backend.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Django_Ecom_API.settings")
 
 application = get_asgi_application()

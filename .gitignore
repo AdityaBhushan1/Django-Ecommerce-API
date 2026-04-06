@@ -1,7 +1,7 @@
 poetry.lock
 __pycache__
 *.pyc
-murphy_threads_backend/murphy_threads_backend/__pycache__/__init__.cpython-311.pyc
+Django_Ecom_API/Django_Ecom_API/__pycache__/__init__.cpython-311.pyc
 *.pyc
 .env
 .vscode

@@ -9,7 +9,7 @@ import dotenv
 def main():
     """Run administrative tasks."""
     dotenv.load_dotenv()
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Murphy_Threads_Backend.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Django_Ecom_API.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

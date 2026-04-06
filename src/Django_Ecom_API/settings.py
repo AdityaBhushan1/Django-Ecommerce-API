@@ -63,9 +63,9 @@ MIDDLEWARE = [
     "ipinfo_django.middleware.IPinfoMiddleware",
 ]
 
-ROOT_URLCONF = "Murphy_Threads_Backend.urls"
+ROOT_URLCONF = "Django_Ecom_API.urls"
 
-WSGI_APPLICATION = "Murphy_Threads_Backend.wsgi.application"
+WSGI_APPLICATION = "Django_Ecom_API.wsgi.application"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
