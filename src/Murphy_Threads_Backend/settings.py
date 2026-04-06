@@ -10,7 +10,15 @@ SECRET_KEY = env_vars.get("secret")
 
 DEBUG = env_vars.get("under_development")
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+# ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+# ALLOWED_HOSTS = env_vars.get("allowed_hosts", "").split(",")
+ALLOWED_HOSTS = [h for h in env_vars.get("allowed_hosts", "").split(",") if h]
+# CSRF_TRUSTED_ORIGINS = env_vars.get("csrf_trusted_origins", "").split(",")
+CSRF_TRUSTED_ORIGINS = [
+    h for h in env_vars.get("csrf_trusted_origins", "").split(",") if h
+]
+
+SITE_ID = 1
 
 # Application definition
 
@@ -96,7 +104,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_RENDERER_CLASSES": [
-        "rest_framework.renderers.JSONRenderer",
+        "Utils.Renderers.UserRenderer",
     ],
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
@@ -140,13 +148,6 @@ PASSWORD_RESET_TIMEOUT = 900
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
 
-# if DEBUG == False:
-#     REST_FRAMEWORK.update(
-#         {
-#             'DEFAULT_RENDERER_CLASSES': 'rest_framework.renderers.JSONRenderer'
-#         }
-#     )
-
 # email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = env_vars.get("email_host")
@@ -182,3 +183,10 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SECURE_SSL_REDIRECT = not DEBUG

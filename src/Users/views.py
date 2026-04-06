@@ -31,7 +31,7 @@ def get_tokens_for_user(user):
 
 
 class UserRegistrationView(APIView):
-    renderer_classes = [UserRenderer]
+    
 
     def post(self, request, format=None):
         # ip_address = request.META.get('REMOTE_ADDR', None)
@@ -55,7 +55,7 @@ class UserRegistrationView(APIView):
 
 
 class ActivationConfirm(APIView):
-    renderer_classes = [UserRenderer]
+    
 
     def post(self, request):
         uid = request.data.get("uid")
@@ -92,7 +92,7 @@ class ActivationConfirm(APIView):
 
 
 class UserLoginView(APIView):
-    renderer_classes = [UserRenderer]
+    
 
     def post(self, request, format=None):
         serializer = UserLoginSerializer(data=request.data)
@@ -112,7 +112,7 @@ class UserLoginView(APIView):
 
 
 class UserProfileView(APIView):
-    renderer_classes = [UserRenderer]
+    
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
@@ -121,7 +121,7 @@ class UserProfileView(APIView):
 
 
 class UserChangePasswordView(APIView):
-    renderer_classes = [UserRenderer]
+    
     permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
@@ -135,7 +135,7 @@ class UserChangePasswordView(APIView):
 
 
 class SendPasswordResetEmailView(APIView):
-    renderer_classes = [UserRenderer]
+    
 
     def post(self, request, format=None):
         serializer = SendPasswordResetEmailSerializer(data=request.data)
@@ -147,7 +147,7 @@ class SendPasswordResetEmailView(APIView):
 
 
 class UserPasswordResetView(APIView):
-    renderer_classes = [UserRenderer]
+    
 
     def post(self, request, uid, token, format=None):
         serializer = UserPasswordResetSerializer(
@@ -160,7 +160,7 @@ class UserPasswordResetView(APIView):
 
 
 class DeleteAccountView(APIView):
-    renderer_classes = [UserRenderer]
+    
     permission_classes = [IsAuthenticated]
 
     def delete(self, request):
@@ -174,7 +174,7 @@ class DeleteAccountView(APIView):
 
 
 class UserLogoutView(APIView):
-    renderer_classes = [UserRenderer]
+    
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -188,7 +188,7 @@ class UserLogoutView(APIView):
 
 
 class UserEmailUpdateView(APIView):
-    renderer_classes = [UserRenderer]
+    
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -211,7 +211,7 @@ class UserEmailUpdateView(APIView):
 
 
 class UserPhoneNoUpdateView(APIView):
-    renderer_classes = [UserRenderer]
+    
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -234,7 +234,7 @@ class UserPhoneNoUpdateView(APIView):
 
 
 class UserNameUpdateView(APIView):
-    renderer_classes = [UserRenderer]
+    
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -257,7 +257,7 @@ class UserNameUpdateView(APIView):
 
 
 class UserAddressesView(APIView):
-    renderer_classes = [UserRenderer]
+    
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -285,7 +285,7 @@ class UserAddressesView(APIView):
 
 
 class UserAddressesUpdateView(APIView):
-    renderer_classes = [UserRenderer]
+    
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, pk):
