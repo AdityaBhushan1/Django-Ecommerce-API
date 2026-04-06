@@ -6,7 +6,7 @@ from django.conf import settings
 
 
 def send_activation_email(recipient_email, activation_url):
-    subject = "Activate your account on " + settings.SITE_NAME
+    subject = "Activate your account on django emcom api"
     from_email = settings.EMAIL_HOST_USER
     to = [recipient_email]
 

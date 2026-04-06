@@ -4,7 +4,6 @@ from rest_framework.permissions import AllowAny
 from django.db import connections
 from django.db.utils import OperationalError
 
-
 @api_view(["GET"])
 def home(request):
     data = {
@@ -14,7 +13,7 @@ def home(request):
         "schema": "/api/schema/",
         "docs": "/api/docs/",
         "redoc": "/api/redoc/",
-        "health": "/health/",
+        "health": "/api/health/",
     }
     return Response(data)
 

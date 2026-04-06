@@ -11,7 +11,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from rest_framework_simplejwt.tokens import RefreshToken
 from Utils.Renderers import UserRenderer
 from Utils.Emails import *
-# import ipinfo
+from drf_spectacular.utils import extend_schema
+
 
 # def get_country_code(ip_address):
 #     access_token = settings.IPINFO_TOKEN
@@ -34,16 +35,16 @@ class UserRegistrationView(APIView):
 
     def post(self, request, format=None):
         # ip_address = request.META.get('REMOTE_ADDR', None)
-
-        request.data["country_code"] = request.ipinfo.country
-        serializer = UserRegistrationSerializer(data=request.data)
+        data = request.data.copy()
+        data["country_code"] = getattr(request.ipinfo, "country", None)
+        serializer = UserRegistrationSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
             # Todo make the email verification part
-            # activation_url = f'{settings.SITE_DOMAIN}/users/activate/{uid}/{token}'
-            # send_activation_email(user.email, activation_url)
+            activation_url = f"http://localhost:8000/users/activate/{uid}/{token}"
+            send_activation_email(user.email, activation_url)
             return Response(
                 {
                     "message": "Successfully Registered User!,Successfully Sent The Activation Link"
