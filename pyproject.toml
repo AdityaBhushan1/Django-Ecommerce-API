@@ -14,6 +14,7 @@ dependencies = [
     "djangorestframework-simplejwt>=5.5.0",
     "djoser>=2.3.1",
     "drf-spectacular>=0.29.0",
+    "gunicorn>=25.3.0",
     "ipinfo-django>=2.0.0",
     "markdown>=3.7",
     "paypalrestsdk>=1.13.3",
