@@ -14,6 +14,7 @@ from Utils.Emails import *
 from drf_spectacular.utils import extend_schema
 
 
+
 # def get_country_code(ip_address):
 #     access_token = settings.IPINFO_TOKEN
 #     handler = ipinfo.getHandler(access_token)
@@ -42,8 +43,7 @@ class UserRegistrationView(APIView):
             user = serializer.save()
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
-            # Todo make the email verification part
-            activation_url = f"http://localhost:8000/users/activate/{uid}/{token}"
+            activation_url = f"{settings.FRONT_END_URL}/users/activate/{uid}/{token}"
             send_activation_email(user.email, activation_url)
             return Response(
                 {

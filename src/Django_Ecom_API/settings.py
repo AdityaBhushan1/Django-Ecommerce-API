@@ -201,3 +201,5 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+FRONT_END_URL = env_vars.get("front_end_url")
