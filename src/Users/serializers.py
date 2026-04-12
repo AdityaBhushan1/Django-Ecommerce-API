@@ -4,6 +4,7 @@ from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeErr
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from Utils.Emails import send_reset_password_email
+from Utils.PassCheck import validate_password_strength
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -29,10 +30,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Password and Confirm Password doesn't match"
             )
+
+        validate_password_strength(password)
+
         return attrs
 
-    def create(self, validate_data):
-        return Users.objects.create_user(**validate_data)
+    def create(self, validated_data):
+        validated_data.pop("password2")
+        return Users.objects.create_user(**validated_data)
 
     def validate_email(self, value):
         if Users.objects.filter(email=value).exists():
@@ -84,8 +89,12 @@ class UserChangePasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 "Password and Confirm Password doesn't match"
             )
+        validate_password_strength(password)
+
         user.set_password(password)
         user.save()
+        send_password_change_email(user.email)
+        user.token_version += 1
         return attrs
 
 
@@ -103,7 +112,7 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
             print("Encoded UID", uid)
             token = PasswordResetTokenGenerator().make_token(user)
             print("Password Reset Token", token)
-            link = "http://localhost:8000/users/reset/" + uid + "/" + token
+            link = "http://localhost:8000/api/users/reset/" + uid + "/" + token
             # print('Password Reset Link', link)
 
             # Send EMail
@@ -133,12 +142,17 @@ class UserPasswordResetSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     "Password and Confirm Password doesn't match"
                 )
+            
+            validate_password_strength(password)
+
             id = smart_str(urlsafe_base64_decode(uid))
             user = Users.objects.get(id=id)
             if not PasswordResetTokenGenerator().check_token(user, token):
                 raise serializers.ValidationError("Token is not Valid or Expired")
             user.set_password(password)
             user.save()
+            send_password_reset_success_email(user.email)
+            user.token_version += 1
             return attrs
         except DjangoUnicodeDecodeError as identifier:
             PasswordResetTokenGenerator().check_token(user, token)

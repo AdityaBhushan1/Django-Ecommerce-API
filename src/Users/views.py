@@ -14,7 +14,6 @@ from Utils.Emails import *
 from drf_spectacular.utils import extend_schema
 
 
-
 # def get_country_code(ip_address):
 #     access_token = settings.IPINFO_TOKEN
 #     handler = ipinfo.getHandler(access_token)
@@ -25,6 +24,8 @@ from drf_spectacular.utils import extend_schema
 # Generate Token Manually
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
+    refresh["token_version"] = user.token_version
+
     return {
         "refresh": str(refresh),
         "access": str(refresh.access_token),
@@ -32,8 +33,6 @@ def get_tokens_for_user(user):
 
 
 class UserRegistrationView(APIView):
-    
-
     def post(self, request, format=None):
         # ip_address = request.META.get('REMOTE_ADDR', None)
         data = request.data.copy()
@@ -55,8 +54,6 @@ class UserRegistrationView(APIView):
 
 
 class ActivationConfirm(APIView):
-    
-
     def post(self, request):
         uid = request.data.get("uid")
         token = request.data.get("token")
@@ -92,8 +89,6 @@ class ActivationConfirm(APIView):
 
 
 class UserLoginView(APIView):
-    
-
     def post(self, request, format=None):
         serializer = UserLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -112,7 +107,6 @@ class UserLoginView(APIView):
 
 
 class UserProfileView(APIView):
-    
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
@@ -121,22 +115,22 @@ class UserProfileView(APIView):
 
 
 class UserChangePasswordView(APIView):
-    
     permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
         serializer = UserChangePasswordSerializer(
             data=request.data, context={"user": request.user}
         )
+        
         serializer.is_valid(raise_exception=True)
+
+        
         return Response(
             {"msg": "Password Changed Successfully"}, status=status.HTTP_200_OK
         )
 
 
 class SendPasswordResetEmailView(APIView):
-    
-
     def post(self, request, format=None):
         serializer = SendPasswordResetEmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -147,8 +141,6 @@ class SendPasswordResetEmailView(APIView):
 
 
 class UserPasswordResetView(APIView):
-    
-
     def post(self, request, uid, token, format=None):
         serializer = UserPasswordResetSerializer(
             data=request.data, context={"uid": uid, "token": token}
@@ -160,7 +152,6 @@ class UserPasswordResetView(APIView):
 
 
 class DeleteAccountView(APIView):
-    
     permission_classes = [IsAuthenticated]
 
     def delete(self, request):
@@ -174,7 +165,6 @@ class DeleteAccountView(APIView):
 
 
 class UserLogoutView(APIView):
-    
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -188,7 +178,6 @@ class UserLogoutView(APIView):
 
 
 class UserEmailUpdateView(APIView):
-    
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -211,7 +200,6 @@ class UserEmailUpdateView(APIView):
 
 
 class UserPhoneNoUpdateView(APIView):
-    
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -234,7 +222,6 @@ class UserPhoneNoUpdateView(APIView):
 
 
 class UserNameUpdateView(APIView):
-    
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -257,7 +244,6 @@ class UserNameUpdateView(APIView):
 
 
 class UserAddressesView(APIView):
-    
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -285,7 +271,6 @@ class UserAddressesView(APIView):
 
 
 class UserAddressesUpdateView(APIView):
-    
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, pk):

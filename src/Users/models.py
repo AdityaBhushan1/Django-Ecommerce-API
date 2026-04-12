@@ -70,6 +70,7 @@ class Users(AbstractBaseUser):
     modified_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
+    token_version = models.IntegerField(default=0)
 
     objects = UserManager()
 
